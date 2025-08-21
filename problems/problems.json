@@ -1,0 +1,26 @@
+[
+  {
+    "id": "two-sum",
+    "title": { "en": "Two Sum", "zh": "两数之和" },
+    "difficulty": "Easy",
+    "tags": ["array", "hash-table"],
+    "description": {
+      "en": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+      "zh": "给定一个整数数组 nums 和一个整数目标值 target，请你在数组中找出和为目标值的那两个整数，并返回它们的数组下标。"
+    },
+    "examples": [
+      { "input": "nums = [2,7,11,15], target = 9", "output": "[0,1]" }
+    ],
+    "template": {
+      "js": "function twoSum(nums, target) {\n  // write your code here\n}\nmodule.exports = twoSum;"
+    },
+    "solution": {
+      "js": "function twoSum(nums, target) {\n  const map = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (map.has(complement)) return [map.get(complement), i];\n    map.set(nums[i], i);\n  }\n}\nmodule.exports = twoSum;"
+    },
+    "tests": [
+      { "input": "[2,7,11,15],9", "output": "[0,1]" },
+      { "input": "[3,2,4],6", "output": "[1,2]" },
+      { "input": "[3,3],6", "output": "[0,1]" }
+    ]
+  }
+]

@@ -521,5 +521,40 @@
         "output": "5"
       }
     ]
+  },
+  {
+    "id": "test",
+    "title": {
+      "en": "test",
+      "zh": "test"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "test"
+    ],
+    "description": {
+      "en": "test",
+      "zh": "test"
+    },
+    "examples": [
+      {
+        "input": "",
+        "output": ""
+      }
+    ],
+    "template": {
+      "js": "function solution() {\n  // write your code here\n}\nmodule.exports = solution;",
+      "python": "def solution():\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public void solution() {\n        // write your code here\n    }\n}",
+      "cpp": "#include <iostream>\nusing namespace std;\n\nclass Solution {\npublic:\n    void solution() {\n        // write your code here\n    }\n};",
+      "c": "#include <stdio.h>\n\nvoid solution() {\n    // write your code here\n}"
+    },
+    "solution": {},
+    "tests": [
+      {
+        "input": "test",
+        "output": "test"
+      }
+    ]
   }
 ]

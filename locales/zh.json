@@ -18,6 +18,17 @@
     "subtitle": "本地题库，支持在浏览器内编辑并运行测试（JavaScript）",
     "problemList": "📚 题目列表",
     "problems": "题",
+    "addProblem": "添加题目",
+    "search": "搜索",
+    "searchPlaceholder": "搜索题目标题或描述...",
+    "filterByDifficulty": "按难度筛选",
+    "filterByTags": "按标签筛选",
+    "allDifficulties": "所有难度",
+    "allTags": "所有标签",
+    "clearFilters": "清除筛选",
+    "noResults": "没有找到匹配的题目",
+    "showingResults": "显示",
+    "of": "共",
     "difficulty": {
       "Easy": "简单",
       "Medium": "中等", 
@@ -30,7 +41,10 @@
     "solution": "参考解法",
     "example": "示例",
     "input": "输入",
-    "output": "输出"
+    "output": "输出",
+    "showSolution": "显示解法",
+    "hideSolution": "隐藏解法",
+    "solutionHidden": "点击查看参考解法"
   },
   "codeRunner": {
     "title": "💻 代码编辑器",
@@ -46,7 +60,13 @@
     "ms": "毫秒",
     "runningTests": "正在运行测试...",
     "runError": "运行错误",
-    "networkError": "运行失败，请检查网络连接"
+    "networkError": "运行失败，请检查网络连接",
+    "noResults": "暂无测试结果。运行代码后在此查看结果。",
+    "totalExecutionTime": "总执行时间",
+    "averageTime": "平均时间",
+    "memoryUsed": "内存使用",
+    "totalMemory": "总内存",
+    "input": "输入"
   },
   "tags": {
     "array": "数组",
@@ -61,5 +81,38 @@
     "divide-and-conquer": "分治",
     "dynamic-programming": "动态规划",
     "memoization": "记忆化"
+  },
+  "addProblem": {
+    "title": "添加新题目",
+    "manualForm": "手动表单",
+    "importJson": "导入JSON",
+    "uploadJsonFile": "上传JSON文件：",
+    "selectJsonFile": "选择JSON文件",
+    "pasteJson": "或粘贴JSON：",
+    "importJsonButton": "导入JSON",
+    "basicInformation": "基本信息",
+    "problemId": "题目ID：",
+    "problemIdHint": "仅使用小写字母、数字和连字符",
+    "difficulty": "难度：",
+    "titles": "标题",
+    "englishTitle": "英文标题：",
+    "chineseTitle": "中文标题：",
+    "tagsLabel": "标签（逗号分隔）：",
+    "tagsPlaceholder": "例如：array, hash-table",
+    "descriptions": "描述",
+    "englishDescription": "英文描述：",
+    "chineseDescription": "中文描述：",
+    "testCases": "测试用例：",
+    "input": "输入：",
+    "expectedOutput": "期望输出：",
+    "removeTestCase": "删除测试用例",
+    "addTestCase": "添加测试用例",
+    "addProblemButton": "添加题目",
+    "addingProblem": "正在添加题目...",
+    "problemAddedSuccess": "题目添加成功！ID: {{id}}",
+    "invalidJsonFormat": "JSON格式无效",
+    "jsonImportedSuccess": "JSON导入成功",
+    "networkError": "网络错误",
+    "backToProblems": "返回题目列表"
   }
 }

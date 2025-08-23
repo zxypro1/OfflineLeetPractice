@@ -21,6 +21,17 @@ type Translations = {
     subtitle: string;
     problemList: string;
     problems: string;
+    addProblem: string;
+    search: string;
+    searchPlaceholder: string;
+    filterByDifficulty: string;
+    filterByTags: string;
+    allDifficulties: string;
+    allTags: string;
+    clearFilters: string;
+    noResults: string;
+    showingResults: string;
+    of: string;
     difficulty: {
       Easy: string;
       Medium: string;
@@ -62,6 +73,39 @@ type Translations = {
   tags: {
     [key: string]: string;
   };
+  addProblem: {
+    title: string;
+    manualForm: string;
+    importJson: string;
+    uploadJsonFile: string;
+    selectJsonFile: string;
+    pasteJson: string;
+    importJsonButton: string;
+    basicInformation: string;
+    problemId: string;
+    problemIdHint: string;
+    difficulty: string;
+    titles: string;
+    englishTitle: string;
+    chineseTitle: string;
+    tagsLabel: string;
+    tagsPlaceholder: string;
+    descriptions: string;
+    englishDescription: string;
+    chineseDescription: string;
+    testCases: string;
+    input: string;
+    expectedOutput: string;
+    removeTestCase: string;
+    addTestCase: string;
+    addProblemButton: string;
+    addingProblem: string;
+    problemAddedSuccess: string;
+    invalidJsonFormat: string;
+    jsonImportedSuccess: string;
+    networkError: string;
+    backToProblems: string;
+  };
 };
 type TranslationKey = keyof Translations;
 type NestedTranslationKey<T> = T extends object ? keyof T : never;
@@ -95,6 +139,17 @@ const translations: Record<string, Translations> = {
       subtitle: '本地题库，支持在浏览器内编辑并运行测试（JavaScript）',
       problemList: '📚 题目列表',
       problems: '题',
+      addProblem: '添加题目',
+      search: '搜索',
+      searchPlaceholder: '搜索题目标题或描述...',
+      filterByDifficulty: '按难度筛选',
+      filterByTags: '按标签筛选',
+      allDifficulties: '所有难度',
+      allTags: '所有标签',
+      clearFilters: '清除筛选',
+      noResults: '没有找到匹配的题目',
+      showingResults: '显示',
+      of: '共',
       difficulty: {
         Easy: '简单',
         Medium: '中等',
@@ -146,6 +201,39 @@ const translations: Record<string, Translations> = {
       'divide-and-conquer': '分治',
       'dynamic-programming': '动态规划',
       'memoization': '记忆化'
+    },
+    addProblem: {
+      title: '添加新题目',
+      manualForm: '手动表单',
+      importJson: '导入JSON',
+      uploadJsonFile: '上传JSON文件：',
+      selectJsonFile: '选择JSON文件',
+      pasteJson: '或粘贴JSON：',
+      importJsonButton: '导入JSON',
+      basicInformation: '基本信息',
+      problemId: '题目ID：',
+      problemIdHint: '仅使用小写字母、数字和连字符',
+      difficulty: '难度：',
+      titles: '标题',
+      englishTitle: '英文标题：',
+      chineseTitle: '中文标题：',
+      tagsLabel: '标签（逗号分隔）：',
+      tagsPlaceholder: '例如：array, hash-table',
+      descriptions: '描述',
+      englishDescription: '英文描述：',
+      chineseDescription: '中文描述：',
+      testCases: '测试用例：',
+      input: '输入：',
+      expectedOutput: '期望输出：',
+      removeTestCase: '删除测试用例',
+      addTestCase: '添加测试用例',
+      addProblemButton: '添加题目',
+      addingProblem: '正在添加题目...',
+      problemAddedSuccess: '题目添加成功！ID: {{id}}',
+      invalidJsonFormat: 'JSON格式无效',
+      jsonImportedSuccess: 'JSON导入成功',
+      networkError: '网络错误',
+      backToProblems: '返回题目列表'
     }
   },
   en: {
@@ -168,6 +256,17 @@ const translations: Record<string, Translations> = {
       subtitle: 'Local problem set, supports editing and running tests in browser (JavaScript)',
       problemList: '📚 Problem List',
       problems: 'problems',
+      addProblem: 'Add Problem',
+      search: 'Search',
+      searchPlaceholder: 'Search problem title or description...',
+      filterByDifficulty: 'Filter by Difficulty',
+      filterByTags: 'Filter by Tags',
+      allDifficulties: 'All Difficulties',
+      allTags: 'All Tags',
+      clearFilters: 'Clear Filters',
+      noResults: 'No matching problems found',
+      showingResults: 'Showing',
+      of: 'of',
       difficulty: {
         Easy: 'Easy',
         Medium: 'Medium',
@@ -219,6 +318,39 @@ const translations: Record<string, Translations> = {
       'divide-and-conquer': 'Divide and Conquer',
       'dynamic-programming': 'Dynamic Programming',
       'memoization': 'Memoization'
+    },
+    addProblem: {
+      title: 'Add New Problem',
+      manualForm: 'Manual Form',
+      importJson: 'Import JSON',
+      uploadJsonFile: 'Upload JSON File:',
+      selectJsonFile: 'Select JSON file',
+      pasteJson: 'Or paste JSON:',
+      importJsonButton: 'Import JSON',
+      basicInformation: 'Basic Information',
+      problemId: 'Problem ID:',
+      problemIdHint: 'Use lowercase letters, numbers, and hyphens only',
+      difficulty: 'Difficulty:',
+      titles: 'Titles',
+      englishTitle: 'English Title:',
+      chineseTitle: 'Chinese Title:',
+      tagsLabel: 'Tags (comma-separated):',
+      tagsPlaceholder: 'e.g., array, hash-table',
+      descriptions: 'Descriptions',
+      englishDescription: 'English Description:',
+      chineseDescription: 'Chinese Description:',
+      testCases: 'Test Cases:',
+      input: 'Input:',
+      expectedOutput: 'Expected Output:',
+      removeTestCase: 'Remove Test Case',
+      addTestCase: 'Add Test Case',
+      addProblemButton: 'Add Problem',
+      addingProblem: 'Adding Problem...',
+      problemAddedSuccess: 'Problem added successfully! ID: {{id}}',
+      invalidJsonFormat: 'Invalid JSON format',
+      jsonImportedSuccess: 'JSON imported successfully',
+      networkError: 'Network error occurred',
+      backToProblems: 'Back to Problems'
     }
   }
 };

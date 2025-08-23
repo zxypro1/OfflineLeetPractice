@@ -12,8 +12,16 @@ import {
   Center,
   Divider,
   Loader,
-  Alert
+  Alert,
+  TextInput,
+  Select,
+  MultiSelect,
+  Button,
+  Flex,
+  Paper,
+  AppShell
 } from '@mantine/core';
+import { useMemo } from 'react';
 import { useTranslation, useI18n } from '../src/contexts/I18nContext';
 import { LanguageThemeControls } from '../src/components/LanguageThemeControls'
 
@@ -40,6 +48,11 @@ export default function Home() {
   const [problems, setProblems] = useState<Problem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Search and filter states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -60,120 +73,317 @@ export default function Home() {
     fetchProblems();
   }, []);
 
+  // Get unique difficulties and tags for filter options
+  const { difficulties, allTags } = useMemo(() => {
+    const uniqueDifficulties = Array.from(new Set(problems.map(p => p.difficulty)));
+    const uniqueTags = Array.from(new Set(problems.flatMap(p => p.tags || [])));
+    return {
+      difficulties: uniqueDifficulties,
+      allTags: uniqueTags
+    };
+  }, [problems]);
+
+  // Filter and search logic
+  const filteredProblems = useMemo(() => {
+    return problems.filter(problem => {
+      // Search filter
+      const searchLower = searchQuery.toLowerCase();
+      const titleMatch = problem.title.en.toLowerCase().includes(searchLower) || 
+                         problem.title.zh.toLowerCase().includes(searchLower);
+      const descMatch = problem.description.en.toLowerCase().includes(searchLower) || 
+                        problem.description.zh.toLowerCase().includes(searchLower);
+      const searchMatch = !searchQuery || titleMatch || descMatch;
+      
+      // Difficulty filter
+      const difficultyMatch = selectedDifficulties.length === 0 || 
+                             selectedDifficulties.includes(problem.difficulty);
+      
+      // Tag filter
+      const tagMatch = selectedTags.length === 0 || 
+                       selectedTags.some(tag => problem.tags?.includes(tag));
+      
+      return searchMatch && difficultyMatch && tagMatch;
+    });
+  }, [problems, searchQuery, selectedDifficulties, selectedTags]);
+
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedDifficulties([]);
+    setSelectedTags([]);
+  };
+
+  // Check if any filters are applied
+  const hasActiveFilters = searchQuery || selectedDifficulties.length > 0 || selectedTags.length > 0;
+
   if (loading) {
     return (
-      <Container size="xl" py={40}>
-        <Group justify="flex-end" mb={20}>
-          <LanguageThemeControls />
-        </Group>
-        <Center style={{ minHeight: '50vh' }}>
-          <Stack align="center" gap={20}>
-            <Loader size="lg" />
-            <Text>{t('common.loading')}</Text>
+      <AppShell
+        header={{ height: 80 }}
+        navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: true } }}
+        padding={{ base: 'sm', md: 'md' }}
+      >
+        <AppShell.Header>
+          <Stack gap="xs" h="100%" justify="center" px="md">
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Title order={2} mb={4}>{t('homepage.title')}</Title>
+                <Text size="sm" c="dimmed">{t('homepage.subtitle')}</Text>
+              </div>
+              <Group>
+                <Link href="/add-problem">
+                  <Badge 
+                    size="lg" 
+                    variant="outline" 
+                    color="blue" 
+                    style={{ cursor: 'pointer', padding: '8px 16px' }}
+                  >
+                    + {t('homepage.addProblem')}
+                  </Badge>
+                </Link>
+                <LanguageThemeControls />
+              </Group>
+            </Group>
           </Stack>
-        </Center>
-      </Container>
+        </AppShell.Header>
+
+        <AppShell.Main>
+          <Center style={{ minHeight: '50vh' }}>
+            <Stack align="center" gap={20}>
+              <Loader size="lg" />
+              <Text>{t('common.loading')}</Text>
+            </Stack>
+          </Center>
+        </AppShell.Main>
+      </AppShell>
     );
   }
 
   if (error) {
     return (
-      <Container size="xl" py={40}>
-        <Group justify="flex-end" mb={20}>
-          <LanguageThemeControls />
-        </Group>
-        <Center style={{ minHeight: '50vh' }}>
-          <Alert color="red" title={t('common.error')}>
-            {error}
-          </Alert>
-        </Center>
-      </Container>
+      <AppShell
+        header={{ height: 80 }}
+        navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: true } }}
+        padding={{ base: 'sm', md: 'md' }}
+      >
+        <AppShell.Header>
+          <Stack gap="xs" h="100%" justify="center" px="md">
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Title order={2} mb={4}>{t('homepage.title')}</Title>
+                <Text size="sm" c="dimmed">{t('homepage.subtitle')}</Text>
+              </div>
+              <Group>
+                <Link href="/add-problem">
+                  <Badge 
+                    size="lg" 
+                    variant="outline" 
+                    color="blue" 
+                    style={{ cursor: 'pointer', padding: '8px 16px' }}
+                  >
+                    + {t('homepage.addProblem')}
+                  </Badge>
+                </Link>
+                <LanguageThemeControls />
+              </Group>
+            </Group>
+          </Stack>
+        </AppShell.Header>
+
+        <AppShell.Main>
+          <Center style={{ minHeight: '50vh' }}>
+            <Alert color="red" title={t('common.error')}>
+              {error}
+            </Alert>
+          </Center>
+        </AppShell.Main>
+      </AppShell>
     );
   }
 
   return (
-    <Container size="xl" py={40}>
-      {/* 语言和主题控件 */}
-      <Group justify="flex-end" mb={20}>
-        <LanguageThemeControls />
-      </Group>
-      
-      <Center>
-        <Stack gap={30}>
+    <AppShell
+      header={{ height: 80 }}
+      navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: true } }}
+      padding={{ base: 'sm', md: 'md' }}
+    >
+      {/* Header with title and controls */}
+      <AppShell.Header>
+        <Stack gap="xs" h="100%" justify="center" px="md">
+          <Group justify="space-between" align="flex-start">
+            <div>
+              <Title order={2} mb={4}>{t('homepage.title')}</Title>
+              <Text size="sm" c="dimmed">{t('homepage.subtitle')}</Text>
+            </div>
+            <Group>
+              <Link href="/add-problem">
+                <Badge 
+                  size="lg" 
+                  variant="outline" 
+                  color="blue" 
+                  style={{ cursor: 'pointer', padding: '8px 16px' }}
+                >
+                  + {t('homepage.addProblem')}
+                </Badge>
+              </Link>
+              <LanguageThemeControls />
+            </Group>
+          </Group>
+        </Stack>
+      </AppShell.Header>
+
+      {/* Left Sidebar with search and filters */}
+      <AppShell.Navbar p="md">
+        <Stack gap="lg">
+          {/* Search Section */}
           <div>
-            <Title order={1} ta="center" mb={10}>
-              {t('homepage.title')}
-            </Title>
-            <Text size="lg" c="dimmed" ta="center">
-              {t('homepage.subtitle')}
-            </Text>
+            <Title order={4} mb="md">{t('homepage.search')}</Title>
+            <TextInput
+              placeholder={t('homepage.searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.currentTarget.value)}
+              size="sm"
+            />
           </div>
           
-          <Divider size="md" />
+          <Divider />
           
-          <Text size="xl" fw={600} ta="center">
-            {t('homepage.problemList')} ({problems.length} {t('homepage.problems')})
+          {/* Difficulty Filter */}
+          <div>
+            <Title order={4} mb="md">{t('homepage.filterByDifficulty')}</Title>
+            <Select
+              placeholder={t('homepage.allDifficulties')}
+              data={[
+                { value: '', label: t('homepage.allDifficulties') },
+                ...difficulties.map(diff => ({
+                  value: diff,
+                  label: t(`homepage.difficulty.${diff}`)
+                }))
+              ]}
+              value={selectedDifficulties.length === 1 ? selectedDifficulties[0] : ''}
+              onChange={(value) => {
+                if (value) {
+                  setSelectedDifficulties([value]);
+                } else {
+                  setSelectedDifficulties([]);
+                }
+              }}
+              clearable
+              size="sm"
+            />
+          </div>
+          
+          {/* Tag Filter */}
+          <div>
+            <Title order={4} mb="md">{t('homepage.filterByTags')}</Title>
+            <MultiSelect
+              placeholder={t('homepage.allTags')}
+              data={allTags.map(tag => ({
+                value: tag,
+                label: t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag
+              }))}
+              value={selectedTags}
+              onChange={setSelectedTags}
+              searchable
+              limit={20}
+              size="sm"
+            />
+          </div>
+          
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <Button 
+              variant="light" 
+              onClick={clearFilters}
+              fullWidth
+              size="sm"
+            >
+              {t('homepage.clearFilters')}
+            </Button>
+          )}
+          
+          <Divider />
+          
+          {/* Result Counter */}
+          <Text size="sm" c="dimmed" ta="center">
+            {t('homepage.showingResults')} {filteredProblems.length} {t('homepage.of')} {problems.length} {t('homepage.problems')}
           </Text>
         </Stack>
-      </Center>
-      
-      <Grid mt={40}>
-        {problems.map((problem) => (
-          <Grid.Col key={problem.id} span={{ base: 12, sm: 6, lg: 4 }}>
-            <Card 
-              shadow="sm" 
-              padding="lg" 
-              radius="md" 
-              withBorder
-              style={{ height: '100%', cursor: 'pointer', transition: 'all 0.2s ease' }}
-              component={Link}
-              href={`/problems/${problem.id}`}
-            >
-              <Stack gap={12}>
-                <Group justify="space-between" align="flex-start">
-                  <Badge 
-                    color={getDifficultyColor(problem.difficulty)}
-                    variant="filled"
-                    size="sm"
+      </AppShell.Navbar>
+
+      {/* Main content area with problem list */}
+      <AppShell.Main>
+        <Container fluid p={0}>
+          {filteredProblems.length === 0 ? (
+            <Center mt={40}>
+              <Alert color="blue" title={t('homepage.noResults')}>
+                <Text>
+                  {hasActiveFilters 
+                    ? t('homepage.noResults') 
+                    : t('homepage.noResults')
+                  }
+                </Text>
+              </Alert>
+            </Center>
+          ) : (
+            <Grid gutter="md" style={{ margin: 0 }}>
+              {filteredProblems.map((problem) => (
+                <Grid.Col key={problem.id} span={{ base: 12, sm: 6, xl: 4 }}>
+                  <Card 
+                    shadow="sm" 
+                    padding="lg" 
+                    radius="md" 
+                    withBorder
+                    style={{ height: '100%', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                    component={Link}
+                    href={`/problems/${problem.id}`}
                   >
-                    {t(`homepage.difficulty.${problem.difficulty}`)}
-                  </Badge>
-                </Group>
-                
-                <div>
-                  <Title order={4} mb={8}>
-                    {problem.title[locale as keyof typeof problem.title] || problem.title.zh}
-                  </Title>
-                  {/* <Text size="sm" c="dimmed" mb={8}>
-                    {locale === 'zh' ? problem.title.en : problem.title.zh}
-                  </Text> */}
-                  <Text size="xs" lineClamp={2}>
-                    {problem.description[locale as keyof typeof problem.description] || problem.description.zh}
-                  </Text>
-                </div>
-                
-                <Group gap={4}>
-                  {problem.tags?.slice(0, 3).map((tag) => (
-                    <Badge 
-                      key={tag} 
-                      color="blue" 
-                      variant="light" 
-                      size="xs"
-                    >
-                      {t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}
-                    </Badge>
-                  ))}
-                  {problem.tags?.length > 3 && (
-                    <Badge color="gray" variant="light" size="xs">
-                      +{problem.tags.length - 3}
-                    </Badge>
-                  )}
-                </Group>
-              </Stack>
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
-    </Container>
+                    <Stack gap={12}>
+                      <Group justify="space-between" align="flex-start">
+                        <Badge 
+                          color={getDifficultyColor(problem.difficulty)}
+                          variant="filled"
+                          size="sm"
+                        >
+                          {t(`homepage.difficulty.${problem.difficulty}`)}
+                        </Badge>
+                      </Group>
+                      
+                      <div>
+                        <Title order={4} mb={8}>
+                          {problem.title[locale as keyof typeof problem.title] || problem.title.zh}
+                        </Title>
+                        <Text size="xs" lineClamp={2}>
+                          {problem.description[locale as keyof typeof problem.description] || problem.description.zh}
+                        </Text>
+                      </div>
+                      
+                      <Group gap={4} style={{ flexWrap: 'wrap' }}>
+                        {problem.tags?.slice(0, 3).map((tag) => (
+                          <Badge 
+                            key={tag} 
+                            color="blue" 
+                            variant="light" 
+                            size="xs"
+                            style={{ flexShrink: 0 }}
+                          >
+                            {t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}
+                          </Badge>
+                        ))}
+                        {problem.tags?.length > 3 && (
+                          <Badge color="gray" variant="light" size="xs" style={{ flexShrink: 0 }}>
+                            +{problem.tags.length - 3}
+                          </Badge>
+                        )}
+                      </Group>
+                    </Stack>
+                  </Card>
+                </Grid.Col>
+              ))}
+            </Grid>
+          )}
+        </Container>
+      </AppShell.Main>
+    </AppShell>
   );
 }

@@ -18,6 +18,17 @@
     "subtitle": "Local problem set, supports editing and running tests in browser (JavaScript)",
     "problemList": "📚 Problem List",
     "problems": "problems",
+    "addProblem": "Add Problem",
+    "search": "Search",
+    "searchPlaceholder": "Search problem title or description...",
+    "filterByDifficulty": "Filter by Difficulty",
+    "filterByTags": "Filter by Tags",
+    "allDifficulties": "All Difficulties",
+    "allTags": "All Tags",
+    "clearFilters": "Clear Filters",
+    "noResults": "No matching problems found",
+    "showingResults": "Showing",
+    "of": "of",
     "difficulty": {
       "Easy": "Easy",
       "Medium": "Medium",
@@ -30,7 +41,10 @@
     "solution": "Reference Solution",
     "example": "Example",
     "input": "Input",
-    "output": "Output"
+    "output": "Output",
+    "showSolution": "Show Solution",
+    "hideSolution": "Hide Solution",
+    "solutionHidden": "Click to view the reference solution"
   },
   "codeRunner": {
     "title": "💻 Code Editor",
@@ -46,7 +60,13 @@
     "ms": "ms",
     "runningTests": "Running tests...",
     "runError": "Runtime Error",
-    "networkError": "Failed to run, please check network connection"
+    "networkError": "Failed to run, please check network connection",
+    "noResults": "No test results yet. Run your code to see results here.",
+    "totalExecutionTime": "Total Execution Time",
+    "averageTime": "Average Time",
+    "memoryUsed": "Memory Used",
+    "totalMemory": "Total Memory",
+    "input": "Input"
   },
   "tags": {
     "array": "Array",
@@ -61,5 +81,38 @@
     "divide-and-conquer": "Divide and Conquer",
     "dynamic-programming": "Dynamic Programming",
     "memoization": "Memoization"
+  },
+  "addProblem": {
+    "title": "Add New Problem",
+    "manualForm": "Manual Form",
+    "importJson": "Import JSON",
+    "uploadJsonFile": "Upload JSON File:",
+    "selectJsonFile": "Select JSON file",
+    "pasteJson": "Or paste JSON:",
+    "importJsonButton": "Import JSON",
+    "basicInformation": "Basic Information",
+    "problemId": "Problem ID:",
+    "problemIdHint": "Use lowercase letters, numbers, and hyphens only",
+    "difficulty": "Difficulty:",
+    "titles": "Titles",
+    "englishTitle": "English Title:",
+    "chineseTitle": "Chinese Title:",
+    "tagsLabel": "Tags (comma-separated):",
+    "tagsPlaceholder": "e.g., array, hash-table",
+    "descriptions": "Descriptions",
+    "englishDescription": "English Description:",
+    "chineseDescription": "Chinese Description:",
+    "testCases": "Test Cases:",
+    "input": "Input:",
+    "expectedOutput": "Expected Output:",
+    "removeTestCase": "Remove Test Case",
+    "addTestCase": "Add Test Case",
+    "addProblemButton": "Add Problem",
+    "addingProblem": "Adding Problem...",
+    "problemAddedSuccess": "Problem added successfully! ID: {{id}}",
+    "invalidJsonFormat": "Invalid JSON format",
+    "jsonImportedSuccess": "JSON imported successfully",
+    "networkError": "Network error occurred",
+    "backToProblems": "Back to Problems"
   }
 }

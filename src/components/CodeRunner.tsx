@@ -46,7 +46,13 @@ function formatOutput(value: any): string {
   return String(value);
 }
 
-export default function CodeRunner({ problem }: any) {
+interface CodeRunnerProps {
+  problem: any;
+  onTestResult?: (result: any) => void;
+  showResults?: boolean;
+}
+
+export default function CodeRunner({ problem, onTestResult, showResults = true }: CodeRunnerProps) {
   const { t } = useTranslation();
   const { colorScheme } = useTheme();
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
@@ -86,7 +92,13 @@ export default function CodeRunner({ problem }: any) {
   
   const runTests = async () => {
     setIsRunning(true);
-    setResult({ status: 'running' });
+    const runningStatus = { status: 'running' };
+    setResult(runningStatus);
+    
+    // Call the callback with running status if provided
+    if (onTestResult) {
+      onTestResult(runningStatus);
+    }
     
     try {
       const res = await fetch('/api/run', {
@@ -100,11 +112,22 @@ export default function CodeRunner({ problem }: any) {
       });
       const data = await res.json();
       setResult(data);
+      
+      // Call the callback if provided
+      if (onTestResult) {
+        onTestResult(data);
+      }
     } catch (error) {
-      setResult({ 
+      const errorResult = { 
         status: 'error', 
         error: t('codeRunner.networkError')
-      });
+      };
+      setResult(errorResult);
+      
+      // Call the callback with error if provided
+      if (onTestResult) {
+        onTestResult(errorResult);
+      }
     } finally {
       setIsRunning(false);
     }
@@ -233,8 +256,8 @@ export default function CodeRunner({ problem }: any) {
   };
   
   return (
-    <Stack gap={15}>
-      <Paper shadow="sm" p="md" withBorder style={{ position: 'relative' }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+      <Paper shadow="sm" p="md" withBorder style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <LoadingOverlay visible={isRunning} />
         
         <Group justify="space-between" mb={15}>
@@ -260,33 +283,35 @@ export default function CodeRunner({ problem }: any) {
           </Group>
         </Group>
         
-        <Editor
-          height="400px"
-          language={SUPPORTED_LANGUAGES.find(l => l.value === selectedLanguage)?.monacoLang || 'javascript'}
-          value={code}
-          onChange={(v) => setCode(v || '')}
-          theme={colorScheme === 'dark' ? 'vs-dark' : 'light'}
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
-            lineNumbers: 'on',
-            roundedSelection: false,
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            tabSize: 2,
-            insertSpaces: true,
-            wordWrap: 'on',
-            contextmenu: false,
-            folding: false
-          }}
-        />
+        <div style={{ flex: 1, minHeight: '300px' }}>
+          <Editor
+            height="100%"
+            language={SUPPORTED_LANGUAGES.find(l => l.value === selectedLanguage)?.monacoLang || 'javascript'}
+            value={code}
+            onChange={(v) => setCode(v || '')}
+            theme={colorScheme === 'dark' ? 'vs-dark' : 'light'}
+            options={{
+              minimap: { enabled: false },
+              fontSize: 14,
+              lineNumbers: 'on',
+              roundedSelection: false,
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+              tabSize: 2,
+              insertSpaces: true,
+              wordWrap: 'on',
+              contextmenu: false,
+              folding: false
+            }}
+          />
+        </div>
       </Paper>
       
-      {result && (
-        <Paper shadow="sm" p="md" withBorder>
+      {showResults && result && (
+        <Paper shadow="sm" p="md" withBorder style={{ maxHeight: '300px', overflow: 'auto' }}>
           {renderResult()}
         </Paper>
       )}
-    </Stack>
+    </div>
   );
 }

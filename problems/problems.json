@@ -1,258 +1,560 @@
 [
   {
     "id": "two-sum",
-    "title": { "en": "Two Sum", "zh": "两数之和" },
+    "title": {
+      "en": "Two Sum",
+      "zh": "两数之和"
+    },
     "difficulty": "Easy",
-    "tags": ["array", "hash-table"],
+    "tags": [
+      "array",
+      "hash-table"
+    ],
     "description": {
       "en": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
       "zh": "给定一个整数数组 nums 和一个整数目标值 target，请你在数组中找出和为目标值的那两个整数，并返回它们的数组下标。"
     },
     "examples": [
-      { "input": "nums = [2,7,11,15], target = 9", "output": "[0,1]" },
-      { "input": "nums = [3,2,4], target = 6", "output": "[1,2]" }
+      {
+        "input": "nums = [2,7,11,15], target = 9",
+        "output": "[0,1]"
+      },
+      {
+        "input": "nums = [3,2,4], target = 6",
+        "output": "[1,2]"
+      }
     ],
     "template": {
-      "js": "function twoSum(nums, target) {\n  // write your code here\n}\nmodule.exports = twoSum;"
+      "js": "function twoSum(nums, target) {\n  // write your code here\n}\nmodule.exports = twoSum;",
+      "python": "def two_sum(nums, target):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // write your code here\n        return new int[0];\n    }\n}",
+      "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // write your code here\n        return {};\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\nint* twoSum(int* nums, int numsSize, int target, int* returnSize) {\n    // write your code here\n    *returnSize = 2;\n    int* result = (int*)malloc(2 * sizeof(int));\n    return result;\n}"
     },
     "solution": {
       "js": "function twoSum(nums, target) {\n  const map = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (map.has(complement)) return [map.get(complement), i];\n    map.set(nums[i], i);\n  }\n}\nmodule.exports = twoSum;"
     },
     "tests": [
-      { "input": "[2,7,11,15],9", "output": "[0,1]" },
-      { "input": "[3,2,4],6", "output": "[1,2]" },
-      { "input": "[3,3],6", "output": "[0,1]" }
+      {
+        "input": "[2,7,11,15],9",
+        "output": "[0,1]"
+      },
+      {
+        "input": "[3,2,4],6",
+        "output": "[1,2]"
+      },
+      {
+        "input": "[3,3],6",
+        "output": "[0,1]"
+      }
     ]
   },
   {
     "id": "reverse-integer",
-    "title": { "en": "Reverse Integer", "zh": "整数反转" },
+    "title": {
+      "en": "Reverse Integer",
+      "zh": "整数反转"
+    },
     "difficulty": "Medium",
-    "tags": ["math"],
+    "tags": [
+      "math"
+    ],
     "description": {
       "en": "Given a signed 32-bit integer x, return x with its digits reversed.",
       "zh": "给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。"
     },
     "examples": [
-      { "input": "x = 123", "output": "321" },
-      { "input": "x = -123", "output": "-321" },
-      { "input": "x = 120", "output": "21" }
+      {
+        "input": "x = 123",
+        "output": "321"
+      },
+      {
+        "input": "x = -123",
+        "output": "-321"
+      },
+      {
+        "input": "x = 120",
+        "output": "21"
+      }
     ],
     "template": {
-      "js": "function reverse(x) {\n  // write your code here\n}\nmodule.exports = reverse;"
+      "js": "function reverse(x) {\n  // write your code here\n}\nmodule.exports = reverse;",
+      "python": "def reverse(x):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int reverse(int x) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <climits>\nusing namespace std;\n\nclass Solution {\npublic:\n    int reverse(int x) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <limits.h>\n\nint reverse(int x) {\n    // write your code here\n    return 0;\n}"
     },
     "solution": {
       "js": "function reverse(x) {\n  const sign = x < 0 ? -1 : 1;\n  const reversed = parseInt(Math.abs(x).toString().split('').reverse().join(''));\n  if (reversed > 2**31 - 1) return 0;\n  return sign * reversed;\n}\nmodule.exports = reverse;"
     },
     "tests": [
-      { "input": "123", "output": "321" },
-      { "input": "-123", "output": "-321" },
-      { "input": "120", "output": "21" }
+      {
+        "input": "123",
+        "output": "321"
+      },
+      {
+        "input": "-123",
+        "output": "-321"
+      },
+      {
+        "input": "120",
+        "output": "21"
+      }
     ]
   },
   {
     "id": "palindrome-number",
-    "title": { "en": "Palindrome Number", "zh": "回文数" },
+    "title": {
+      "en": "Palindrome Number",
+      "zh": "回文数"
+    },
     "difficulty": "Easy",
-    "tags": ["math"],
+    "tags": [
+      "math"
+    ],
     "description": {
       "en": "Given an integer x, return true if x is palindrome integer.",
       "zh": "给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。"
     },
     "examples": [
-      { "input": "x = 121", "output": "true" },
-      { "input": "x = -121", "output": "false" },
-      { "input": "x = 10", "output": "false" }
+      {
+        "input": "x = 121",
+        "output": "true"
+      },
+      {
+        "input": "x = -121",
+        "output": "false"
+      },
+      {
+        "input": "x = 10",
+        "output": "false"
+      }
     ],
     "template": {
-      "js": "function isPalindrome(x) {\n  // write your code here\n}\nmodule.exports = isPalindrome;"
+      "js": "function isPalindrome(x) {\n  // write your code here\n}\nmodule.exports = isPalindrome;",
+      "python": "def is_palindrome(x):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public boolean isPalindrome(int x) {\n        // write your code here\n        return false;\n    }\n}",
+      "cpp": "#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isPalindrome(int x) {\n        // write your code here\n        return false;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdbool.h>\n\nbool isPalindrome(int x) {\n    // write your code here\n    return false;\n}"
     },
     "solution": {
       "js": "function isPalindrome(x) {\n  if (x < 0) return false;\n  const str = x.toString();\n  return str === str.split('').reverse().join('');\n}\nmodule.exports = isPalindrome;"
     },
     "tests": [
-      { "input": "121", "output": "true" },
-      { "input": "-121", "output": "false" },
-      { "input": "10", "output": "false" }
+      {
+        "input": "121",
+        "output": "true"
+      },
+      {
+        "input": "-121",
+        "output": "false"
+      },
+      {
+        "input": "10",
+        "output": "false"
+      }
     ]
   },
   {
     "id": "longest-common-prefix",
-    "title": { "en": "Longest Common Prefix", "zh": "最长公共前缀" },
+    "title": {
+      "en": "Longest Common Prefix",
+      "zh": "最长公共前缀"
+    },
     "difficulty": "Easy",
-    "tags": ["string"],
+    "tags": [
+      "string"
+    ],
     "description": {
       "en": "Write a function to find the longest common prefix string amongst an array of strings.",
       "zh": "编写一个函数来查找字符串数组中的最长公共前缀。"
     },
     "examples": [
-      { "input": "strs = [\"flower\",\"flow\",\"flight\"]", "output": "\"fl\"" },
-      { "input": "strs = [\"dog\",\"racecar\",\"car\"]", "output": "\"\"" }
+      {
+        "input": "strs = [\"flower\",\"flow\",\"flight\"]",
+        "output": "\"fl\""
+      },
+      {
+        "input": "strs = [\"dog\",\"racecar\",\"car\"]",
+        "output": "\"\""
+      }
     ],
     "template": {
-      "js": "function longestCommonPrefix(strs) {\n  // write your code here\n}\nmodule.exports = longestCommonPrefix;"
+      "js": "function longestCommonPrefix(strs) {\n  // write your code here\n}\nmodule.exports = longestCommonPrefix;",
+      "python": "def longest_common_prefix(strs):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public String longestCommonPrefix(String[] strs) {\n        // write your code here\n        return \"\";\n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string longestCommonPrefix(vector<string>& strs) {\n        // write your code here\n        return \"\";\n    }\n};",
+      "c": "#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\n\nchar* longestCommonPrefix(char** strs, int strsSize) {\n    // write your code here\n    char* result = (char*)malloc(1);\n    result[0] = '\\0';\n    return result;\n}"
     },
     "solution": {
       "js": "function longestCommonPrefix(strs) {\n  if (!strs.length) return '';\n  let prefix = strs[0];\n  for (let i = 1; i < strs.length; i++) {\n    while (strs[i].indexOf(prefix) !== 0) {\n      prefix = prefix.slice(0, -1);\n      if (!prefix) return '';\n    }\n  }\n  return prefix;\n}\nmodule.exports = longestCommonPrefix;"
     },
     "tests": [
-      { "input": "[\"flower\",\"flow\",\"flight\"]", "output": "\"fl\"" },
-      { "input": "[\"dog\",\"racecar\",\"car\"]", "output": "\"\"" },
-      { "input": "[\"ab\", \"a\"]", "output": "\"a\"" }
+      {
+        "input": "[\"flower\",\"flow\",\"flight\"]",
+        "output": "\"fl\""
+      },
+      {
+        "input": "[\"dog\",\"racecar\",\"car\"]",
+        "output": "\"\""
+      },
+      {
+        "input": "[\"ab\", \"a\"]",
+        "output": "\"a\""
+      }
     ]
   },
   {
     "id": "valid-parentheses",
-    "title": { "en": "Valid Parentheses", "zh": "有效的括号" },
+    "title": {
+      "en": "Valid Parentheses",
+      "zh": "有效的括号"
+    },
     "difficulty": "Easy",
-    "tags": ["string", "stack"],
+    "tags": [
+      "string",
+      "stack"
+    ],
     "description": {
       "en": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
       "zh": "给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。"
     },
     "examples": [
-      { "input": "s = \"()\"", "output": "true" },
-      { "input": "s = \"()[]{}\"", "output": "true" },
-      { "input": "s = \"(]\"", "output": "false" }
+      {
+        "input": "s = \"()\"",
+        "output": "true"
+      },
+      {
+        "input": "s = \"()[]{}\"",
+        "output": "true"
+      },
+      {
+        "input": "s = \"(]\"",
+        "output": "false"
+      }
     ],
     "template": {
-      "js": "function isValid(s) {\n  // write your code here\n}\nmodule.exports = isValid;"
+      "js": "function isValid(s) {\n  // write your code here\n}\nmodule.exports = isValid;",
+      "python": "def is_valid(s):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public boolean isValid(String s) {\n        // write your code here\n        return false;\n    }\n}",
+      "cpp": "#include <string>\n#include <stack>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isValid(string s) {\n        // write your code here\n        return false;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdbool.h>\n#include <string.h>\n\nbool isValid(char* s) {\n    // write your code here\n    return false;\n}"
     },
     "solution": {
       "js": "function isValid(s) {\n  const stack = [];\n  const map = { ')': '(', '}': '{', ']': '[' };\n  for (let char of s) {\n    if (char in map) {\n      if (stack.pop() !== map[char]) return false;\n    } else {\n      stack.push(char);\n    }\n  }\n  return stack.length === 0;\n}\nmodule.exports = isValid;"
     },
     "tests": [
-      { "input": "\"()\"", "output": "true" },
-      { "input": "\"()[]{}\"", "output": "true" },
-      { "input": "\"(]\"", "output": "false" }
+      {
+        "input": "\"()\"",
+        "output": "true"
+      },
+      {
+        "input": "\"()[]{}\"",
+        "output": "true"
+      },
+      {
+        "input": "\"(]\"",
+        "output": "false"
+      }
     ]
   },
   {
     "id": "merge-sorted-lists",
-    "title": { "en": "Merge Two Sorted Lists", "zh": "合并两个有序链表" },
+    "title": {
+      "en": "Merge Two Sorted Lists",
+      "zh": "合并两个有序链表"
+    },
     "difficulty": "Easy",
-    "tags": ["linked-list", "recursion"],
+    "tags": [
+      "linked-list",
+      "recursion"
+    ],
     "description": {
       "en": "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a sorted list.",
       "zh": "将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。"
     },
     "examples": [
-      { "input": "list1 = [1,2,4], list2 = [1,3,4]", "output": "[1,1,2,3,4,4]" },
-      { "input": "list1 = [], list2 = []", "output": "[]" }
+      {
+        "input": "list1 = [1,2,4], list2 = [1,3,4]",
+        "output": "[1,1,2,3,4,4]"
+      },
+      {
+        "input": "list1 = [], list2 = []",
+        "output": "[]"
+      }
     ],
     "template": {
-      "js": "// Definition for singly-linked list\nfunction ListNode(val, next) {\n  this.val = (val===undefined ? 0 : val);\n  this.next = (next===undefined ? null : next);\n}\n\nfunction mergeTwoLists(list1, list2) {\n  // write your code here\n}\nmodule.exports = mergeTwoLists;"
+      "js": "// Definition for singly-linked list\nfunction ListNode(val, next) {\n  this.val = (val===undefined ? 0 : val);\n  this.next = (next===undefined ? null : next);\n}\n\nfunction mergeTwoLists(list1, list2) {\n  // write your code here\n}\nmodule.exports = mergeTwoLists;",
+      "python": "class ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef merge_two_lists(list1, list2):\n    # write your code here\n    pass",
+      "java": "public class ListNode {\n    int val;\n    ListNode next;\n    ListNode() {}\n    ListNode(int val) { this.val = val; }\n    ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n}\n\npublic class Solution {\n    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {\n        // write your code here\n        return null;\n    }\n}",
+      "cpp": "#include <iostream>\nusing namespace std;\n\nstruct ListNode {\n    int val;\n    ListNode *next;\n    ListNode() : val(0), next(nullptr) {}\n    ListNode(int x) : val(x), next(nullptr) {}\n    ListNode(int x, ListNode *next) : val(x), next(next) {}\n};\n\nclass Solution {\npublic:\n    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n        // write your code here\n        return nullptr;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\nstruct ListNode {\n    int val;\n    struct ListNode *next;\n};\n\nstruct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {\n    // write your code here\n    return NULL;\n}"
     },
     "solution": {
       "js": "function ListNode(val, next) {\n  this.val = (val===undefined ? 0 : val);\n  this.next = (next===undefined ? null : next);\n}\n\nfunction mergeTwoLists(list1, list2) {\n  const dummy = new ListNode(0);\n  let current = dummy;\n  while (list1 && list2) {\n    if (list1.val <= list2.val) {\n      current.next = list1;\n      list1 = list1.next;\n    } else {\n      current.next = list2;\n      list2 = list2.next;\n    }\n    current = current.next;\n  }\n  current.next = list1 || list2;\n  return dummy.next;\n}\nmodule.exports = mergeTwoLists;"
     },
     "tests": [
-      { "input": "[1,2,4],[1,3,4]", "output": "[1,1,2,3,4,4]" },
-      { "input": "[],[]", "output": "[]" },
-      { "input": "[],[0]", "output": "[0]" }
+      {
+        "input": "[1,2,4],[1,3,4]",
+        "output": "[1,1,2,3,4,4]"
+      },
+      {
+        "input": "[],[]",
+        "output": "[]"
+      },
+      {
+        "input": "[],[0]",
+        "output": "[0]"
+      }
     ]
   },
   {
     "id": "remove-duplicates",
-    "title": { "en": "Remove Duplicates from Sorted Array", "zh": "删除有序数组中的重复项" },
+    "title": {
+      "en": "Remove Duplicates from Sorted Array",
+      "zh": "删除有序数组中的重复项"
+    },
     "difficulty": "Easy",
-    "tags": ["array", "two-pointers"],
+    "tags": [
+      "array",
+      "two-pointers"
+    ],
     "description": {
       "en": "Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once.",
       "zh": "给你一个 升序排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。"
     },
     "examples": [
-      { "input": "nums = [1,1,2]", "output": "2, nums = [1,2,_]" },
-      { "input": "nums = [0,0,1,1,1,2,2,3,3,4]", "output": "5, nums = [0,1,2,3,4,_,_,_,_,_]" }
+      {
+        "input": "nums = [1,1,2]",
+        "output": "2, nums = [1,2,_]"
+      },
+      {
+        "input": "nums = [0,0,1,1,1,2,2,3,3,4]",
+        "output": "5, nums = [0,1,2,3,4,_,_,_,_,_]"
+      }
     ],
     "template": {
-      "js": "function removeDuplicates(nums) {\n  // write your code here\n}\nmodule.exports = removeDuplicates;"
+      "js": "function removeDuplicates(nums) {\n  // write your code here\n}\nmodule.exports = removeDuplicates;",
+      "python": "def removeDuplicates(param):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public /* return_type */ removeDuplicates(/* parameters */) {\n        // write your code here\n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    /* return_type */ removeDuplicates(/* parameters */) {\n        // write your code here\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\n/* return_type */ removeDuplicates(/* parameters */) {\n    // write your code here\n}"
     },
     "solution": {
       "js": "function removeDuplicates(nums) {\n  if (nums.length === 0) return 0;\n  let i = 0;\n  for (let j = 1; j < nums.length; j++) {\n    if (nums[j] !== nums[i]) {\n      i++;\n      nums[i] = nums[j];\n    }\n  }\n  return i + 1;\n}\nmodule.exports = removeDuplicates;"
     },
     "tests": [
-      { "input": "[1,1,2]", "output": "2" },
-      { "input": "[0,0,1,1,1,2,2,3,3,4]", "output": "5" },
-      { "input": "[1]", "output": "1" }
+      {
+        "input": "[1,1,2]",
+        "output": "2"
+      },
+      {
+        "input": "[0,0,1,1,1,2,2,3,3,4]",
+        "output": "5"
+      },
+      {
+        "input": "[1]",
+        "output": "1"
+      }
     ]
   },
   {
     "id": "search-insert",
-    "title": { "en": "Search Insert Position", "zh": "搜索插入位置" },
+    "title": {
+      "en": "Search Insert Position",
+      "zh": "搜索插入位置"
+    },
     "difficulty": "Easy",
-    "tags": ["array", "binary-search"],
+    "tags": [
+      "array",
+      "binary-search"
+    ],
     "description": {
       "en": "Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.",
       "zh": "给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。"
     },
     "examples": [
-      { "input": "nums = [1,3,5,6], target = 5", "output": "2" },
-      { "input": "nums = [1,3,5,6], target = 2", "output": "1" },
-      { "input": "nums = [1,3,5,6], target = 7", "output": "4" }
+      {
+        "input": "nums = [1,3,5,6], target = 5",
+        "output": "2"
+      },
+      {
+        "input": "nums = [1,3,5,6], target = 2",
+        "output": "1"
+      },
+      {
+        "input": "nums = [1,3,5,6], target = 7",
+        "output": "4"
+      }
     ],
     "template": {
-      "js": "function searchInsert(nums, target) {\n  // write your code here\n}\nmodule.exports = searchInsert;"
+      "js": "function searchInsert(nums, target) {\n  // write your code here\n}\nmodule.exports = searchInsert;",
+      "python": "def searchInsert(param):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public /* return_type */ searchInsert(/* parameters */) {\n        // write your code here\n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    /* return_type */ searchInsert(/* parameters */) {\n        // write your code here\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\n/* return_type */ searchInsert(/* parameters */) {\n    // write your code here\n}"
     },
     "solution": {
       "js": "function searchInsert(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left <= right) {\n    let mid = Math.floor((left + right) / 2);\n    if (nums[mid] === target) return mid;\n    if (nums[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return left;\n}\nmodule.exports = searchInsert;"
     },
     "tests": [
-      { "input": "[1,3,5,6],5", "output": "2" },
-      { "input": "[1,3,5,6],2", "output": "1" },
-      { "input": "[1,3,5,6],7", "output": "4" }
+      {
+        "input": "[1,3,5,6],5",
+        "output": "2"
+      },
+      {
+        "input": "[1,3,5,6],2",
+        "output": "1"
+      },
+      {
+        "input": "[1,3,5,6],7",
+        "output": "4"
+      }
     ]
   },
   {
     "id": "maximum-subarray",
-    "title": { "en": "Maximum Subarray", "zh": "最大子数组和" },
+    "title": {
+      "en": "Maximum Subarray",
+      "zh": "最大子数组和"
+    },
     "difficulty": "Medium",
-    "tags": ["array", "divide-and-conquer", "dynamic-programming"],
+    "tags": [
+      "array",
+      "divide-and-conquer",
+      "dynamic-programming"
+    ],
     "description": {
       "en": "Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.",
       "zh": "给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。"
     },
     "examples": [
-      { "input": "nums = [-2,1,-3,4,-1,2,1,-5,4]", "output": "6" },
-      { "input": "nums = [1]", "output": "1" },
-      { "input": "nums = [5,4,-1,7,8]", "output": "23" }
+      {
+        "input": "nums = [-2,1,-3,4,-1,2,1,-5,4]",
+        "output": "6"
+      },
+      {
+        "input": "nums = [1]",
+        "output": "1"
+      },
+      {
+        "input": "nums = [5,4,-1,7,8]",
+        "output": "23"
+      }
     ],
     "template": {
-      "js": "function maxSubArray(nums) {\n  // write your code here\n}\nmodule.exports = maxSubArray;"
+      "js": "function maxSubArray(nums) {\n  // write your code here\n}\nmodule.exports = maxSubArray;",
+      "python": "def maximumSubarray(param):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public /* return_type */ maximumSubarray(/* parameters */) {\n        // write your code here\n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    /* return_type */ maximumSubarray(/* parameters */) {\n        // write your code here\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\n/* return_type */ maximumSubarray(/* parameters */) {\n    // write your code here\n}"
     },
     "solution": {
       "js": "function maxSubArray(nums) {\n  let maxSum = nums[0];\n  let currentSum = nums[0];\n  for (let i = 1; i < nums.length; i++) {\n    currentSum = Math.max(nums[i], currentSum + nums[i]);\n    maxSum = Math.max(maxSum, currentSum);\n  }\n  return maxSum;\n}\nmodule.exports = maxSubArray;"
     },
     "tests": [
-      { "input": "[-2,1,-3,4,-1,2,1,-5,4]", "output": "6" },
-      { "input": "[1]", "output": "1" },
-      { "input": "[5,4,-1,7,8]", "output": "23" }
+      {
+        "input": "[-2,1,-3,4,-1,2,1,-5,4]",
+        "output": "6"
+      },
+      {
+        "input": "[1]",
+        "output": "1"
+      },
+      {
+        "input": "[5,4,-1,7,8]",
+        "output": "23"
+      }
     ]
   },
   {
     "id": "climbing-stairs",
-    "title": { "en": "Climbing Stairs", "zh": "爬楼梯" },
+    "title": {
+      "en": "Climbing Stairs",
+      "zh": "爬楼梯"
+    },
     "difficulty": "Easy",
-    "tags": ["math", "dynamic-programming", "memoization"],
+    "tags": [
+      "math",
+      "dynamic-programming",
+      "memoization"
+    ],
     "description": {
       "en": "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
       "zh": "假设你正在爬楼梯。需要 n 阶你才能到达楼顶。每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？"
     },
     "examples": [
-      { "input": "n = 2", "output": "2" },
-      { "input": "n = 3", "output": "3" },
-      { "input": "n = 4", "output": "5" }
+      {
+        "input": "n = 2",
+        "output": "2"
+      },
+      {
+        "input": "n = 3",
+        "output": "3"
+      },
+      {
+        "input": "n = 4",
+        "output": "5"
+      }
     ],
     "template": {
-      "js": "function climbStairs(n) {\n  // write your code here\n}\nmodule.exports = climbStairs;"
+      "js": "function climbStairs(n) {\n  // write your code here\n}\nmodule.exports = climbStairs;",
+      "python": "def climbingStairs(param):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public /* return_type */ climbingStairs(/* parameters */) {\n        // write your code here\n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    /* return_type */ climbingStairs(/* parameters */) {\n        // write your code here\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\n/* return_type */ climbingStairs(/* parameters */) {\n    // write your code here\n}"
     },
     "solution": {
       "js": "function climbStairs(n) {\n  if (n <= 2) return n;\n  let prev2 = 1, prev1 = 2;\n  for (let i = 3; i <= n; i++) {\n    const current = prev1 + prev2;\n    prev2 = prev1;\n    prev1 = current;\n  }\n  return prev1;\n}\nmodule.exports = climbStairs;"
     },
     "tests": [
-      { "input": "2", "output": "2" },
-      { "input": "3", "output": "3" },
-      { "input": "4", "output": "5" }
+      {
+        "input": "2",
+        "output": "2"
+      },
+      {
+        "input": "3",
+        "output": "3"
+      },
+      {
+        "input": "4",
+        "output": "5"
+      }
+    ]
+  },
+  {
+    "id": "test",
+    "title": {
+      "en": "test",
+      "zh": "test"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "test"
+    ],
+    "description": {
+      "en": "test",
+      "zh": "test"
+    },
+    "examples": [
+      {
+        "input": "",
+        "output": ""
+      }
+    ],
+    "template": {
+      "js": "function solution() {\n  // write your code here\n}\nmodule.exports = solution;",
+      "python": "def solution():\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public void solution() {\n        // write your code here\n    }\n}",
+      "cpp": "#include <iostream>\nusing namespace std;\n\nclass Solution {\npublic:\n    void solution() {\n        // write your code here\n    }\n};",
+      "c": "#include <stdio.h>\n\nvoid solution() {\n    // write your code here\n}"
+    },
+    "solution": {},
+    "tests": [
+      {
+        "input": "test",
+        "output": "test"
+      }
     ]
   }
 ]

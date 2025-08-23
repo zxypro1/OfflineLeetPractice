@@ -173,6 +173,7 @@ export class LanguageExecutor {
         }
       }
       
+      console.log(filePath, code)
       // Write code to file
       await fs.promises.writeFile(filePath, code);
 
@@ -201,7 +202,7 @@ export class LanguageExecutor {
         file: filePath,
         dir: this.tempDir,
         className,
-        executable
+        executable: process.platform === 'win32' && (language === 'cpp' || language === 'c') ? executable + '.exe' : executable
       });
 
       let finalCommand = executeCmd;

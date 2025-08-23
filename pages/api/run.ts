@@ -107,7 +107,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Use LanguageExecutor for other languages
     for (const test of tests) {
       try {
-        const args = parseTestInput(test.input);
+        let args = parseTestInput(test.input);
+        if (language !== 'java') {
+          args = test.input;
+        }
         const expected = parseTestOutput(test.output);
         
         // Create test wrapper code based on language
@@ -162,7 +165,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  // 计算总执行时间和内存使用
+  //  计算总执行时间和内存使用
   const totalExecutionTime = Date.now() - totalStartTime;
   const finalMemory = process.memoryUsage();
   const memoryUsed = {
@@ -190,11 +193,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 // Create test wrapper code for different languages
-function createTestWrapper(userCode: string, language: string, args: any[], template: string, expected?: any): string {
-  const argsStr = JSON.stringify(args);
+function createTestWrapper(userCode: string, language: string, args: any, template: string, expected?: any): string {
+  if (typeof args !== 'string') {
+    args = JSON.stringify(args);
+  }
+  const argsStr = args;
   
   switch (language) {
     case 'python':
+      const pythonFunctionName = extractFunctionName(template, language);
+      const escapedArgsPython = argsStr.replace(/'/g, "\\'");
+      
       return `
 import json
 import sys
@@ -202,15 +211,23 @@ import sys
 ${userCode}
 
 # Test execution
-args = json.loads('${argsStr}')
-result = ${extractFunctionName(template, language)}(*args)
-print(json.dumps(result))
+try:
+    # Parse the JSON argument
+    raw_args = '${escapedArgsPython}'
+    parsed_arg = json.loads(raw_args)
+    
+    # Call function with single argument (not unpacked)
+    result = ${pythonFunctionName}(parsed_arg)
+    print(json.dumps(result))
+except Exception as e:
+    print(f"Error: {e}", file=sys.stderr)
+    sys.exit(1)
 `;
       
     case 'java':
       const functionName = extractFunctionName(template, language, userCode);
       const className = 'Solution';
-      const escapedArgs = argsStr.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+      const escapedArgs = argsStr.replace(/"/g, '\\"');
       
       // Check if userCode already contains a complete class declaration
       const hasClassDeclaration = userCode.includes('public class') || userCode.includes('class Solution');
@@ -541,10 +558,34 @@ public class ${className} {
       
     case 'cpp':
       const cppFunctionName = extractFunctionName(template, language, userCode);
-      const escapedArgsCpp = argsStr.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+      const escapedArgsCpp = argsStr.replace(/"/g, '\\"');
       
       // Check if userCode contains a complete class Solution
       const hasClassSolution = userCode.includes('class Solution');
+      
+      // Detect parameter type from function signature
+      const detectParameterType = (code: string, functionName: string): string => {
+        // Look for function signature patterns
+        const patterns = [
+          new RegExp(`\\b\\w+\\s+${functionName}\\s*\\(\\s*(\\w+)\\s+\\w+\\s*\\)`, 'g'),
+          new RegExp(`${functionName}\\s*\\(\\s*(\\w+)\\s+\\w+\\s*\\)`, 'g')
+        ];
+        
+        for (const pattern of patterns) {
+          const match = pattern.exec(code);
+          if (match) {
+            const paramType = match[1].trim();
+            if (paramType.includes('string') || paramType === 'string') {
+              return 'string';
+            } else if (paramType === 'int' || paramType === 'long' || paramType === 'double' || paramType === 'float') {
+              return 'int';
+            }
+          }
+        }
+        return 'int'; // default fallback
+      };
+      
+      const paramType = detectParameterType(userCode || '', cppFunctionName);
       
       if (hasClassSolution) {
         // User provided complete class, use it directly
@@ -569,12 +610,28 @@ int parseIntFromJson(const string& jsonStr) {
     trimmed.erase(trimmed.find_last_not_of(" \\t\\n\\r") + 1);
     
     // Remove quotes if present
-    if (trimmed.front() == '"' && trimmed.back() == '"') {
+    if (!trimmed.empty() && trimmed.front() == '"' && trimmed.back() == '"') {
         trimmed = trimmed.substr(1, trimmed.length() - 2);
     }
     
     // Convert to integer
     return stoi(trimmed);
+}
+
+// Helper function to parse JSON string and extract string
+string parseStringFromJson(const string& jsonStr) {
+    string trimmed = jsonStr;
+    
+    // Remove leading/trailing whitespace
+    trimmed.erase(0, trimmed.find_first_not_of(" \\t\\n\\r"));
+    trimmed.erase(trimmed.find_last_not_of(" \\t\\n\\r") + 1);
+    
+    // Remove quotes if present
+    if (!trimmed.empty() && trimmed.front() == '"' && trimmed.back() == '"') {
+        trimmed = trimmed.substr(1, trimmed.length() - 2);
+    }
+    
+    return trimmed;
 }
 
 int main() {
@@ -583,14 +640,22 @@ int main() {
         
         Solution solution;
         
-        // Parse the argument and call the function
+        // Parse the argument and call the function based on detected type
         try {
+            ${paramType === 'string' ? `
+            string arg = parseStringFromJson(jsonArgs);
+            auto result = solution.${cppFunctionName}(arg);
+            if (result) {
+                cout << "true" << endl;
+            } else {
+                cout << "false" << endl;
+            }` : `
             int arg = parseIntFromJson(jsonArgs);
             auto result = solution.${cppFunctionName}(arg);
-            cout << result << endl;
+            cout << result << endl;`}
             return 0;
         } catch (const exception& e) {
-            cout << "Error parsing argument: " << e.what() << endl;
+            cerr << "Error parsing argument: " << e.what() << endl;
             return 1;
         }
         
@@ -623,7 +688,7 @@ int parseIntFromJson(const string& jsonStr) {
     trimmed.erase(trimmed.find_last_not_of(" \\t\\n\\r") + 1);
     
     // Remove quotes if present
-    if (trimmed.front() == '"' && trimmed.back() == '"') {
+    if (!trimmed.empty() && trimmed.front() == '"' && trimmed.back() == '"') {
         trimmed = trimmed.substr(1, trimmed.length() - 2);
     }
     
@@ -631,18 +696,42 @@ int parseIntFromJson(const string& jsonStr) {
     return stoi(trimmed);
 }
 
+// Helper function to parse JSON string and extract string
+string parseStringFromJson(const string& jsonStr) {
+    string trimmed = jsonStr;
+    
+    // Remove leading/trailing whitespace
+    trimmed.erase(0, trimmed.find_first_not_of(" \\t\\n\\r"));
+    trimmed.erase(trimmed.find_last_not_of(" \\t\\n\\r") + 1);
+    
+    // Remove quotes if present
+    if (!trimmed.empty() && trimmed.front() == '"' && trimmed.back() == '"') {
+        trimmed = trimmed.substr(1, trimmed.length() - 2);
+    }
+    
+    return trimmed;
+}
+
 int main() {
     try {
         string jsonArgs = "${escapedArgsCpp}";
         
-        // Parse the argument and call the function
+        // Parse the argument and call the function based on detected type
         try {
+            ${paramType === 'string' ? `
+            string arg = parseStringFromJson(jsonArgs);
+            auto result = ${cppFunctionName}(arg);
+            if (result) {
+                cout << "true" << endl;
+            } else {
+                cout << "false" << endl;
+            }` : `
             int arg = parseIntFromJson(jsonArgs);
             auto result = ${cppFunctionName}(arg);
-            cout << result << endl;
+            cout << result << endl;`}
             return 0;
         } catch (const exception& e) {
-            cout << "Error parsing argument: " << e.what() << endl;
+            cerr << "Error parsing argument: " << e.what() << endl;
             return 1;
         }
         
@@ -656,7 +745,29 @@ int main() {
       
     case 'c':
       const cFunctionName = extractFunctionName(template, language, userCode);
-      const escapedArgsC = argsStr.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+      const escapedArgsC = argsStr.replace(/"/g, '\\"');
+      
+      // Detect parameter type from function signature
+      const detectCParameterType = (code: string, functionName: string): string => {
+        const patterns = [
+          new RegExp(`\\b\\w+\\s+${functionName}\\s*\\(\\s*(\\w+)\\s*\\*?\\s+\\w+\\s*\\)`, 'g'),
+          new RegExp(`${functionName}\\s*\\(\\s*(\\w+)\\s*\\*?\\s+\\w+\\s*\\)`, 'g')
+        ];
+        
+        for (const pattern of patterns) {
+          const match = pattern.exec(code);
+          if (match) {
+            const paramType = match[1].trim();
+            if (paramType === 'char' || code.includes('char*') || code.includes('string')) {
+              return 'string';
+            }
+          }
+        }
+        return 'int'; // default fallback
+      };
+      
+      const cParamType = detectCParameterType(userCode || '', cFunctionName);
+      
       return `
 #include <stdio.h>
 #include <stdlib.h>
@@ -667,38 +778,81 @@ ${userCode}
 
 // Helper function to parse JSON string and extract integer
 int parseIntFromJson(const char* jsonStr) {
-    char* trimmed = malloc(strlen(jsonStr) + 1);
-    strcpy(trimmed, jsonStr);
+    // Create a working copy
+    char* working = malloc(strlen(jsonStr) + 1);
+    strcpy(working, jsonStr);
     
     // Remove leading whitespace
-    while (*trimmed == ' ' || *trimmed == '\\t' || *trimmed == '\\n' || *trimmed == '\\r') {
-        trimmed++;
+    char* start = working;
+    while (*start == ' ' || *start == '\\t' || *start == '\\n' || *start == '\\r') {
+        start++;
     }
     
     // Remove trailing whitespace
-    char* end = trimmed + strlen(trimmed) - 1;
-    while (end > trimmed && (*end == ' ' || *end == '\\t' || *end == '\\n' || *end == '\\r')) {
+    char* end = start + strlen(start) - 1;
+    while (end > start && (*end == ' ' || *end == '\\t' || *end == '\\n' || *end == '\\r')) {
         *end = '\\0';
         end--;
     }
     
     // Remove quotes if present
-    if (trimmed[0] == '"' && trimmed[strlen(trimmed)-1] == '"') {
-        trimmed[strlen(trimmed)-1] = '\\0';
-        trimmed++;
+    if (strlen(start) >= 2 && start[0] == '"' && start[strlen(start)-1] == '"') {
+        start[strlen(start)-1] = '\\0';
+        start++;
     }
     
-    int result = atoi(trimmed);
+    int result = atoi(start);
+    free(working);
+    return result;
+}
+
+// Helper function to parse JSON string and extract string
+char* parseStringFromJson(const char* jsonStr) {
+    // Create a working copy
+    char* working = malloc(strlen(jsonStr) + 1);
+    strcpy(working, jsonStr);
+    
+    // Remove leading whitespace
+    char* start = working;
+    while (*start == ' ' || *start == '\\t' || *start == '\\n' || *start == '\\r') {
+        start++;
+    }
+    
+    // Remove trailing whitespace
+    char* end = start + strlen(start) - 1;
+    while (end > start && (*end == ' ' || *end == '\\t' || *end == '\\n' || *end == '\\r')) {
+        *end = '\\0';
+        end--;
+    }
+    
+    // Remove quotes if present
+    if (strlen(start) >= 2 && start[0] == '"' && start[strlen(start)-1] == '"') {
+        start[strlen(start)-1] = '\\0';
+        start++;
+    }
+    
+    char* result = malloc(strlen(start) + 1);
+    strcpy(result, start);
+    free(working);
     return result;
 }
 
 int main() {
     const char* jsonArgs = "${escapedArgsC}";
     
-    // Parse the argument and call the function
+    // Parse the argument and call the function based on detected type
+    ${cParamType === 'string' ? `
+    char* arg = parseStringFromJson(jsonArgs);
+    int result = ${cFunctionName}(arg);
+    if (result) {
+        printf("true\\n");
+    } else {
+        printf("false\\n");
+    }
+    free(arg);` : `
     int arg = parseIntFromJson(jsonArgs);
     int result = ${cFunctionName}(arg);
-    printf("%d\\n", result);
+    printf("%d\\n", result);`}
     
     return 0;
 }

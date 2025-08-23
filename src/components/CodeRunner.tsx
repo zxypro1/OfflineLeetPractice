@@ -13,6 +13,8 @@ import {
   Divider
 } from '@mantine/core';
 import Editor from '@monaco-editor/react';
+import { useTranslation } from '../contexts/I18nContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 // 格式化输出结果
 function formatOutput(value: any): string {
@@ -35,6 +37,8 @@ function formatOutput(value: any): string {
 }
 
 export default function CodeRunner({ problem }: any) {
+  const { t } = useTranslation();
+  const { colorScheme } = useTheme();
   const [code, setCode] = useState(problem.template.js || '');
   const [result, setResult] = useState<any>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -54,7 +58,7 @@ export default function CodeRunner({ problem }: any) {
     } catch (error) {
       setResult({ 
         status: 'error', 
-        error: '运行失败，请检查网络连接' 
+        error: t('codeRunner.networkError')
       });
     } finally {
       setIsRunning(false);
@@ -67,14 +71,14 @@ export default function CodeRunner({ problem }: any) {
     if (result.status === 'running') {
       return (
         <Alert color="blue">
-          正在运行测试...
+          {t('codeRunner.runningTests')}
         </Alert>
       );
     }
     
     if (result.error) {
       return (
-        <Alert color="red" title="运行错误">
+        <Alert color="red" title={t('codeRunner.runError')}>
           <Code block>{result.error}</Code>
         </Alert>
       );
@@ -90,43 +94,67 @@ export default function CodeRunner({ problem }: any) {
         <Stack gap={10}>
           <Group justify="space-between">
             <Title order={5}>
-              📋 测试结果
+              {t('codeRunner.testResults')}
             </Title>
             <Badge 
               color={allPassed ? 'green' : 'red'} 
               variant="filled"
             >
-              {passedTests}/{totalTests} 通过
+              {passedTests}/{totalTests} {t('codeRunner.passed')}
             </Badge>
           </Group>
+          
+          {/* Performance Information */}
+          {result.performance && (
+            <Paper p="sm" withBorder style={{ background: 'var(--mantine-color-blue-light)' }}>
+              <Group justify="space-between">
+                <div>
+                  <Text size="xs" c="dimmed">{t('codeRunner.totalExecutionTime')}:</Text>
+                  <Text size="sm" fw={500}>{result.performance.totalExecutionTime}ms</Text>
+                </div>
+                <div>
+                  <Text size="xs" c="dimmed">{t('codeRunner.averageTime')}:</Text>
+                  <Text size="sm" fw={500}>{result.performance.averageExecutionTime}ms</Text>
+                </div>
+                <div>
+                  <Text size="xs" c="dimmed">{t('codeRunner.memoryUsed')}:</Text>
+                  <Text size="sm" fw={500}>{result.performance.memoryUsage.heapUsed}MB</Text>
+                </div>
+                <div>
+                  <Text size="xs" c="dimmed">{t('codeRunner.totalMemory')}:</Text>
+                  <Text size="sm" fw={500}>{result.performance.memoryUsage.rss}MB</Text>
+                </div>
+              </Group>
+            </Paper>
+          )}
           
           <Stack gap={8}>
             {result.results.map((testResult: any, index: number) => (
               <Paper key={index} p="sm" withBorder>
                 <Group justify="space-between" mb={5}>
                   <Text size="sm" fw={500}>
-                    测试用例 {index + 1}
+                    {t('codeRunner.testCase')} {index + 1}
                   </Text>
                   <Badge 
                     color={testResult.passed ? 'green' : 'red'}
                     variant="light"
                     size="sm"
                   >
-                    {testResult.passed ? '通过' : '失败'}
+                    {testResult.passed ? t('codeRunner.passed') : t('codeRunner.failed')}
                   </Badge>
                 </Group>
                 
                 <Stack gap={5}>
                   <div>
-                    <Text size="xs" c="dimmed">输入:</Text>
+                    <Text size="xs" c="dimmed">{t('codeRunner.input')}:</Text>
                     <Code>{testResult.input}</Code>
                   </div>
                   <div>
-                    <Text size="xs" c="dimmed">期望输出:</Text>
+                    <Text size="xs" c="dimmed">{t('codeRunner.expected')}:</Text>
                     <Code>{formatOutput(testResult.expected)}</Code>
                   </div>
                   <div>
-                    <Text size="xs" c="dimmed">实际输出:</Text>
+                    <Text size="xs" c="dimmed">{t('codeRunner.actual')}:</Text>
                     <Code color={testResult.passed ? undefined : 'red'}>
                       {testResult.actual === null ? 'null' : 
                        testResult.actual === undefined ? 'undefined' : 
@@ -135,13 +163,13 @@ export default function CodeRunner({ problem }: any) {
                   </div>
                   {testResult.error && (
                     <div>
-                      <Text size="xs" c="red">错误:</Text>
+                      <Text size="xs" c="red">{t('common.error')}:</Text>
                       <Code c="red">{testResult.error}</Code>
                     </div>
                   )}
                   {testResult.executionTime !== undefined && (
                     <div>
-                      <Text size="xs" c="dimmed">执行时间: {testResult.executionTime}ms</Text>
+                      <Text size="xs" c="dimmed">{t('codeRunner.executionTime')}: {testResult.executionTime}ms</Text>
                     </div>
                   )}
                 </Stack>
@@ -166,7 +194,7 @@ export default function CodeRunner({ problem }: any) {
         
         <Group justify="space-between" mb={15}>
           <Title order={4}>
-            💻 代码编辑器
+            {t('codeRunner.title')}
           </Title>
           <Button 
             onClick={runTests} 
@@ -174,7 +202,7 @@ export default function CodeRunner({ problem }: any) {
             color="blue"
             variant="filled"
           >
-            {isRunning ? '运行中...' : '🚀 提交并运行测试'}
+            {isRunning ? t('codeRunner.running') : t('codeRunner.submit')}
           </Button>
         </Group>
         
@@ -183,7 +211,7 @@ export default function CodeRunner({ problem }: any) {
           defaultLanguage="javascript"
           value={code}
           onChange={(v) => setCode(v || '')}
-          theme="vs-dark"
+          theme={colorScheme === 'dark' ? 'vs-dark' : 'light'}
           options={{
             minimap: { enabled: false },
             fontSize: 14,

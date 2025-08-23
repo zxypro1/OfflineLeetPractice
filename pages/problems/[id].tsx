@@ -15,12 +15,23 @@ import {
 } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useTranslation, useI18n } from '../../src/contexts/I18nContext';
+import { LanguageThemeControls } from '../../src/components/LanguageThemeControls';
 
 const CodeRunner = dynamic(() => import('../../src/components/CodeRunner'), { ssr: false });
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = await import('../../problems/problems.json');
-  const paths = data.default.map((p: any) => ({ params: { id: p.id } }));
+  const locales = ['zh', 'en']; // 支持的语言
+  
+  // 为每个问题和每种语言生成路径
+  const paths = data.default.flatMap((p: any) => 
+    locales.map(locale => ({
+      params: { id: p.id },
+      locale: locale
+    }))
+  );
+  
   return { paths, fallback: false };
 };
 
@@ -41,9 +52,12 @@ const getDifficultyColor = (difficulty: string) => {
 };
 
 export default function ProblemPage({ problem }: any) {
+  const { t } = useTranslation();
+  const { locale } = useI18n();
+  
   const breadcrumbItems = [
-    { title: '首页', href: '/' },
-    { title: problem.title.zh, href: '#' }
+    { title: t('common.home'), href: '/' },
+    { title: problem.title[locale as keyof typeof problem.title] || problem.title.zh, href: '#' }
   ].map((item, index) => (
     item.href === '#' ? (
       <Text key={index}>{item.title}</Text>
@@ -57,6 +71,11 @@ export default function ProblemPage({ problem }: any) {
   return (
     <Container fluid py={20}>
       <Container size="xl">
+        {/* 语言和主题控件 */}
+        <Group justify="flex-end" mb={10}>
+          <LanguageThemeControls />
+        </Group>
+        
         <Breadcrumbs mb={20}>
           {breadcrumbItems}
         </Breadcrumbs>
@@ -66,10 +85,10 @@ export default function ProblemPage({ problem }: any) {
             <Group justify="space-between" align="flex-start" mb={15}>
               <div>
                 <Title order={2} mb={8}>
-                  {problem.title.zh}
+                  {problem.title[locale as keyof typeof problem.title] || problem.title.zh}
                 </Title>
                 <Text color="dimmed" size="md">
-                  {problem.title.en}
+                  {locale === 'zh' ? problem.title.en : problem.title.zh}
                 </Text>
               </div>
               <Badge 
@@ -84,7 +103,7 @@ export default function ProblemPage({ problem }: any) {
             <Group gap={8} mb={15}>
               {problem.tags?.map((tag: string) => (
                 <Badge key={tag} color="blue" variant="light">
-                  {tag}
+                  {t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}
                 </Badge>
               ))}
             </Group>
@@ -95,25 +114,25 @@ export default function ProblemPage({ problem }: any) {
               <Stack gap={15}>
                 <Paper shadow="sm" p="md" withBorder>
                   <Title order={4} mb={15}>
-                    📝 题目描述
+                    📝 {t('problemPage.description')}
                   </Title>
                   <Text size="md" style={{ lineHeight: 1.6 }}>
-                    {problem.description.zh}
+                    {problem.description[locale as keyof typeof problem.description] || problem.description.zh}
                   </Text>
                 </Paper>
                 
                 {problem.examples && (
                   <Paper shadow="sm" p="md" withBorder>
                     <Title order={4} mb={15}>
-                      💡 示例
+                      💡 {t('problemPage.examples')}
                     </Title>
                     <Stack gap={10}>
                       {problem.examples.map((example: any, index: number) => (
                         <div key={index}>
-                          <Text size="sm" fw={500}>示例 {index + 1}:</Text>
+                          <Text size="sm" fw={500}>{t('problemPage.example')} {index + 1}:</Text>
                           <Code block mt={5}>
-                            输入: {example.input}
-                            {"\n"}输出: {example.output}
+                            {t('problemPage.input')}: {example.input}
+                            {"\n"}{t('problemPage.output')}: {example.output}
                           </Code>
                         </div>
                       ))}
@@ -123,7 +142,7 @@ export default function ProblemPage({ problem }: any) {
                 
                 <Paper shadow="sm" p="md" withBorder>
                   <Title order={4} mb={15}>
-                    🔍 参考解法
+                    🔍 {t('problemPage.solution')}
                   </Title>
                   <Code block style={{ fontSize: '0.9em' }}>
                     {problem.solution.js}

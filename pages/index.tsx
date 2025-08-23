@@ -12,6 +12,8 @@ import {
   Center,
   Divider
 } from '@mantine/core';
+import { useTranslation, useI18n } from '../src/contexts/I18nContext';
+import { LanguageThemeControls } from '../src/components/LanguageThemeControls'
 
 type Problem = {
   id: string;
@@ -36,23 +38,31 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function Home({ problems }: { problems: Problem[] }) {
+  const { t } = useTranslation();
+  const { locale } = useI18n();
+
   return (
     <Container size="xl" py={40}>
+      {/* 语言和主题控件 */}
+      <Group justify="flex-end" mb={20}>
+        <LanguageThemeControls />
+      </Group>
+      
       <Center>
         <Stack gap={30}>
           <div>
             <Title order={1} ta="center" mb={10}>
-              🚀 离线 LeetCode 练习
+              {t('homepage.title')}
             </Title>
             <Text size="lg" c="dimmed" ta="center">
-              本地题库，支持在浏览器内编辑并运行测试（JavaScript）
+              {t('homepage.subtitle')}
             </Text>
           </div>
           
           <Divider size="md" />
           
           <Text size="xl" fw={600} ta="center">
-            📚 题目列表 ({problems.length} 题)
+            {t('homepage.problemList')} ({problems.length} {t('homepage.problems')})
           </Text>
         </Stack>
       </Center>
@@ -76,19 +86,19 @@ export default function Home({ problems }: { problems: Problem[] }) {
                     variant="filled"
                     size="sm"
                   >
-                    {problem.difficulty}
+                    {t(`homepage.difficulty.${problem.difficulty}`)}
                   </Badge>
                 </Group>
                 
                 <div>
                   <Title order={4} mb={8}>
-                    {problem.title.zh}
+                    {problem.title[locale as keyof typeof problem.title] || problem.title.zh}
                   </Title>
-                  <Text size="sm" color="dimmed" mb={8}>
-                    {problem.title.en}
-                  </Text>
+                  {/* <Text size="sm" c="dimmed" mb={8}>
+                    {locale === 'zh' ? problem.title.en : problem.title.zh}
+                  </Text> */}
                   <Text size="xs" lineClamp={2}>
-                    {problem.description.zh}
+                    {problem.description[locale as keyof typeof problem.description] || problem.description.zh}
                   </Text>
                 </div>
                 
@@ -100,7 +110,7 @@ export default function Home({ problems }: { problems: Problem[] }) {
                       variant="light" 
                       size="xs"
                     >
-                      {tag}
+                      {t(`tags.${tag}`) !== `tags.${tag}` ? t(`tags.${tag}`) : tag}
                     </Badge>
                   ))}
                   {problem.tags?.length > 3 && (

@@ -1,0 +1,65 @@
+/* 全局样式 - 确保暗色主题正确工作 */
+
+/* 亮色主题样式 */
+[data-mantine-color-scheme="light"] {
+  --mantine-color-body: #ffffff;
+  --mantine-color-text: #000000;
+}
+
+/* 暗色主题样式 */
+[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #1a1b1e;
+  --mantine-color-text: #c1c2c5;
+}
+
+/* 确保body元素使用正确的背景色 */
+html[data-mantine-color-scheme="dark"] body {
+  background-color: #1a1b1e;
+  color: #c1c2c5;
+}
+
+html[data-mantine-color-scheme="light"] body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* 确保页面根元素的背景色 */
+html[data-mantine-color-scheme="dark"] {
+  background-color: #1a1b1e;
+}
+
+html[data-mantine-color-scheme="light"] {
+  background-color: #ffffff;
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-track {
+  background: #25262b;
+}
+
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb {
+  background: #373a40;
+  border-radius: 4px;
+}
+
+[data-mantine-color-scheme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #5c5f66;
+}
+
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-track {
+  background: #f1f3f4;
+}
+
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-thumb {
+  background: #c1c2c5;
+  border-radius: 4px;
+}
+
+[data-mantine-color-scheme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #a6a7ab;
+}

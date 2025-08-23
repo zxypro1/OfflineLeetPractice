@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy-local": "npm run build && npm start",
+    "setup": "npm install && npm run build"
   },
   "dependencies": {
     "next": "13.5.8",

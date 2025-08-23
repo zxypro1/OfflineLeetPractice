@@ -1,0 +1,65 @@
+{
+  "common": {
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "home": "Home",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "header": {
+    "title": "Offline LeetCode Practice",
+    "subtitle": "Local problem set, supports editing and running tests in browser (JavaScript)"
+  },
+  "homepage": {
+    "title": "🚀 Offline LeetCode Practice",
+    "subtitle": "Local problem set, supports editing and running tests in browser (JavaScript)",
+    "problemList": "📚 Problem List",
+    "problems": "problems",
+    "difficulty": {
+      "Easy": "Easy",
+      "Medium": "Medium",
+      "Hard": "Hard"
+    }
+  },
+  "problemPage": {
+    "description": "Problem Description",
+    "examples": "Examples",
+    "solution": "Reference Solution",
+    "example": "Example",
+    "input": "Input",
+    "output": "Output"
+  },
+  "codeRunner": {
+    "title": "💻 Code Editor",
+    "submit": "🚀 Submit & Run Tests",
+    "running": "Running...",
+    "testResults": "📋 Test Results",
+    "passed": "Passed",
+    "failed": "Failed",
+    "testCase": "Test Case",
+    "expected": "Expected Output",
+    "actual": "Actual Output",
+    "executionTime": "Execution Time",
+    "ms": "ms",
+    "runningTests": "Running tests...",
+    "runError": "Runtime Error",
+    "networkError": "Failed to run, please check network connection"
+  },
+  "tags": {
+    "array": "Array",
+    "hash-table": "Hash Table",
+    "math": "Math",
+    "string": "String",
+    "stack": "Stack",
+    "linked-list": "Linked List",
+    "recursion": "Recursion",
+    "two-pointers": "Two Pointers",
+    "binary-search": "Binary Search",
+    "divide-and-conquer": "Divide and Conquer",
+    "dynamic-programming": "Dynamic Programming",
+    "memoization": "Memoization"
+  }
+}

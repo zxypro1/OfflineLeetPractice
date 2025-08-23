@@ -1,0 +1,65 @@
+{
+  "common": {
+    "language": "语言",
+    "theme": "主题",
+    "light": "亮色",
+    "dark": "暗色",
+    "home": "首页",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功"
+  },
+  "header": {
+    "title": "离线 LeetCode 练习",
+    "subtitle": "本地题库，支持在浏览器内编辑并运行测试（JavaScript）"
+  },
+  "homepage": {
+    "title": "🚀 离线 LeetCode 练习",
+    "subtitle": "本地题库，支持在浏览器内编辑并运行测试（JavaScript）",
+    "problemList": "📚 题目列表",
+    "problems": "题",
+    "difficulty": {
+      "Easy": "简单",
+      "Medium": "中等", 
+      "Hard": "困难"
+    }
+  },
+  "problemPage": {
+    "description": "题目描述",
+    "examples": "示例",
+    "solution": "参考解法",
+    "example": "示例",
+    "input": "输入",
+    "output": "输出"
+  },
+  "codeRunner": {
+    "title": "💻 代码编辑器",
+    "submit": "🚀 提交并运行测试",
+    "running": "运行中...",
+    "testResults": "📋 测试结果",
+    "passed": "通过",
+    "failed": "失败",
+    "testCase": "测试用例",
+    "expected": "期望输出",
+    "actual": "实际输出",
+    "executionTime": "执行时间",
+    "ms": "毫秒",
+    "runningTests": "正在运行测试...",
+    "runError": "运行错误",
+    "networkError": "运行失败，请检查网络连接"
+  },
+  "tags": {
+    "array": "数组",
+    "hash-table": "哈希表",
+    "math": "数学",
+    "string": "字符串",
+    "stack": "栈",
+    "linked-list": "链表",
+    "recursion": "递归",
+    "two-pointers": "双指针",
+    "binary-search": "二分查找",
+    "divide-and-conquer": "分治",
+    "dynamic-programming": "动态规划",
+    "memoization": "记忆化"
+  }
+}

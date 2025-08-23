@@ -12,6 +12,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const tests = problem.tests || [];
   const results: any[] = [];
   let passedCount = 0;
+  
+  // 记录总开始时间和初始内存
+  const totalStartTime = Date.now();
+  const initialMemory = process.memoryUsage();
 
   // 执行每个测试用例
   for (const test of tests) {
@@ -87,11 +91,26 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
   }
 
+  // 计算总执行时间和内存使用
+  const totalExecutionTime = Date.now() - totalStartTime;
+  const finalMemory = process.memoryUsage();
+  const memoryUsed = {
+    heapUsed: Math.round((finalMemory.heapUsed - initialMemory.heapUsed) / 1024 / 1024 * 100) / 100, // MB
+    heapTotal: Math.round(finalMemory.heapTotal / 1024 / 1024 * 100) / 100, // MB
+    external: Math.round(finalMemory.external / 1024 / 1024 * 100) / 100, // MB
+    rss: Math.round(finalMemory.rss / 1024 / 1024 * 100) / 100 // MB
+  };
+
   res.json({
     status: 'success',
     total: tests.length,
     passed: passedCount,
-    results: results
+    results: results,
+    performance: {
+      totalExecutionTime: totalExecutionTime, // ms
+      averageExecutionTime: Math.round(totalExecutionTime / tests.length * 100) / 100, // ms
+      memoryUsage: memoryUsed
+    }
   });
 }
 

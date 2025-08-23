@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GetStaticProps } from 'next';
+import { useState, useEffect } from 'react';
 import { 
   Container, 
   Title, 
@@ -10,7 +10,9 @@ import {
   Grid, 
   Stack,
   Center,
-  Divider
+  Divider,
+  Loader,
+  Alert
 } from '@mantine/core';
 import { useTranslation, useI18n } from '../src/contexts/I18nContext';
 import { LanguageThemeControls } from '../src/components/LanguageThemeControls'
@@ -32,14 +34,62 @@ const getDifficultyColor = (difficulty: string) => {
   }
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const data = await import('../problems/problems.json');
-  return { props: { problems: data.default } };
-};
-
-export default function Home({ problems }: { problems: Problem[] }) {
+export default function Home() {
   const { t } = useTranslation();
   const { locale } = useI18n();
+  const [problems, setProblems] = useState<Problem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const response = await fetch('/api/problems');
+        if (!response.ok) {
+          throw new Error('Failed to fetch problems');
+        }
+        const data = await response.json();
+        setProblems(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load problems');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProblems();
+  }, []);
+
+  if (loading) {
+    return (
+      <Container size="xl" py={40}>
+        <Group justify="flex-end" mb={20}>
+          <LanguageThemeControls />
+        </Group>
+        <Center style={{ minHeight: '50vh' }}>
+          <Stack align="center" gap={20}>
+            <Loader size="lg" />
+            <Text>{t('common.loading')}</Text>
+          </Stack>
+        </Center>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container size="xl" py={40}>
+        <Group justify="flex-end" mb={20}>
+          <LanguageThemeControls />
+        </Group>
+        <Center style={{ minHeight: '50vh' }}>
+          <Alert color="red" title={t('common.error')}>
+            {error}
+          </Alert>
+        </Center>
+      </Container>
+    );
+  }
 
   return (
     <Container size="xl" py={40}>

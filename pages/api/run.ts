@@ -1,17 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NodeVM } from 'vm2';
-import problems from '../../problems/problems.json';
+import fs from 'fs';
+import path from 'path';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
   
   const { id, code } = req.body;
-  const problem = problems.find((p: any) => p.id === id);
-  if (!problem) return res.status(404).json({ error: 'Problem not found' });
+  
+  try {
+    // Read problems.json from public folder at runtime
+    const problemsPath = path.join(process.cwd(), 'public', 'problems.json');
+    const problemsData = fs.readFileSync(problemsPath, 'utf8');
+    const problems = JSON.parse(problemsData);
+    
+    const problem = problems.find((p: any) => p.id === id);
+    if (!problem) return res.status(404).json({ error: 'Problem not found' });
 
-  const tests = problem.tests || [];
-  const results: any[] = [];
-  let passedCount = 0;
+    const tests = problem.tests || [];
+    const results: any[] = [];
+    let passedCount = 0;
   
   // 记录总开始时间和初始内存
   const totalStartTime = Date.now();
@@ -112,6 +120,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       memoryUsage: memoryUsed
     }
   });
+  } catch (error) {
+    console.error('Error in run API:', error);
+    res.status(500).json({ error: 'Failed to execute code or load problems' });
+  }
 }
 
 // 解析测试输入

@@ -47,6 +47,8 @@ echo Usage Instructions:
 echo    - Open http://localhost:3000 in your browser
 echo    - Fully local execution, no external network required
 echo    - Press Ctrl+C to stop the server
+echo    - To add problems: Edit public/problems.json (see MODIFY-PROBLEMS-GUIDE.md)
+echo    - Changes take effect immediately without rebuilding!
 echo.
 
 REM Start the application

@@ -162,6 +162,35 @@ OfflineLeetPractice/
 
 ## 🔧 Customization
 
+### Adding New Problems (No Rebuild Required!) 🎯
+
+**The application supports adding/modifying problems in offline environments without rebuilding!**
+
+1. **Edit the Problem Database**: Open `public/problems.json` in your built application folder
+2. **Add Your Problem**: Follow the JSON format (see `MODIFY-PROBLEMS-GUIDE.md` for details)
+3. **Save and Refresh**: Changes take effect immediately!
+
+**Perfect for:**
+- ✈️ Adding practice problems during flights
+- 🏫 Teachers customizing problems for students
+- 🎯 Creating company-specific coding challenges
+- 📚 Building personal algorithm libraries
+
+**Example**: Add a new problem by editing `public/problems.json`:
+```json
+{
+  "id": "reverse-string",
+  "title": { "en": "Reverse String", "zh": "反转字符串" },
+  "difficulty": "Easy",
+  "tags": ["string"],
+  "description": { "en": "Reverse a string...", "zh": "反转字符串..." },
+  "template": { "js": "function reverse(s) {\n  // Your code\n}\nmodule.exports = reverse;" },
+  "tests": [{ "input": "\"hello\"", "output": "\"olleh\"" }]
+}
+```
+
+See **`MODIFY-PROBLEMS-GUIDE.md`** for complete instructions!
+
 ### Adding New Problems
 
 Edit `problems/problems.json`:

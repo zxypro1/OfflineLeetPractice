@@ -1,5 +1,5 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import { 
   Container, 
   Grid, 
@@ -14,7 +14,10 @@ import {
   Anchor,
   Code,
   Button,
-  Collapse
+  Collapse,
+  Loader,
+  Alert,
+  Center
 } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -23,41 +26,86 @@ import { LanguageThemeControls } from '../../src/components/LanguageThemeControl
 
 const CodeRunner = dynamic(() => import('../../src/components/CodeRunner'), { ssr: false });
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await import('../../problems/problems.json');
-  const locales = ['zh', 'en']; // 支持的语言
-  
-  // 为每个问题和每种语言生成路径
-  const paths = data.default.flatMap((p: any) => 
-    locales.map(locale => ({
-      params: { id: p.id },
-      locale: locale
-    }))
-  );
-  
-  return { paths, fallback: false };
-};
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const id = ctx.params?.id as string;
-  const data = await import('../../problems/problems.json');
-  const prob = data.default.find((p: any) => p.id === id);
-  return { props: { problem: prob } };
-};
-
-const getDifficultyColor = (difficulty: string) => {
-  switch (difficulty) {
-    case 'Easy': return 'green';
-    case 'Medium': return 'yellow';
-    case 'Hard': return 'red';
-    default: return 'gray';
-  }
-};
-
-export default function ProblemPage({ problem }: any) {
+export default function ProblemPage() {
+  const router = useRouter();
+  const { id } = router.query;
   const { t } = useTranslation();
   const { locale } = useI18n();
   const [showSolution, setShowSolution] = useState(false);
+  const [problem, setProblem] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchProblem = async () => {
+      try {
+        const response = await fetch('/api/problems');
+        if (!response.ok) {
+          throw new Error('Failed to fetch problems');
+        }
+        const problems = await response.json();
+        const foundProblem = problems.find((p: any) => p.id === id);
+        
+        if (!foundProblem) {
+          throw new Error('Problem not found');
+        }
+        
+        setProblem(foundProblem);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load problem');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProblem();
+  }, [id]);
+  
+  if (loading) {
+    return (
+      <Container fluid py={20}>
+        <Container size="xl">
+          <Group justify="flex-end" mb={10}>
+            <LanguageThemeControls />
+          </Group>
+          <Center style={{ minHeight: '50vh' }}>
+            <Stack align="center" gap={20}>
+              <Loader size="lg" />
+              <Text>{t('common.loading')}</Text>
+            </Stack>
+          </Center>
+        </Container>
+      </Container>
+    );
+  }
+
+  if (error || !problem) {
+    return (
+      <Container fluid py={20}>
+        <Container size="xl">
+          <Group justify="flex-end" mb={10}>
+            <LanguageThemeControls />
+          </Group>
+          <Center style={{ minHeight: '50vh' }}>
+            <Alert color="red" title={t('common.error')}>
+              {error || 'Problem not found'}
+            </Alert>
+          </Center>
+        </Container>
+      </Container>
+    );
+  }
+
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Easy': return 'green';
+      case 'Medium': return 'yellow';
+      case 'Hard': return 'red';
+      default: return 'gray';
+    }
+  };
   
   const breadcrumbItems = [
     { title: t('common.home'), href: '/' },

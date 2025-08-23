@@ -7,9 +7,7 @@
     "build": "node setup-problems.js && next build",
     "start": "next start",
     "deploy-local": "npm run build && npm start",
-    "setup": "npm install && npm run build",
-    "test:dynamic": "node test-dynamic-problems.js",
-    "test:cleanup": "node cleanup-test-problem.js"
+    "setup": "npm install && npm run build"
   },
   "dependencies": {
     "next": "13.5.8",

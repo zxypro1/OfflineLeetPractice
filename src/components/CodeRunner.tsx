@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Button, 
   Paper, 
@@ -10,13 +10,23 @@ import {
   LoadingOverlay,
   Alert,
   Code,
-  Divider
+  Divider,
+  Select
 } from '@mantine/core';
 import Editor from '@monaco-editor/react';
 import { useTranslation } from '../contexts/I18nContext';
 import { useTheme } from '../contexts/ThemeContext';
 
-// 格式化输出结果
+// Language configurations
+const SUPPORTED_LANGUAGES = [
+  { value: 'javascript', label: 'JavaScript', monacoLang: 'javascript', templateKey: 'js' },
+  { value: 'python', label: 'Python', monacoLang: 'python', templateKey: 'python' },
+  { value: 'java', label: 'Java', monacoLang: 'java', templateKey: 'java' },
+  { value: 'cpp', label: 'C++', monacoLang: 'cpp', templateKey: 'cpp' },
+  { value: 'c', label: 'C', monacoLang: 'c', templateKey: 'c' }
+];
+
+// Format output results
 function formatOutput(value: any): string {
   if (value === null) return 'null';
   if (value === undefined) return 'undefined';
@@ -39,9 +49,40 @@ function formatOutput(value: any): string {
 export default function CodeRunner({ problem }: any) {
   const { t } = useTranslation();
   const { colorScheme } = useTheme();
-  const [code, setCode] = useState(problem.template.js || '');
+  const [selectedLanguage, setSelectedLanguage] = useState('javascript');
+  const [code, setCode] = useState('');
   const [result, setResult] = useState<any>(null);
   const [isRunning, setIsRunning] = useState(false);
+  
+  // Update code when language changes
+  useEffect(() => {
+    const langConfig = SUPPORTED_LANGUAGES.find(l => l.value === selectedLanguage);
+    const templateKey = langConfig?.templateKey || 'js';
+    let template = problem.template?.[templateKey];
+    
+    // Fallback to 'js' template for JavaScript compatibility
+    if (!template && selectedLanguage === 'javascript' && problem.template?.js) {
+      template = problem.template.js;
+    }
+    
+    setCode(template || '');
+  }, [selectedLanguage, problem]);
+  
+  // Filter available languages based on problem templates
+  // Always include JavaScript if any template exists (backward compatibility)
+  const availableLanguages = SUPPORTED_LANGUAGES.filter(
+    lang => {
+      // Check if the specific template exists
+      if (problem.template?.[lang.templateKey]) {
+        return true;
+      }
+      // For JavaScript, also check for 'js' key (backward compatibility)
+      if (lang.value === 'javascript' && problem.template?.js) {
+        return true;
+      }
+      return false;
+    }
+  );
   
   const runTests = async () => {
     setIsRunning(true);
@@ -51,7 +92,11 @@ export default function CodeRunner({ problem }: any) {
       const res = await fetch('/api/run', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: problem.id, code }),
+        body: JSON.stringify({ 
+          id: problem.id, 
+          code, 
+          language: selectedLanguage 
+        }),
       });
       const data = await res.json();
       setResult(data);
@@ -196,19 +241,28 @@ export default function CodeRunner({ problem }: any) {
           <Title order={4}>
             {t('codeRunner.title')}
           </Title>
-          <Button 
-            onClick={runTests} 
-            disabled={isRunning}
-            color="blue"
-            variant="filled"
-          >
-            {isRunning ? t('codeRunner.running') : t('codeRunner.submit')}
-          </Button>
+          <Group>
+            <Select
+              value={selectedLanguage}
+              onChange={(value) => setSelectedLanguage(value || 'javascript')}
+              data={availableLanguages}
+              size="sm"
+              w={120}
+            />
+            <Button 
+              onClick={runTests} 
+              disabled={isRunning}
+              color="blue"
+              variant="filled"
+            >
+              {isRunning ? t('codeRunner.running') : t('codeRunner.submit')}
+            </Button>
+          </Group>
         </Group>
         
         <Editor
           height="400px"
-          defaultLanguage="javascript"
+          language={SUPPORTED_LANGUAGES.find(l => l.value === selectedLanguage)?.monacoLang || 'javascript'}
           value={code}
           onChange={(v) => setCode(v || '')}
           theme={colorScheme === 'dark' ? 'vs-dark' : 'light'}

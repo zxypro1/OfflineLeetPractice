@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { useState } from 'react';
 import { 
   Container, 
   Grid, 
@@ -11,7 +12,9 @@ import {
   Divider,
   Breadcrumbs,
   Anchor,
-  Code
+  Code,
+  Button,
+  Collapse
 } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -54,6 +57,7 @@ const getDifficultyColor = (difficulty: string) => {
 export default function ProblemPage({ problem }: any) {
   const { t } = useTranslation();
   const { locale } = useI18n();
+  const [showSolution, setShowSolution] = useState(false);
   
   const breadcrumbItems = [
     { title: t('common.home'), href: '/' },
@@ -87,9 +91,9 @@ export default function ProblemPage({ problem }: any) {
                 <Title order={2} mb={8}>
                   {problem.title[locale as keyof typeof problem.title] || problem.title.zh}
                 </Title>
-                <Text color="dimmed" size="md">
+                {/* <Text color="dimmed" size="md">
                   {locale === 'zh' ? problem.title.en : problem.title.zh}
-                </Text>
+                </Text> */}
               </div>
               <Badge 
                 color={getDifficultyColor(problem.difficulty)}
@@ -141,12 +145,28 @@ export default function ProblemPage({ problem }: any) {
                 )}
                 
                 <Paper shadow="sm" p="md" withBorder>
-                  <Title order={4} mb={15}>
-                    🔍 {t('problemPage.solution')}
-                  </Title>
-                  <Code block style={{ fontSize: '0.9em' }}>
-                    {problem.solution.js}
-                  </Code>
+                  <Group justify="space-between" align="center" mb={15}>
+                    <Title order={4}>
+                      🔍 {t('problemPage.solution')}
+                    </Title>
+                    <Button 
+                      variant="light" 
+                      size="sm"
+                      onClick={() => setShowSolution(!showSolution)}
+                    >
+                      {showSolution ? t('problemPage.hideSolution') : t('problemPage.showSolution')}
+                    </Button>
+                  </Group>
+                  <Collapse in={showSolution}>
+                    <Code block style={{ fontSize: '0.9em' }}>
+                      {problem.solution.js}
+                    </Code>
+                  </Collapse>
+                  {!showSolution && (
+                    <Text size="sm" c="dimmed" ta="center" py="xl">
+                      {t('problemPage.solutionHidden')}
+                    </Text>
+                  )}
                 </Paper>
               </Stack>
             </Grid.Col>

@@ -31,6 +31,9 @@ type Translations = {
     description: string;
     examples: string;
     solution: string;
+    showSolution: string;
+    hideSolution: string;
+    solutionHidden: string;
     example: string;
     input: string;
     output: string;
@@ -102,6 +105,9 @@ const translations: Record<string, Translations> = {
       description: '题目描述',
       examples: '示例',
       solution: '参考解法',
+      showSolution: '显示解法',
+      hideSolution: '隐藏解法',
+      solutionHidden: '点击上方按钮查看参考解法（建议先自己尝试解决）',
       example: '示例',
       input: '输入',
       output: '输出'
@@ -172,6 +178,9 @@ const translations: Record<string, Translations> = {
       description: 'Problem Description',
       examples: 'Examples',
       solution: 'Reference Solution',
+      showSolution: 'Show Solution',
+      hideSolution: 'Hide Solution',
+      solutionHidden: 'Click the button above to view the reference solution (try solving it yourself first)',
       example: 'Example',
       input: 'Input',
       output: 'Output'

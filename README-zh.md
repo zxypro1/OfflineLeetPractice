@@ -11,6 +11,7 @@
 ## 快速开始
 
 ### 系统要求
+
 - **Node.js** 16+ ([点击下载](https://nodejs.org/))
 - 任意现代网页浏览器
 
@@ -19,12 +20,14 @@
 ### 一键启动
 
 #### Windows 用户
+
 ```bash
 # 双击运行或在终端中执行
 start-local.bat
 ```
 
 #### macOS / Linux 用户
+
 ```bash
 # 首次使用需要赋予执行权限
 chmod +x start-local.sh
@@ -34,6 +37,7 @@ chmod +x start-local.sh
 ```
 
 启动脚本会自动：
+
 1. 检查 Node.js 安装
 2. 安装依赖 (npm install) - *需要网络*
 3. 构建应用 (npm run build) - *需要网络*
@@ -44,6 +48,7 @@ chmod +x start-local.sh
 > **注意**: 首次构建完成后，您可以离线使用应用而无需重新构建。
 
 ### 手动安装（备选方案）
+
 ```bash
 # 克隆仓库
 git clone https://github.com/yourusername/OfflineLeetPractice.git
@@ -62,6 +67,7 @@ npm start
 ## 功能特性
 
 ### 核心功能
+
 - **本地题库**: 内置 10+ 道经典算法题目
 - **AI 题目生成器**: 使用 DeepSeek-V3 AI 生成无限自定义题目
 - **多语言支持**: 支持 JavaScript、Python、Java、C++ 和 C 语言编码和测试
@@ -80,6 +86,7 @@ npm start
 ## 使用方法
 
 ### 基本题目解决
+
 1. **浏览题目**: 查看包含难度和标签的题目列表
 2. **选择题目**: 点击任意题目打开详情页面
 3. **编写解法**: 使用 Monaco 编辑器（支持自动补全、语法高亮）
@@ -87,12 +94,14 @@ npm start
 5. **查看结果**: 查看测试结果和性能指标
 
 ### AI 题目生成
+
 1. **访问 AI 生成器**: 点击首页的"AI 生成器"按钮
 2. **描述你的需求**: 输入你想要的题目类型
 3. **生成题目**: AI 创建包含测试用例和解法的完整题目
 4. **立即练习**: 生成的题目自动添加到你的库中
 
 ### 添加自定义题目
+
 1. **手动添加**: 使用"添加题目"页面添加自定义题目
 2. **JSON 导入**: 上传或粘贴 JSON 格式的题目数据
 3. **直接编辑**: 修改 `public/problems.json` 即时生效（无需重新构建）
@@ -142,6 +151,7 @@ OfflineLeetPractice/
 3. **保存并刷新**: 更改立即生效！
 
 **例子**: 通过编辑 `public/problems.json` 添加新题目：
+
 ```json
 {
   "id": "reverse-string",
@@ -166,35 +176,10 @@ OfflineLeetPractice/
 
 查看 **`MODIFY-PROBLEMS-GUIDE.md`** 获取完整说明！
 
-### 添加新题目
-
-编辑 `public/problems.json`:
-
-```json
-{
-  "id": "your-problem",
-  "title": {
-    "en": "Your Problem",
-    "zh": "你的问题"
-  },
-  "difficulty": "Easy",
-  "tags": ["array", "hash-table"],
-  "description": {
-    "en": "Problem description...",
-    "zh": "问题描述..."
-  },
-  "template": {
-    "js": "function solve() {\n  // 在这里编写代码\n}\nmodule.exports = solve;"
-  },
-  "tests": [
-    { "input": "[1,2,3]", "output": "6" }
-  ]
-}
-```
-
 ## 贡献
 
 我们欢迎贡献！改进方向：
+
 - **更多题目**: 添加经典算法挑战
 - **更多语言**: Python、Java、C++ 支持
 - **增强功能**: 更好的性能分析

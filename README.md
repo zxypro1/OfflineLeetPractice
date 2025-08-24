@@ -88,6 +88,7 @@ npm start
 ## How to Use
 
 ### Basic Problem Solving
+
 1. **Browse Problems**: View the problem list with difficulty and tags
 2. **Select a Problem**: Click on any problem to open the detail page
 3. **Code Your Solution**: Use the Monaco editor (supports autocomplete, syntax highlighting)
@@ -95,12 +96,14 @@ npm start
 5. **View Results**: See test results with performance metrics
 
 ### AI Problem Generation
+
 1. **Access AI Generator**: Click the "AI Generator" button on the homepage
 2. **Describe Your Need**: Enter what type of problem you want
 3. **Generate Problem**: AI creates a complete problem with test cases and solutions
 4. **Practice Immediately**: Generated problem is auto-added to your library
 
 ### Adding Custom Problems
+
 1. **Manual Addition**: Use the "Add Problem" page for custom problems
 2. **JSON Import**: Upload or paste problem data in JSON format
 3. **Direct Edit**: Modify `public/problems.json` for immediate changes (no rebuild needed)
@@ -150,6 +153,7 @@ OfflineLeetPractice/
 3. **Save and Refresh**: Changes take effect immediately!
 
 **Example**: Add a new problem by editing `public/problems.json`:
+
 ```json
 {
   "id": "reverse-string",
@@ -173,32 +177,6 @@ OfflineLeetPractice/
 ```
 
 See **`MODIFY-PROBLEMS-GUIDE.md`** for complete instructions!
-
-### Adding New Problems
-
-Edit `public/problems.json`:
-
-```json
-{
-  "id": "your-problem",
-  "title": {
-    "en": "Your Problem",
-    "zh": "你的问题"
-  },
-  "difficulty": "Easy",
-  "tags": ["array", "hash-table"],
-  "description": {
-    "en": "Problem description...",
-    "zh": "问题描述..."
-  },
-  "template": {
-    "js": "function solve() {\n  // Your code here\n}\nmodule.exports = solve;"
-  },
-  "tests": [
-    { "input": "[1,2,3]", "output": "6" }
-  ]
-}
-```
 
 ### Supported Languages
 

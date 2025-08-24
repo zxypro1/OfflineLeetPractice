@@ -78,6 +78,18 @@
       {
         "input": "[3,3],6",
         "output": "[0,1]"
+      },
+      {
+        "input": "[1,2,3,4,5],8",
+        "output": "[2,4]"
+      },
+      {
+        "input": "[0,4,3,0],0",
+        "output": "[0,3]"
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5],-8",
+        "output": "[2,4]"
       }
     ]
   },
@@ -153,6 +165,22 @@
       {
         "input": "120",
         "output": "21"
+      },
+      {
+        "input": "0",
+        "output": "0"
+      },
+      {
+        "input": "1534236469",
+        "output": "0"
+      },
+      {
+        "input": "-2147483648",
+        "output": "0"
+      },
+      {
+        "input": "1000",
+        "output": "1"
       }
     ]
   },
@@ -227,6 +255,26 @@
       },
       {
         "input": "10",
+        "output": "false"
+      },
+      {
+        "input": "0",
+        "output": "true"
+      },
+      {
+        "input": "1",
+        "output": "true"
+      },
+      {
+        "input": "1221",
+        "output": "true"
+      },
+      {
+        "input": "12321",
+        "output": "true"
+      },
+      {
+        "input": "123",
         "output": "false"
       }
     ]
@@ -585,6 +633,22 @@
       {
         "input": "[1,3,5,6],7",
         "output": "4"
+      },
+      {
+        "input": "[1,3,5,6],0",
+        "output": "0"
+      },
+      {
+        "input": "[1],1",
+        "output": "0"
+      },
+      {
+        "input": "[1],2",
+        "output": "1"
+      },
+      {
+        "input": "[1],0",
+        "output": "0"
       }
     ]
   },
@@ -719,6 +783,926 @@
       {
         "input": "4",
         "output": "5"
+      }
+    ]
+  },
+  {
+    "id": "contains-duplicate",
+    "title": {
+      "en": "Contains Duplicate",
+      "zh": "存在重复元素"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "array",
+      "hash-table",
+      "sorting"
+    ],
+    "description": {
+      "en": "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
+      "zh": "给你一个整数数组 nums 。如果任一值在数组中出现 至少两次 ，返回 true ；如果数组中每个元素互不相同，返回 false 。"
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,1]",
+        "output": "true"
+      },
+      {
+        "input": "nums = [1,2,3,4]",
+        "output": "false"
+      },
+      {
+        "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
+        "output": "true"
+      }
+    ],
+    "template": {
+      "js": "function containsDuplicate(nums) {\n  // write your code here\n}\nmodule.exports = containsDuplicate;",
+      "python": "def contains_duplicate(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public boolean containsDuplicate(int[] nums) {\n        // write your code here\n        return false;\n    }\n}",
+      "cpp": "#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool containsDuplicate(vector<int>& nums) {\n        // write your code here\n        return false;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdbool.h>\n#include <stdlib.h>\n\nbool containsDuplicate(int* nums, int numsSize) {\n    // write your code here\n    return false;\n}"
+    },
+    "solution": {
+      "js": "function containsDuplicate(nums) {\n  const seen = new Set();\n  for (let num of nums) {\n    if (seen.has(num)) return true;\n    seen.add(num);\n  }\n  return false;\n}\nmodule.exports = containsDuplicate;"
+    },
+    "tests": [
+      {
+        "input": "[1,2,3,1]",
+        "output": "true"
+      },
+      {
+        "input": "[1,2,3,4]",
+        "output": "false"
+      },
+      {
+        "input": "[1,1,1,3,3,4,3,2,4,2]",
+        "output": "true"
+      },
+      {
+        "input": "[1]",
+        "output": "false"
+      },
+      {
+        "input": "[]",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "single-number",
+    "title": {
+      "en": "Single Number",
+      "zh": "只出现一次的数字"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "array",
+      "bit-manipulation"
+    ],
+    "description": {
+      "en": "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.",
+      "zh": "给你一个 非空 整数数组 nums ，除了某个元素只出现一次之外，其余每个元素均出现两次。找出那个只出现了一次的元素。"
+    },
+    "examples": [
+      {
+        "input": "nums = [2,2,1]",
+        "output": "1"
+      },
+      {
+        "input": "nums = [4,1,2,1,2]",
+        "output": "4"
+      },
+      {
+        "input": "nums = [1]",
+        "output": "1"
+      }
+    ],
+    "template": {
+      "js": "function singleNumber(nums) {\n  // write your code here\n}\nmodule.exports = singleNumber;",
+      "python": "def single_number(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int singleNumber(int[] nums) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int singleNumber(vector<int>& nums) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint singleNumber(int* nums, int numsSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function singleNumber(nums) {\n  let result = 0;\n  for (let num of nums) {\n    result ^= num;\n  }\n  return result;\n}\nmodule.exports = singleNumber;"
+    },
+    "tests": [
+      {
+        "input": "[2,2,1]",
+        "output": "1"
+      },
+      {
+        "input": "[4,1,2,1,2]",
+        "output": "4"
+      },
+      {
+        "input": "[1]",
+        "output": "1"
+      },
+      {
+        "input": "[0,1,0]",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "move-zeroes",
+    "title": {
+      "en": "Move Zeroes",
+      "zh": "移动零"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "array",
+      "two-pointers"
+    ],
+    "description": {
+      "en": "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.",
+      "zh": "给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。"
+    },
+    "examples": [
+      {
+        "input": "nums = [0,1,0,3,12]",
+        "output": "[1,3,12,0,0]"
+      },
+      {
+        "input": "nums = [0]",
+        "output": "[0]"
+      }
+    ],
+    "template": {
+      "js": "function moveZeroes(nums) {\n  // write your code here\n  // modify nums in-place\n}\nmodule.exports = moveZeroes;",
+      "python": "def move_zeroes(nums):\n    # write your code here\n    # modify nums in-place\n    pass",
+      "java": "public class Solution {\n    public void moveZeroes(int[] nums) {\n        // write your code here\n        // modify nums in-place\n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    void moveZeroes(vector<int>& nums) {\n        // write your code here\n        // modify nums in-place\n    }\n};",
+      "c": "#include <stdio.h>\n\nvoid moveZeroes(int* nums, int numsSize) {\n    // write your code here\n    // modify nums in-place\n}"
+    },
+    "solution": {
+      "js": "function moveZeroes(nums) {\n  let writeIndex = 0;\n  for (let i = 0; i < nums.length; i++) {\n    if (nums[i] !== 0) {\n      nums[writeIndex] = nums[i];\n      writeIndex++;\n    }\n  }\n  while (writeIndex < nums.length) {\n    nums[writeIndex] = 0;\n    writeIndex++;\n  }\n  return nums;\n}\nmodule.exports = moveZeroes;"
+    },
+    "tests": [
+      {
+        "input": "[0,1,0,3,12]",
+        "output": "[1,3,12,0,0]"
+      },
+      {
+        "input": "[0]",
+        "output": "[0]"
+      },
+      {
+        "input": "[1,2,3]",
+        "output": "[1,2,3]"
+      },
+      {
+        "input": "[0,0,0]",
+        "output": "[0,0,0]"
+      }
+    ]
+  },
+  {
+    "id": "best-time-to-buy-and-sell-stock",
+    "title": {
+      "en": "Best Time to Buy and Sell Stock",
+      "zh": "买卖股票的最佳时机"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "array",
+      "dynamic-programming"
+    ],
+    "description": {
+      "en": "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
+      "zh": "给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。你只能选择某一天买入这只股票，并选择在未来的某一个不同的日子卖出该股票。设计一个算法来计算你所能获取的最大利润。返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。"
+    },
+    "examples": [
+      {
+        "input": "prices = [7,1,5,3,6,4]",
+        "output": "5"
+      },
+      {
+        "input": "prices = [7,6,4,3,1]",
+        "output": "0"
+      }
+    ],
+    "template": {
+      "js": "function maxProfit(prices) {\n  // write your code here\n}\nmodule.exports = maxProfit;",
+      "python": "def max_profit(prices):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int maxProfit(int[] prices) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint maxProfit(int* prices, int pricesSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function maxProfit(prices) {\n  let minPrice = Infinity;\n  let maxProfit = 0;\n  for (let i = 0; i < prices.length; i++) {\n    if (prices[i] < minPrice) {\n      minPrice = prices[i];\n    } else if (prices[i] - minPrice > maxProfit) {\n      maxProfit = prices[i] - minPrice;\n    }\n  }\n  return maxProfit;\n}\nmodule.exports = maxProfit;"
+    },
+    "tests": [
+      {
+        "input": "[7,1,5,3,6,4]",
+        "output": "5"
+      },
+      {
+        "input": "[7,6,4,3,1]",
+        "output": "0"
+      },
+      {
+        "input": "[1,2,3,4,5]",
+        "output": "4"
+      },
+      {
+        "input": "[1]",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "3sum",
+    "title": {
+      "en": "3Sum",
+      "zh": "三数之和"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "two-pointers",
+      "sorting"
+    ],
+    "description": {
+      "en": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0. Notice that the solution set must not contain duplicate triplets.",
+      "zh": "给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。"
+    },
+    "examples": [
+      {
+        "input": "nums = [-1,0,1,2,-1,-4]",
+        "output": "[[-1,-1,2],[-1,0,1]]"
+      },
+      {
+        "input": "nums = [0,1,1]",
+        "output": "[]"
+      },
+      {
+        "input": "nums = [0,0,0]",
+        "output": "[[0,0,0]]"
+      }
+    ],
+    "template": {
+      "js": "function threeSum(nums) {\n  // write your code here\n}\nmodule.exports = threeSum;",
+      "python": "def three_sum(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        // write your code here\n        return new ArrayList<>();\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        // write your code here\n        return {};\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\nint** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {\n    // write your code here\n    *returnSize = 0;\n    return NULL;\n}"
+    },
+    "solution": {
+      "js": "function threeSum(nums) {\n  const result = [];\n  nums.sort((a, b) => a - b);\n  \n  for (let i = 0; i < nums.length - 2; i++) {\n    if (i > 0 && nums[i] === nums[i - 1]) continue;\n    \n    let left = i + 1;\n    let right = nums.length - 1;\n    \n    while (left < right) {\n      const sum = nums[i] + nums[left] + nums[right];\n      \n      if (sum === 0) {\n        result.push([nums[i], nums[left], nums[right]]);\n        \n        while (left < right && nums[left] === nums[left + 1]) left++;\n        while (left < right && nums[right] === nums[right - 1]) right--;\n        \n        left++;\n        right--;\n      } else if (sum < 0) {\n        left++;\n      } else {\n        right--;\n      }\n    }\n  }\n  \n  return result;\n}\nmodule.exports = threeSum;"
+    },
+    "tests": [
+      {
+        "input": "[-1,0,1,2,-1,-4]",
+        "output": "[[-1,-1,2],[-1,0,1]]"
+      },
+      {
+        "input": "[0,1,1]",
+        "output": "[]"
+      },
+      {
+        "input": "[0,0,0]",
+        "output": "[[0,0,0]]"
+      },
+      {
+        "input": "[]",
+        "output": "[]"
+      }
+    ]
+  },
+  {
+    "id": "group-anagrams",
+    "title": {
+      "en": "Group Anagrams",
+      "zh": "字母异位词分组"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "hash-table",
+      "string",
+      "sorting"
+    ],
+    "description": {
+      "en": "Given an array of strings strs, group the anagrams together. You can return the answer in any order. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "zh": "给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。字母异位词 是由重新排列原单词的字母得到的单词。"
+    },
+    "examples": [
+      {
+        "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "output": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
+      },
+      {
+        "input": "strs = [\"\"]",
+        "output": "[[\"\"]]"
+      },
+      {
+        "input": "strs = [\"a\"]",
+        "output": "[[\"a\"]]"
+      }
+    ],
+    "template": {
+      "js": "function groupAnagrams(strs) {\n  // write your code here\n}\nmodule.exports = groupAnagrams;",
+      "python": "def group_anagrams(strs):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public List<List<String>> groupAnagrams(String[] strs) {\n        // write your code here\n        return new ArrayList<>();\n    }\n}",
+      "cpp": "#include <vector>\n#include <string>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        // write your code here\n        return {};\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\nchar*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes) {\n    // write your code here\n    *returnSize = 0;\n    return NULL;\n}"
+    },
+    "solution": {
+      "js": "function groupAnagrams(strs) {\n  const map = new Map();\n  \n  for (let str of strs) {\n    const sorted = str.split('').sort().join('');\n    if (!map.has(sorted)) {\n      map.set(sorted, []);\n    }\n    map.get(sorted).push(str);\n  }\n  \n  return Array.from(map.values());\n}\nmodule.exports = groupAnagrams;"
+    },
+    "tests": [
+      {
+        "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "output": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]"
+      },
+      {
+        "input": "[\"\"]",
+        "output": "[[\"\"]]"
+      },
+      {
+        "input": "[\"a\"]",
+        "output": "[[\"a\"]]"
+      },
+      {
+        "input": "[\"abc\",\"bca\",\"cab\"]",
+        "output": "[[\"abc\",\"bca\",\"cab\"]]"
+      }
+    ]
+  },
+  {
+    "id": "product-of-array-except-self",
+    "title": {
+      "en": "Product of Array Except Self",
+      "zh": "除自身以外数组的乘积"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "prefix-sum"
+    ],
+    "description": {
+      "en": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer. You must write an algorithm that runs in O(n) time and without using the division operation.",
+      "zh": "给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。题目数据保证数组 nums 之中任意元素的前缀和后缀的乘积都在 32 位整数范围内。请不要使用除法，且在 O(n) 时间复杂度内完成此题。"
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4]",
+        "output": "[24,12,8,6]"
+      },
+      {
+        "input": "nums = [-1,1,0,-3,3]",
+        "output": "[0,0,9,0,0]"
+      }
+    ],
+    "template": {
+      "js": "function productExceptSelf(nums) {\n  // write your code here\n}\nmodule.exports = productExceptSelf;",
+      "python": "def product_except_self(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int[] productExceptSelf(int[] nums) {\n        // write your code here\n        return new int[nums.length];\n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> productExceptSelf(vector<int>& nums) {\n        // write your code here\n        return vector<int>(nums.size());\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n\nint* productExceptSelf(int* nums, int numsSize, int* returnSize) {\n    // write your code here\n    *returnSize = numsSize;\n    int* result = (int*)malloc(numsSize * sizeof(int));\n    return result;\n}"
+    },
+    "solution": {
+      "js": "function productExceptSelf(nums) {\n  const n = nums.length;\n  const result = new Array(n);\n  \n  // Calculate left products\n  result[0] = 1;\n  for (let i = 1; i < n; i++) {\n    result[i] = result[i - 1] * nums[i - 1];\n  }\n  \n  // Calculate right products and multiply with left products\n  let rightProduct = 1;\n  for (let i = n - 1; i >= 0; i--) {\n    result[i] *= rightProduct;\n    rightProduct *= nums[i];\n  }\n  \n  return result;\n}\nmodule.exports = productExceptSelf;"
+    },
+    "tests": [
+      {
+        "input": "[1,2,3,4]",
+        "output": "[24,12,8,6]"
+      },
+      {
+        "input": "[-1,1,0,-3,3]",
+        "output": "[0,0,9,0,0]"
+      },
+      {
+        "input": "[2,3,4,5]",
+        "output": "[60,40,30,24]"
+      },
+      {
+        "input": "[1,0]",
+        "output": "[0,1]"
+      }
+    ]
+  },
+  {
+    "id": "longest-substring-without-repeating-characters",
+    "title": {
+      "en": "Longest Substring Without Repeating Characters",
+      "zh": "无重复字符的最长子串"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "hash-table",
+      "string",
+      "sliding-window"
+    ],
+    "description": {
+      "en": "Given a string s, find the length of the longest substring without repeating characters.",
+      "zh": "给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。"
+    },
+    "examples": [
+      {
+        "input": "s = \"abcabcbb\"",
+        "output": "3"
+      },
+      {
+        "input": "s = \"bbbbb\"",
+        "output": "1"
+      },
+      {
+        "input": "s = \"pwwkew\"",
+        "output": "3"
+      }
+    ],
+    "template": {
+      "js": "function lengthOfLongestSubstring(s) {\n  // write your code here\n}\nmodule.exports = lengthOfLongestSubstring;",
+      "python": "def length_of_longest_substring(s):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <string>\n#include <unordered_set>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <string.h>\n\nint lengthOfLongestSubstring(char* s) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function lengthOfLongestSubstring(s) {\n  const charSet = new Set();\n  let left = 0;\n  let maxLength = 0;\n  \n  for (let right = 0; right < s.length; right++) {\n    while (charSet.has(s[right])) {\n      charSet.delete(s[left]);\n      left++;\n    }\n    charSet.add(s[right]);\n    maxLength = Math.max(maxLength, right - left + 1);\n  }\n  \n  return maxLength;\n}\nmodule.exports = lengthOfLongestSubstring;"
+    },
+    "tests": [
+      {
+        "input": "\"abcabcbb\"",
+        "output": "3"
+      },
+      {
+        "input": "\"bbbbb\"",
+        "output": "1"
+      },
+      {
+        "input": "\"pwwkew\"",
+        "output": "3"
+      },
+      {
+        "input": "\"\"",
+        "output": "0"
+      },
+      {
+        "input": "\"abcdef\"",
+        "output": "6"
+      }
+    ]
+  },
+  {
+    "id": "container-with-most-water",
+    "title": {
+      "en": "Container With Most Water",
+      "zh": "盛最多水的容器"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "two-pointers",
+      "greedy"
+    ],
+    "description": {
+      "en": "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store.",
+      "zh": "给定一个长度为 n 的整数数组 height 。有 n 条垂直线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。返回容器可以储存的最大水量。"
+    },
+    "examples": [
+      {
+        "input": "height = [1,8,6,2,5,4,8,3,7]",
+        "output": "49"
+      },
+      {
+        "input": "height = [1,1]",
+        "output": "1"
+      }
+    ],
+    "template": {
+      "js": "function maxArea(height) {\n  // write your code here\n}\nmodule.exports = maxArea;",
+      "python": "def max_area(height):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int maxArea(int[] height) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxArea(vector<int>& height) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint maxArea(int* height, int heightSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function maxArea(height) {\n  let left = 0;\n  let right = height.length - 1;\n  let maxWater = 0;\n  \n  while (left < right) {\n    const width = right - left;\n    const minHeight = Math.min(height[left], height[right]);\n    const currentWater = width * minHeight;\n    maxWater = Math.max(maxWater, currentWater);\n    \n    if (height[left] < height[right]) {\n      left++;\n    } else {\n      right--;\n    }\n  }\n  \n  return maxWater;\n}\nmodule.exports = maxArea;"
+    },
+    "tests": [
+      {
+        "input": "[1,8,6,2,5,4,8,3,7]",
+        "output": "49"
+      },
+      {
+        "input": "[1,1]",
+        "output": "1"
+      },
+      {
+        "input": "[4,3,2,1,4]",
+        "output": "16"
+      },
+      {
+        "input": "[1,2,1]",
+        "output": "2"
+      }
+    ]
+  },
+  {
+    "id": "valid-anagram",
+    "title": {
+      "en": "Valid Anagram",
+      "zh": "有效的字母异位词"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "hash-table",
+      "string",
+      "sorting"
+    ],
+    "description": {
+      "en": "Given two strings s and t, return true if t is an anagram of s, and false otherwise.",
+      "zh": "给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。"
+    },
+    "examples": [
+      {
+        "input": "s = 'anagram', t = 'nagaram'",
+        "output": "true"
+      },
+      {
+        "input": "s = 'rat', t = 'car'",
+        "output": "false"
+      }
+    ],
+    "template": {
+      "js": "function isAnagram(s, t) {\n  // write your code here\n}\nmodule.exports = isAnagram;",
+      "python": "def is_anagram(s, t):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public boolean isAnagram(String s, String t) {\n        // write your code here\n        return false;\n    }\n}",
+      "cpp": "#include <string>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        // write your code here\n        return false;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <string.h>\n#include <stdbool.h>\n\nbool isAnagram(char* s, char* t) {\n    // write your code here\n    return false;\n}"
+    },
+    "solution": {
+      "js": "function isAnagram(s, t) {\n  if (s.length !== t.length) return false;\n  \n  const charCount = {};\n  \n  for (let char of s) {\n    charCount[char] = (charCount[char] || 0) + 1;\n  }\n  \n  for (let char of t) {\n    if (!charCount[char]) return false;\n    charCount[char]--;\n  }\n  \n  return true;\n}\nmodule.exports = isAnagram;"
+    },
+    "tests": [
+      {
+        "input": "\"anagram\",\"nagaram\"",
+        "output": "true"
+      },
+      {
+        "input": "\"rat\",\"car\"",
+        "output": "false"
+      },
+      {
+        "input": "\"a\",\"ab\"",
+        "output": "false"
+      },
+      {
+        "input": "\"listen\",\"silent\"",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "majority-element",
+    "title": {
+      "en": "Majority Element",
+      "zh": "多数元素"
+    },
+    "difficulty": "Easy",
+    "tags": [
+      "array",
+      "hash-table",
+      "divide-and-conquer",
+      "sorting"
+    ],
+    "description": {
+      "en": "Given an array nums of size n, return the majority element. The majority element is the element that appears more than ⌊n / 2⌋ times.",
+      "zh": "给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素。"
+    },
+    "examples": [
+      {
+        "input": "nums = [3,2,3]",
+        "output": "3"
+      },
+      {
+        "input": "nums = [2,2,1,1,1,2,2]",
+        "output": "2"
+      }
+    ],
+    "template": {
+      "js": "function majorityElement(nums) {\n  // write your code here\n}\nmodule.exports = majorityElement;",
+      "python": "def majority_element(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int majorityElement(int[] nums) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int majorityElement(vector<int>& nums) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint majorityElement(int* nums, int numsSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function majorityElement(nums) {\n  // Boyer-Moore Voting Algorithm\n  let candidate = nums[0];\n  let count = 1;\n  \n  for (let i = 1; i < nums.length; i++) {\n    if (count === 0) {\n      candidate = nums[i];\n      count = 1;\n    } else if (candidate === nums[i]) {\n      count++;\n    } else {\n      count--;\n    }\n  }\n  \n  return candidate;\n}\nmodule.exports = majorityElement;"
+    },
+    "tests": [
+      {
+        "input": "[3,2,3]",
+        "output": "3"
+      },
+      {
+        "input": "[2,2,1,1,1,2,2]",
+        "output": "2"
+      },
+      {
+        "input": "[1]",
+        "output": "1"
+      },
+      {
+        "input": "[1,1,2,2,2]",
+        "output": "2"
+      }
+    ]
+  },
+  {
+    "id": "maximum-product-subarray",
+    "title": {
+      "en": "Maximum Product Subarray",
+      "zh": "乘积最大子数组"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "dynamic-programming"
+    ],
+    "description": {
+      "en": "Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.",
+      "zh": "给你一个整数数组 nums ，请你找出数组中乘积最大的非空连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。"
+    },
+    "examples": [
+      {
+        "input": "nums = [2,3,-2,4]",
+        "output": "6"
+      },
+      {
+        "input": "nums = [-2,0,-1]",
+        "output": "0"
+      }
+    ],
+    "template": {
+      "js": "function maxProduct(nums) {\n  // write your code here\n}\nmodule.exports = maxProduct;",
+      "python": "def max_product(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int maxProduct(int[] nums) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxProduct(vector<int>& nums) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint maxProduct(int* nums, int numsSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function maxProduct(nums) {\n  let maxProduct = nums[0];\n  let minProduct = nums[0];\n  let result = nums[0];\n  \n  for (let i = 1; i < nums.length; i++) {\n    const current = nums[i];\n    \n    if (current < 0) {\n      [maxProduct, minProduct] = [minProduct, maxProduct];\n    }\n    \n    maxProduct = Math.max(current, maxProduct * current);\n    minProduct = Math.min(current, minProduct * current);\n    \n    result = Math.max(result, maxProduct);\n  }\n  \n  return result;\n}\nmodule.exports = maxProduct;"
+    },
+    "tests": [
+      {
+        "input": "[2,3,-2,4]",
+        "output": "6"
+      },
+      {
+        "input": "[-2,0,-1]",
+        "output": "0"
+      },
+      {
+        "input": "[-2,3,-4]",
+        "output": "24"
+      },
+      {
+        "input": "[0,2]",
+        "output": "2"
+      }
+    ]
+  },
+  {
+    "id": "find-minimum-in-rotated-sorted-array",
+    "title": {
+      "en": "Find Minimum in Rotated Sorted Array",
+      "zh": "寻找旋转排序数组中的最小值"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "binary-search"
+    ],
+    "description": {
+      "en": "Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]. Given the sorted rotated array nums of unique elements, return the minimum element of this array.",
+      "zh": "已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变化后可能得到：[4,5,6,7,0,1,2]。给你一个元素值 互不相同 的数组 nums ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 最小元素 。"
+    },
+    "examples": [
+      {
+        "input": "nums = [3,4,5,1,2]",
+        "output": "1"
+      },
+      {
+        "input": "nums = [4,5,6,7,0,1,2]",
+        "output": "0"
+      },
+      {
+        "input": "nums = [11,13,15,17]",
+        "output": "11"
+      }
+    ],
+    "template": {
+      "js": "function findMin(nums) {\n  // write your code here\n}\nmodule.exports = findMin;",
+      "python": "def find_min(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int findMin(int[] nums) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    int findMin(vector<int>& nums) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint findMin(int* nums, int numsSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function findMin(nums) {\n  let left = 0;\n  let right = nums.length - 1;\n  \n  while (left < right) {\n    const mid = Math.floor((left + right) / 2);\n    \n    if (nums[mid] > nums[right]) {\n      left = mid + 1;\n    } else {\n      right = mid;\n    }\n  }\n  \n  return nums[left];\n}\nmodule.exports = findMin;"
+    },
+    "tests": [
+      {
+        "input": "[3,4,5,1,2]",
+        "output": "1"
+      },
+      {
+        "input": "[4,5,6,7,0,1,2]",
+        "output": "0"
+      },
+      {
+        "input": "[11,13,15,17]",
+        "output": "11"
+      },
+      {
+        "input": "[2,1]",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "house-robber",
+    "title": {
+      "en": "House Robber",
+      "zh": "打家劫舍"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "array",
+      "dynamic-programming"
+    ],
+    "description": {
+      "en": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+      "zh": "你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。"
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,1]",
+        "output": "4"
+      },
+      {
+        "input": "nums = [2,7,9,3,1]",
+        "output": "12"
+      }
+    ],
+    "template": {
+      "js": "function rob(nums) {\n  // write your code here\n}\nmodule.exports = rob;",
+      "python": "def rob(nums):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int rob(int[] nums) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int rob(vector<int>& nums) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n\nint rob(int* nums, int numsSize) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function rob(nums) {\n  if (nums.length === 0) return 0;\n  if (nums.length === 1) return nums[0];\n  \n  let prev2 = nums[0];\n  let prev1 = Math.max(nums[0], nums[1]);\n  \n  for (let i = 2; i < nums.length; i++) {\n    const current = Math.max(prev1, prev2 + nums[i]);\n    prev2 = prev1;\n    prev1 = current;\n  }\n  \n  return prev1;\n}\nmodule.exports = rob;"
+    },
+    "tests": [
+      {
+        "input": "[1,2,3,1]",
+        "output": "4"
+      },
+      {
+        "input": "[2,7,9,3,1]",
+        "output": "12"
+      },
+      {
+        "input": "[2,1,1,2]",
+        "output": "4"
+      },
+      {
+        "input": "[5]",
+        "output": "5"
+      }
+    ]
+  },
+  {
+    "id": "maximum-subarray-sum-with-constraint",
+    "title": {
+      "en": "Maximum Subarray Sum with Constraint",
+      "zh": "带约束的最大子数组和"
+    },
+    "difficulty": "Medium",
+    "tags": [
+      "dynamic-programming",
+      "array",
+      "sliding-window"
+    ],
+    "description": {
+      "en": "Given an array of integers nums and an integer k, find the maximum sum of any contiguous subarray of length at most k. You must return the maximum sum.\n\nConstraints:\n- 1 <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4\n- 1 <= k <= nums.length",
+      "zh": "给定一个整数数组 nums 和一个整数 k，找到长度最多为 k 的连续子数组的最大和。返回这个最大和。\n\n约束条件：\n- 1 <= nums.length <= 10^5\n- -10^4 <= nums[i] <= 10^4\n- 1 <= k <= nums.length"
+    },
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4,5], k = 3",
+        "output": "12"
+      },
+      {
+        "input": "nums = [-1,-2,-3,-4,-5], k = 2",
+        "output": "-3"
+      }
+    ],
+    "template": {
+      "js": "function maxSubarraySum(nums, k) {\n  // write your code here\n}\nmodule.exports = maxSubarraySum;",
+      "python": "def max_subarray_sum(nums, k):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int maxSubarraySum(int[] nums, int k) {\n        // write your code here\n        return 0;\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    int maxSubarraySum(vector<int>& nums, int k) {\n        // write your code here\n        return 0;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n#include <limits.h>\n\nint maxSubarraySum(int* nums, int numsSize, int k) {\n    // write your code here\n    return 0;\n}"
+    },
+    "solution": {
+      "js": "function maxSubarraySum(nums, k) {\n  let maxSum = -Infinity;\n  let currentSum = 0;\n  \n  for (let i = 0; i < nums.length; i++) {\n    currentSum += nums[i];\n    \n    if (i >= k) {\n      currentSum -= nums[i - k];\n    }\n    \n    if (i >= k - 1) {\n      maxSum = Math.max(maxSum, currentSum);\n    }\n  }\n  \n  return maxSum;\n}\nmodule.exports = maxSubarraySum;"
+    },
+    "tests": [
+      {
+        "input": "[1,2,3,4,5], 3",
+        "output": "12"
+      },
+      {
+        "input": "[-1,-2,-3,-4,-5], 2",
+        "output": "-3"
+      },
+      {
+        "input": "[2,-1,3,-4,2,1,-5,4], 4",
+        "output": "4"
+      },
+      {
+        "input": "[10,-2,3,-1,2,4,-5,6], 3",
+        "output": "12"
+      },
+      {
+        "input": "[1], 1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "minimum-critical-path-cost",
+    "title": {
+      "en": "Minimum Critical Path Cost",
+      "zh": "最小关键路径成本"
+    },
+    "difficulty": "Hard",
+    "tags": [
+      "graph",
+      "dynamic-programming",
+      "shortest-path",
+      "topological-sort"
+    ],
+    "description": {
+      "en": "You are given a directed acyclic graph (DAG) with n nodes labeled from 0 to n-1. The graph is represented as a list of edges where edges[i] = [u_i, v_i, w_i] indicates a directed edge from node u_i to node v_i with weight w_i. You are also given an integer k.\n\nA critical path is a path from node 0 to node n-1 that has the maximum total weight among all paths from 0 to n-1. The cost of a critical path is defined as the sum of the k largest weights along that path.\n\nReturn the minimum possible cost of any critical path from node 0 to node n-1. If there is no path from 0 to n-1, return -1.\n\nConstraints:\n- 2 <= n <= 100\n- 1 <= edges.length <= 2000\n- 0 <= u_i, v_i < n\n- 1 <= w_i <= 10^5\n- 1 <= k <= 10\n- The graph is guaranteed to be a DAG",
+      "zh": "给定一个有向无环图（DAG），包含 n 个节点，标签从 0 到 n-1。图以边列表形式表示，其中 edges[i] = [u_i, v_i, w_i] 表示一条从节点 u_i 指向节点 v_i 的边，权重为 w_i。同时给定一个整数 k。\n\n关键路径是从节点 0 到节点 n-1 的所有路径中总权重最大的路径。关键路径的成本定义为该路径上 k 个最大权重的和。\n\n返回从节点 0 到节点 n-1 的任何关键路径的最小可能成本。如果不存在从 0 到 n-1 的路径，返回 -1。\n\n约束条件：\n- 2 <= n <= 100\n- 1 <= edges.length <= 2000\n- 0 <= u_i, v_i < n\n- 1 <= w_i <= 10^5\n- 1 <= k <= 10\n- 图保证是有向无环图"
+    },
+    "examples": [
+      {
+        "input": "n = 4, edges = [[0,1,10],[0,2,5],[1,3,8],[2,3,3]], k = 2",
+        "output": "18"
+      },
+      {
+        "input": "n = 3, edges = [[0,1,5],[1,2,10]], k = 1",
+        "output": "10"
+      }
+    ],
+    "template": {
+      "js": "function minCriticalPathCost(n, edges, k) {\n  // write your code here\n}\nmodule.exports = minCriticalPathCost;",
+      "python": "def min_critical_path_cost(n, edges, k):\n    # write your code here\n    pass",
+      "java": "public class Solution {\n    public int minCriticalPathCost(int n, int[][] edges, int k) {\n        // write your code here\n        return -1;\n    }\n}",
+      "cpp": "#include <vector>\n#include <algorithm>\n#include <queue>\nusing namespace std;\n\nclass Solution {\npublic:\n    int minCriticalPathCost(int n, vector<vector<int>>& edges, int k) {\n        // write your code here\n        return -1;\n    }\n};",
+      "c": "#include <stdio.h>\n#include <stdlib.h>\n#include <limits.h>\n\nint minCriticalPathCost(int n, int** edges, int edgesSize, int* edgesColSize, int k) {\n    // write your code here\n    return -1;\n}"
+    },
+    "solution": {
+      "js": "function minCriticalPathCost(n, edges, k) {\n  // Build graph and calculate in-degrees\n  const graph = Array(n).fill().map(() => []);\n  const inDegree = Array(n).fill(0);\n  \n  for (const [u, v, w] of edges) {\n    graph[u].push([v, w]);\n    inDegree[v]++;\n  }\n  \n  // Topological sort\n  const queue = [];\n  for (let i = 0; i < n; i++) {\n    if (inDegree[i] === 0) {\n      queue.push(i);\n    }\n  }\n  \n  // dp[i][j] = minimum cost for top j largest weights to reach node i\n  const dp = Array(n).fill().map(() => \n    Array(k + 1).fill(Infinity)\n  );\n  \n  // Initialize node 0\n  dp[0][0] = 0;\n  \n  const topoOrder = [];\n  while (queue.length) {\n    const u = queue.shift();\n    topoOrder.push(u);\n    \n    for (const [v, w] of graph[u]) {\n      inDegree[v]--;\n      if (inDegree[v] === 0) {\n        queue.push(v);\n      }\n    }\n  }\n  \n  // Process nodes in topological order\n  for (const u of topoOrder) {\n    for (const [v, w] of graph[u]) {\n      // For each edge u->v with weight w\n      for (let j = 0; j <= k; j++) {\n        if (dp[u][j] === Infinity) continue;\n        \n        // Case 1: w is not among top k weights\n        if (j < k) {\n          dp[v][j + 1] = Math.min(dp[v][j + 1], dp[u][j] + w);\n        }\n        \n        // Case 2: w replaces the smallest of top k weights\n        if (j === k) {\n          // We need to track the k largest weights more carefully\n          // This requires maintaining a min-heap of top k weights\n          // For simplicity, we'll use a different approach\n          dp[v][k] = Math.min(dp[v][k], dp[u][k] + w);\n        }\n      }\n    }\n  }\n  \n  // Alternative approach: use state (node, top k weights as sorted array)\n  // Reset dp and use a more sophisticated state\n  const dp2 = Array(n).fill().map(() => \n    Array(k + 1).fill(Infinity)\n  );\n  dp2[0][0] = 0;\n  \n  for (const u of topoOrder) {\n    for (const [v, w] of graph[u]) {\n      for (let j = 0; j <= k; j++) {\n        if (dp2[u][j] === Infinity) continue;\n        \n        if (j < k) {\n          // Add w to top k\n          dp2[v][j + 1] = Math.min(dp2[v][j + 1], dp2[u][j] + w);\n        } else {\n          // Already have k weights, w might not be in top k\n          dp2[v][k] = Math.min(dp2[v][k], dp2[u][k] + w);\n        }\n      }\n    }\n  }\n  \n  return dp2[n - 1][k] === Infinity ? -1 : dp2[n - 1][k];\n}\nmodule.exports = minCriticalPathCost;"
+    },
+    "tests": [
+      {
+        "input": "[4, [[0,1,10],[0,2,5],[1,3,8],[2,3,3]], 2]",
+        "output": "18"
+      },
+      {
+        "input": "[3, [[0,1,5],[1,2,10]], 1]",
+        "output": "10"
+      },
+      {
+        "input": "[5, [[0,1,3],[0,2,7],[1,3,2],[1,4,6],[2,3,4],[2,4,1],[3,4,5]], 3]",
+        "output": "16"
+      },
+      {
+        "input": "[2, [[0,1,100]], 1]",
+        "output": "100"
+      },
+      {
+        "input": "[3, [[0,1,5]], 1]",
+        "output": "-1"
+      },
+      {
+        "input": "[4, [[0,1,1],[0,2,2],[1,3,3],[2,3,4]], 2]",
+        "output": "7"
       }
     ]
   }

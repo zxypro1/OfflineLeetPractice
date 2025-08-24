@@ -267,6 +267,18 @@ module.exports = twoSum;`;
         expect(res._statusCode).toBe(200);
         expect(res._jsonData).toBeDefined();
         expect(res._jsonData.status).toBe('success');
+        
+        if (res._jsonData.passed !== res._jsonData.total) {
+          console.log(`\n❌ FAILING PROBLEM: ${problem.id}`);
+          console.log(`Passed: ${res._jsonData.passed}/${res._jsonData.total}`);
+          console.log('Failed test cases:');
+          res._jsonData.results.forEach((result, index) => {
+            if (!result.passed) {
+              console.log(`  Test ${index + 1}: input=${result.input}, expected=${JSON.stringify(result.expected)}, actual=${JSON.stringify(result.actual)}, error=${result.error}`);
+            }
+          });
+        }
+        
         expect(res._jsonData.passed).toBe(res._jsonData.total);
         expect(res._jsonData.passed).toBe(problem.tests.length);
         

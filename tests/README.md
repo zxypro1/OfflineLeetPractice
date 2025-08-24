@@ -100,16 +100,21 @@ node scripts/test-runner.js help
 ## Expected Problems Coverage
 
 The test suite validates solutions for these problems:
-- ✅ **Two Sum** (all languages)
-- ✅ **Reverse Integer** (all languages) 
-- ✅ **Palindrome Number** (all languages)
+- ✅ **Two Sum** (all languages) - 6 test cases
+- ✅ **Reverse Integer** (all languages) - 7 test cases
+- ✅ **Palindrome Number** (all languages) - 8 test cases
 - ✅ **Longest Common Prefix** (JavaScript, Java, Python)
 - ✅ **Valid Parentheses** (JavaScript, Java, Python)
-- ✅ **Merge Sorted Lists** (when available)
+- ✅ **Merge Sorted Lists** (linked-list conversion) - 3 test cases
 - ✅ **Remove Duplicates** (when available)
-- ✅ **Search Insert Position** (when available)
-- ✅ **Maximum Subarray** (when available)
-- ✅ **Climbing Stairs** (when available)
+- ✅ **Search Insert Position** (when available) - 7 test cases
+- ✅ **Maximum Subarray** (when available) - 3 test cases
+- ✅ **Climbing Stairs** (when available) - 3 test cases
+- ✅ **Contains Duplicate** (new) - 5 test cases
+- ✅ **Single Number** (new) - 4 test cases
+- ✅ **Move Zeroes** (new) - 4 test cases
+
+**Total: 13 problems with comprehensive test coverage**
 
 ## Language Support Matrix
 

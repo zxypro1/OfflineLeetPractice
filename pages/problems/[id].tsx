@@ -20,13 +20,15 @@ import {
   Center,
   AppShell,
   Box,
-  Tabs
+  Tabs,
+  Select
 } from '@mantine/core';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useTranslation, useI18n } from '../../src/contexts/I18nContext';
 import { useTheme } from '../../src/contexts/ThemeContext';
 import { LanguageThemeControls } from '../../src/components/LanguageThemeControls';
+import MarkdownRenderer from '../../src/components/MarkdownRenderer';
 
 const CodeRunner = dynamic(() => import('../../src/components/CodeRunner'), { ssr: false });
 
@@ -42,6 +44,7 @@ export default function ProblemPage() {
   const [error, setError] = useState<string | null>(null);
   const [testResult, setTestResult] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<string>('description');
+  const [selectedSolutionIndex, setSelectedSolutionIndex] = useState<number>(0);
   
   // Resizable split pane state
   const [leftWidth, setLeftWidth] = useState(30); // percentage - default 30% for problem & results, 70% for code editor
@@ -508,27 +511,88 @@ export default function ProblemPage() {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="solution" style={{ height: 'calc(100% - 40px)', overflow: 'auto', padding: '16px 0' }}>
-                  <Paper shadow="sm" p="lg" withBorder>
-                    <Group justify="flex-end" align="center" mb={15}>
-                      <Button 
-                        variant="light" 
-                        size="sm"
-                        onClick={() => setShowSolution(!showSolution)}
-                      >
-                        {showSolution ? t('problemPage.hideSolution') : t('problemPage.showSolution')}
-                      </Button>
-                    </Group>
-                    <Collapse in={showSolution}>
-                      <Code block style={{ fontSize: '0.9em' }}>
-                        {problem.solution.js}
-                      </Code>
-                    </Collapse>
-                    {!showSolution && (
-                      <Text size="sm" c="dimmed" ta="center" py="xl">
-                        {t('problemPage.solutionHidden')}
-                      </Text>
-                    )}
-                  </Paper>
+                  {problem.solutions && problem.solutions.length > 0 ? (
+                    <Paper shadow="sm" p="lg" withBorder>
+                      <Group justify="space-between" align="center" mb={15}>
+                        {problem.solutions.length > 1 && (
+                          <Select
+                            value={selectedSolutionIndex.toString()}
+                            onChange={(value) => value && setSelectedSolutionIndex(parseInt(value))}
+                            data={problem.solutions.map((solution: any, index: number) => ({
+                              value: index.toString(),
+                              label: solution.title?.[locale] || solution.title?.zh || `${t('problemPage.solution')} ${index + 1}`
+                            }))}
+                            size="sm"
+                            style={{ minWidth: 200 }}
+                          />
+                        )}
+                        <Button 
+                          variant="light" 
+                          size="sm"
+                          onClick={() => setShowSolution(!showSolution)}
+                        >
+                          {showSolution ? t('problemPage.hideSolution') : t('problemPage.showSolution')}
+                        </Button>
+                      </Group>
+                      
+                      <Collapse in={showSolution}>
+                        {problem.solutions[selectedSolutionIndex]?.content ? (
+                          <MarkdownRenderer 
+                            content={(
+                              problem.solutions[selectedSolutionIndex].content[locale as 'en' | 'zh'] ||
+                              problem.solutions[selectedSolutionIndex].content.zh ||
+                              problem.solutions[selectedSolutionIndex].content.en ||
+                              ''
+                            )}
+                          />
+                        ) : problem.solution?.js ? (
+                          <Code block style={{ fontSize: '0.9em' }}>
+                            {problem.solution.js}
+                          </Code>
+                        ) : (
+                          <Text size="sm" c="dimmed" ta="center" py="xl">
+                            {t('problemPage.noSolutions')}
+                          </Text>
+                        )}
+                      </Collapse>
+                      
+                      {!showSolution && (
+                        <Text size="sm" c="dimmed" ta="center" py="xl">
+                          {t('problemPage.solutionHidden')}
+                        </Text>
+                      )}
+                    </Paper>
+                  ) : problem.solution?.js ? (
+                    <Paper shadow="sm" p="lg" withBorder>
+                      <Group justify="flex-end" align="center" mb={15}>
+                        <Button 
+                          variant="light" 
+                          size="sm"
+                          onClick={() => setShowSolution(!showSolution)}
+                        >
+                          {showSolution ? t('problemPage.hideSolution') : t('problemPage.showSolution')}
+                        </Button>
+                      </Group>
+                      <Collapse in={showSolution}>
+                        <Code block style={{ fontSize: '0.9em' }}>
+                          {problem.solution.js}
+                        </Code>
+                      </Collapse>
+                      {!showSolution && (
+                        <Text size="sm" c="dimmed" ta="center" py="xl">
+                          {t('problemPage.solutionHidden')}
+                        </Text>
+                      )}
+                    </Paper>
+                  ) : (
+                    <Paper shadow="sm" p="lg" withBorder>
+                      <Center py="xl">
+                        <Text size="md" c="dimmed">
+                          {t('problemPage.noSolutions')}
+                        </Text>
+                      </Center>
+                    </Paper>
+                  )}
                 </Tabs.Panel>
 
                 <Tabs.Panel value="results" style={{ height: 'calc(100% - 40px)', overflow: 'auto', padding: '16px 0' }}>

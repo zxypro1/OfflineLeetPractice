@@ -39,12 +39,15 @@
     "description": "Problem Description",
     "examples": "Examples",
     "solution": "Reference Solution",
+    "solutions": "Reference Solutions",
     "example": "Example",
     "input": "Input",
     "output": "Output",
     "showSolution": "Show Solution",
     "hideSolution": "Hide Solution",
-    "solutionHidden": "Click to view the reference solution"
+    "solutionHidden": "Click to view the reference solution",
+    "solutionTitle": "Solution {{index}}: {{title}}",
+    "noSolutions": "No reference solutions available for this problem."
   },
   "codeRunner": {
     "title": "💻 Code Editor",

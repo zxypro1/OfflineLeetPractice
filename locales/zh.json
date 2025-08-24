@@ -39,12 +39,15 @@
     "description": "题目描述",
     "examples": "示例",
     "solution": "参考解法",
+    "solutions": "参考解法",
     "example": "示例",
     "input": "输入",
     "output": "输出",
     "showSolution": "显示解法",
     "hideSolution": "隐藏解法",
-    "solutionHidden": "点击查看参考解法"
+    "solutionHidden": "点击查看参考解法",
+    "solutionTitle": "解法{{index}}：{{title}}",
+    "noSolutions": "此题目暂无参考解法。"
   },
   "codeRunner": {
     "title": "💻 代码编辑器",

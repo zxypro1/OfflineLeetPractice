@@ -42,12 +42,15 @@ type Translations = {
     description: string;
     examples: string;
     solution: string;
+    solutions?: string;
     showSolution: string;
     hideSolution: string;
     solutionHidden: string;
     example: string;
     input: string;
     output: string;
+    solutionTitle?: string;
+    noSolutions?: string;
   };
   codeRunner: {
     title: string;

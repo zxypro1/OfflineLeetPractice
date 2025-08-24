@@ -376,9 +376,6 @@ Return the response in this EXACT JSON format with proper escaping:
     "cpp": "#include <vector>\\n#include <algorithm>\\nusing namespace std;\\n\\nclass Solution {\\npublic:\\n    ReturnType functionName(ParamType param) {\\n        // write your code here\\n        return {};\\n    }\\n};",
     "c": "#include <stdio.h>\\n#include <stdlib.h>\\n\\nReturnType functionName(ParamType param) {\\n    // write your code here\\n    return 0;\\n}"
   },
-  "solution": {
-    "js": "function functionName(param) {\\n  // Complete working solution\\n  return result;\\n}\\nmodule.exports = functionName;"
-  },
   "solutions": [
     {
       "title": {

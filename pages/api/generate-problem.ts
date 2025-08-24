@@ -569,7 +569,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Validate the generated problem structure
-    const requiredFields = ['id', 'title', 'difficulty', 'tags', 'description', 'examples', 'template', 'solution', 'tests'];
+    const requiredFields = ['id', 'title', 'difficulty', 'tags', 'description', 'examples', 'template', 'solutions', 'tests'];
     for (const field of requiredFields) {
       if (!problemData[field as keyof Problem]) {
         return res.status(500).json({ 

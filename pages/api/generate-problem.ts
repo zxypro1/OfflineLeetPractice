@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface Problem {
   id: string;
@@ -96,6 +96,57 @@ CRITICAL REQUIREMENTS:
   return data.choices[0].message.content;
 }
 
+// New function to call Ollama API
+async function callOllamaAPI(prompt: string): Promise<any> {
+  const ollamaEndpoint = process.env.OLLAMA_ENDPOINT || 'http://localhost:11434';
+  const ollamaModel = process.env.OLLAMA_MODEL || 'llama3';
+
+  const response = await fetch(`${ollamaEndpoint}/api/chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: ollamaModel,
+      messages: [
+        {
+          role: 'system',
+          content: `You are an expert LeetCode problem generator. Generate high-quality coding problems in the exact JSON format specified. The problem should be original, well-designed, and include comprehensive test cases.
+
+CRITICAL REQUIREMENTS:
+1. Return ONLY valid JSON, no additional text or explanations
+2. Use kebab-case for the problem ID (e.g., "dynamic-programming-example")
+3. Include complete templates for all 5 languages (js, python, java, cpp, c)
+4. Provide a working JavaScript solution
+5. Include at least 4-5 comprehensive test cases covering edge cases
+6. Ensure the problem is solvable and well-defined
+7. Use proper escape sequences in strings (\\n for newlines, \\" for quotes)
+8. Make sure all test cases pass with the provided solution
+9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
+10. Each solution should have a title and content in both English and Chinese
+11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples`
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      stream: false,
+      options: {
+        temperature: 0.7,
+      }
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  return data.message.content;
+}
+
 function generatePrompt(userRequest: string): string {
   return `Generate a LeetCode-style coding problem based on this request: "${userRequest}"
 
@@ -165,22 +216,70 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { request } = req.body;
+    const { request, aiProvider } = req.body;
 
     if (!request || typeof request !== 'string') {
       return res.status(400).json({ error: 'Request description is required' });
     }
 
-    // Generate the problem using DeepSeek
+    // Check what providers are configured
+    const isOllamaConfigured = !!process.env.OLLAMA_ENDPOINT || !!process.env.OLLAMA_MODEL;
+    const isDeepSeekConfigured = !!process.env.DEEPSEEK_API_KEY;
+    
+    // If a specific provider is requested, validate it's configured
+    if (aiProvider) {
+      if (aiProvider === 'ollama' && !isOllamaConfigured) {
+        return res.status(400).json({ error: 'Ollama is not configured. Please check your environment variables.' });
+      }
+      
+      if (aiProvider === 'deepseek' && !isDeepSeekConfigured) {
+        return res.status(400).json({ error: 'DeepSeek API key is not configured. Please check your environment variables.' });
+      }
+    }
+    
+    // If no provider is specified, auto-select based on what's available
+    let useOllama: boolean;
+    let useDeepSeek: boolean;
+    
+    if (aiProvider === 'ollama') {
+      useOllama = true;
+      useDeepSeek = false;
+    } else if (aiProvider === 'deepseek') {
+      useOllama = false;
+      useDeepSeek = true;
+    } else {
+      // Auto-select logic: prefer Ollama if available, otherwise DeepSeek
+      if (isOllamaConfigured) {
+        useOllama = true;
+        useDeepSeek = false;
+      } else if (isDeepSeekConfigured) {
+        useOllama = false;
+        useDeepSeek = true;
+      } else {
+        return res.status(400).json({ 
+          error: 'No AI provider is configured. Please configure either Ollama or DeepSeek API key in your environment variables.' 
+        });
+      }
+    }
+
+    // Generate the problem using the selected AI provider
     const prompt = generatePrompt(request);
-    const generatedContent = await callDeepSeekAPI(prompt);
+    let generatedContent: string;
+
+    if (useOllama) {
+      generatedContent = await callOllamaAPI(prompt);
+    } else if (useDeepSeek) {
+      generatedContent = await callDeepSeekAPI(prompt);
+    } else {
+      return res.status(500).json({ error: 'No valid AI provider configured' });
+    }
 
     // Parse the generated JSON
     let problemData: Problem;
     try {
       problemData = JSON.parse(generatedContent);
     } catch (parseError) {
-      console.error('Failed to parse generated JSON:', generatedContent);
+      console.error('Failed to parse generated JSON:', generatedContent, parseError);
       return res.status(500).json({ 
         error: 'Failed to parse generated problem data',
         details: generatedContent

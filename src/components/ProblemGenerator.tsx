@@ -47,11 +47,66 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
   const [success, setSuccess] = useState<string | null>(null);
   const [generatedProblem, setGeneratedProblem] = useState<GeneratedProblem | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [selectedAIProvider, setSelectedAIProvider] = useState<'deepseek' | 'ollama' | 'auto'>('auto');
+  const [isOllamaConfigured, setIsOllamaConfigured] = useState(false);
+  const [isDeepSeekConfigured, setIsDeepSeekConfigured] = useState(false);
+  const [providersLoading, setProvidersLoading] = useState(true);
 
   // Prevent hydration mismatch by ensuring component is mounted
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Fetch AI provider configuration from server
+  useEffect(() => {
+    const fetchProviderConfiguration = async () => {
+      try {
+        const response = await fetch('/api/ai-providers');
+        const data = await response.json();
+        
+        if (response.ok) {
+          setIsOllamaConfigured(data.providers.ollama);
+          setIsDeepSeekConfigured(data.providers.deepseek);
+        } else {
+          console.error('Failed to fetch provider configuration:', data.error);
+        }
+      } catch (err) {
+        console.error('Error fetching provider configuration:', err);
+      } finally {
+        setProvidersLoading(false);
+      }
+    };
+
+    if (mounted) {
+      fetchProviderConfiguration();
+    }
+  }, [mounted]);
+
+  // Determine which AI provider is currently selected
+  const getCurrentAIProvider = () => {
+    if (selectedAIProvider === 'auto') {
+      // Auto-select based on what's available
+      if (isOllamaConfigured) {
+        return 'ollama';
+      } else if (isDeepSeekConfigured) {
+        return 'deepseek';
+      } else {
+        return null; // Neither is configured
+      }
+    }
+    return selectedAIProvider;
+  };
+
+  const currentAIProvider = getCurrentAIProvider();
+  const isUsingLocalAI = currentAIProvider === 'ollama';
+
+  // Check if AI generation is possible
+  const canGenerate = isOllamaConfigured || isDeepSeekConfigured;
+  
+  // Get available providers for selection
+  const availableProviders = [];
+  if (isDeepSeekConfigured) availableProviders.push('deepseek');
+  if (isOllamaConfigured) availableProviders.push('ollama');
 
   const suggestedRequests = [
     locale === 'zh' ? "我想做一道动态规划题目" : "Generate a dynamic programming problem",
@@ -79,6 +134,11 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
       return;
     }
 
+    if (!canGenerate) {
+      setError(t('aiGenerator.noAIProviderConfigured'));
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -90,7 +150,10 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ request: request.trim() }),
+        body: JSON.stringify({ 
+          request: request.trim(),
+          aiProvider: selectedAIProvider === 'auto' ? undefined : selectedAIProvider
+        }),
       });
 
       const data = await response.json();
@@ -138,6 +201,28 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
     );
   }
 
+  // Show loading state while fetching provider configuration
+  if (providersLoading) {
+    return (
+      <Box maw={800} mx="auto" p="md">
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Stack gap="lg">
+            <Group gap="md">
+              <IconBrain size={32} color={colorScheme === 'dark' ? '#748ffc' : '#339af0'} />
+              <Title order={2} c={colorScheme === 'dark' ? 'blue.4' : 'blue.6'}>
+                {t('aiGenerator.title')}
+              </Title>
+            </Group>
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <Loader size="md" />
+              <Text mt="md">{t('common.loading')}</Text>
+            </div>
+          </Stack>
+        </Card>
+      </Box>
+    );
+  }
+
   return (
     <Box maw={800} mx="auto" p="md">
       <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -153,6 +238,61 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
             {t('aiGenerator.subtitle')}
           </Text>
 
+          {/* AI Provider Status */}
+          {!canGenerate ? (
+            <Alert color="red" title={t('aiGenerator.errorTitle')}>
+              {t('aiGenerator.noAIProviderConfigured')}
+            </Alert>
+          ) : (
+            <>
+              {/* AI Provider Indicator */}
+              <Alert color={isUsingLocalAI ? 'blue' : 'violet'} variant="light">
+                <Group gap="xs">
+                  <IconBrain size={16} />
+                  <Text size="sm" fw={500}>
+                    {currentAIProvider === 'ollama' 
+                      ? t('aiGenerator.usingLocalAI') 
+                      : t('aiGenerator.usingOnlineAI')}
+                  </Text>
+                </Group>
+              </Alert>
+
+              {/* AI Provider Selection */}
+              {availableProviders.length > 1 && (
+                <Group>
+                  <Text size="sm">{t('aiGenerator.selectAIProvider')}:</Text>
+                  <Button
+                    variant={selectedAIProvider === 'auto' ? 'filled' : 'outline'}
+                    size="xs"
+                    onClick={() => setSelectedAIProvider('auto')}
+                  >
+                    {t('aiGenerator.autoSelect')}
+                  </Button>
+                  {isDeepSeekConfigured && (
+                    <Button
+                      variant={selectedAIProvider === 'deepseek' ? 'filled' : 'outline'}
+                      size="xs"
+                      onClick={() => setSelectedAIProvider('deepseek')}
+                      color="violet"
+                    >
+                      {t('aiGenerator.onlineAI')}
+                    </Button>
+                  )}
+                  {isOllamaConfigured && (
+                    <Button
+                      variant={selectedAIProvider === 'ollama' ? 'filled' : 'outline'}
+                      size="xs"
+                      onClick={() => setSelectedAIProvider('ollama')}
+                      color="blue"
+                    >
+                      {t('aiGenerator.localAI')}
+                    </Button>
+                  )}
+                </Group>
+              )}
+            </>
+          )}
+
           {/* Request Input */}
           <Textarea
             label={t('aiGenerator.requestLabel')}
@@ -160,7 +300,7 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
             value={request}
             onChange={(event) => setRequest(event.currentTarget.value)}
             minRows={3}
-            disabled={loading}
+            disabled={loading || !canGenerate}
           />
 
           {/* Suggested Requests */}
@@ -188,7 +328,7 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
             <Button
               leftSection={loading ? <Loader size="sm" /> : <IconWand size={16} />}
               onClick={handleGenerate}
-              disabled={loading || !request.trim()}
+              disabled={loading || !request.trim() || !canGenerate}
               size="md"
               style={{ minWidth: 200 }}
             >

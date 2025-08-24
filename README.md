@@ -104,7 +104,9 @@ npm start
 
 #### Setting Up AI Features
 
-To use the AI problem generator, you need to set up a DeepSeek API key:
+To use the AI problem generator, you can configure either DeepSeek cloud service or local Ollama models (or both):
+
+##### Option 1: DeepSeek Cloud Service
 
 1. **Get API Key**: Obtain an API key from [DeepSeek Platform](https://platform.deepseek.com/)
 2. **Configure Key**: Add your API key to the application using one of these methods:
@@ -121,7 +123,37 @@ To use the AI problem generator, you need to set up a DeepSeek API key:
      export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
      ```
 
-3. **Start the Application**: Run the application with `npm run dev` or use the startup scripts
+##### Option 2: Local Ollama Models
+
+1. **Install Ollama**: Download and install Ollama from https://ollama.com/
+2. **Download Model**: Run `ollama pull llama3` to download the recommended model
+3. **Configure Ollama**: Configure Ollama using one of these methods:
+   - Create a `.env.local` file in the project root with:
+     ```bash
+     # Optional: Set Ollama endpoint (default: http://localhost:11434)
+     # OLLAMA_ENDPOINT=http://localhost:11434
+     
+     # Optional: Set Ollama model (default: llama3)
+     # OLLAMA_MODEL=llama3
+     ```
+   - Or set as environment variables in your system:
+     ```bash
+     # Windows (PowerShell)
+     $env:OLLAMA_ENDPOINT="http://localhost:11434"  # Optional
+     $env:OLLAMA_MODEL="llama3"  # Optional
+     
+     # macOS/Linux (Bash)
+     export OLLAMA_ENDPOINT=http://localhost:11434  # Optional
+     export OLLAMA_MODEL=llama3  # Optional
+     ```
+
+4. **Start Ollama**: Ensure the Ollama service is running (it usually starts automatically)
+
+##### Using Both Providers
+
+If you have both DeepSeek and Ollama configured, the system will automatically prefer Ollama. You can switch between providers using the UI controls on the AI Generator page.
+
+The system automatically detects which providers are configured through a server-side check. The frontend fetches this configuration via the `/api/ai-providers` endpoint, ensuring proper security and compliance with Next.js environment variable restrictions.
 
 #### Using AI Generator
 
@@ -133,6 +165,8 @@ To use the AI problem generator, you need to set up a DeepSeek API key:
 3. Click "Generate Problem" and wait for the AI to create your custom problem
 4. The generated problem will automatically be added to your local problem library
 5. Click "Try Last Generated Problem" to immediately start solving it
+
+See **`AI_GENERATOR_README.md`** for more detailed configuration instructions and troubleshooting guide!
 
 ### Adding Custom Problems
 

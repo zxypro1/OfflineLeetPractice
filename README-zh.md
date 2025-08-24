@@ -102,7 +102,9 @@ npm start
 
 #### AI 功能设置
 
-要使用 AI 题目生成器，您需要设置 DeepSeek API 密钥：
+要使用 AI 题目生成器，您可以配置 DeepSeek 云服务或本地 Ollama 模型（或两者）：
+
+##### 选项 1：DeepSeek 云服务
 
 1. **获取 API 密钥**: 从 [DeepSeek 平台](https://platform.deepseek.com/) 获取 API 密钥
 2. **配置密钥**: 通过以下方法之一将 API 密钥添加到应用程序：
@@ -119,7 +121,37 @@ npm start
      export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
      ```
 
-3. **启动应用程序**: 使用 `npm run dev` 运行应用程序或使用启动脚本
+##### 选项 2：本地 Ollama 模型
+
+1. **安装 Ollama**: 从 https://ollama.com/ 下载并安装 Ollama
+2. **下载模型**: 运行 `ollama pull llama3` 下载推荐的模型
+3. **配置 Ollama**: 通过以下方法之一配置 Ollama：
+   - 在项目根目录创建 `.env.local` 文件，内容如下：
+     ```bash
+     # 可选：设置 Ollama 端点（默认：http://localhost:11434）
+     # OLLAMA_ENDPOINT=http://localhost:11434
+     
+     # 可选：设置 Ollama 模型（默认：llama3）
+     # OLLAMA_MODEL=llama3
+     ```
+   - 或者在系统中设置环境变量：
+     ```bash
+     # Windows (PowerShell)
+     $env:OLLAMA_ENDPOINT="http://localhost:11434"  # 可选
+     $env:OLLAMA_MODEL="llama3"  # 可选
+     
+     # macOS/Linux (Bash)
+     export OLLAMA_ENDPOINT=http://localhost:11434  # 可选
+     export OLLAMA_MODEL=llama3  # 可选
+     ```
+
+4. **启动 Ollama**: 确保 Ollama 服务正在运行（通常会自动启动）
+
+##### 使用两个提供商
+
+如果您同时配置了 DeepSeek 和 Ollama，系统将自动优先选择 Ollama。您可以使用 AI 生成器页面上的 UI 控件在提供商之间切换。
+
+系统通过服务器端检查自动检测配置了哪些提供商。前端通过 `/api/ai-providers` 端点获取此配置，确保正确的安全性和符合 Next.js 环境变量限制。
 
 #### 使用 AI 生成器
 
@@ -131,6 +163,8 @@ npm start
 3. 点击"生成题目"并等待 AI 创建您的自定义问题
 4. 生成的问题将自动添加到您的本地问题库中
 5. 点击"尝试最后生成的问题"立即开始解决它
+
+查看 **`AI_GENERATOR_README.md`** 获取更详细的配置说明和故障排除指南！
 
 ### 添加自定义题目
 

@@ -69,7 +69,9 @@
     "averageTime": "Average Time",
     "memoryUsed": "Memory Used",
     "totalMemory": "Total Memory",
-    "input": "Input"
+    "input": "Input",
+    "copy": "Copy",
+    "copied": "Copied!"
   },
   "tags": {
     "array": "Array",

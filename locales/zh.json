@@ -69,7 +69,9 @@
     "averageTime": "平均时间",
     "memoryUsed": "内存使用",
     "totalMemory": "总内存",
-    "input": "输入"
+    "input": "输入",
+    "copy": "复制",
+    "copied": "已复制！"
   },
   "tags": {
     "array": "数组",

@@ -28,6 +28,7 @@ import Link from 'next/link';
 import { useTranslation, useI18n } from '../../src/contexts/I18nContext';
 import { useTheme } from '../../src/contexts/ThemeContext';
 import { LanguageThemeControls } from '../../src/components/LanguageThemeControls';
+import { CodeWithCopy } from '../../src/components/CodeWithCopy';
 import MarkdownRenderer from '../../src/components/MarkdownRenderer';
 
 const CodeRunner = dynamic(() => import('../../src/components/CodeRunner'), { ssr: false });
@@ -559,9 +560,7 @@ export default function ProblemPage() {
                             )}
                           />
                         ) : problem.solution?.js ? (
-                          <Code block style={{ fontSize: '0.9em' }}>
-                            {problem.solution.js}
-                          </Code>
+                          <CodeWithCopy code={problem.solution.js} />
                         ) : (
                           <Text size="sm" c="dimmed" ta="center" py="xl">
                             {t('problemPage.noSolutions')}
@@ -587,9 +586,7 @@ export default function ProblemPage() {
                         </Button>
                       </Group>
                       <Collapse in={showSolution}>
-                        <Code block style={{ fontSize: '0.9em' }}>
-                          {problem.solution.js}
-                        </Code>
+                        <CodeWithCopy code={problem.solution.js} />
                       </Collapse>
                       {!showSolution && (
                         <Text size="sm" c="dimmed" ta="center" py="xl">

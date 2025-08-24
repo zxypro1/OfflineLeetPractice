@@ -6,6 +6,8 @@
 
 <img width="2542" height="1221" alt="2025-08-2165223" src="https://github.com/user-attachments/assets/5b9298e2-fa5b-4596-9694-733132ea509f" />
 
+<img width="1302" height="1001" alt="2025-08-24210533" src="https://github.com/user-attachments/assets/efa542ae-137a-4150-892b-0608255cef8c" />
+
 ## 为什么选择 OfflineLeetPractice？
 
 **专为无网环境设计：**

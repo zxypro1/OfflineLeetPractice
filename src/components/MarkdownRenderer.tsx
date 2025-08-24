@@ -1,162 +1,200 @@
-import React from 'react';
-import { Text, Code, Title, Stack, Divider, List } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { Box, Paper, Text, Table, Code, Title } from '@mantine/core';
+import 'katex/dist/katex.min.css';
 
 interface MarkdownRendererProps {
   content: string;
 }
 
+// Mermaid component that loads dynamically
+const MermaidChart: React.FC<{ chart: string }> = ({ chart }) => {
+  const [svg, setSvg] = useState<string>('');
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    const renderMermaid = async () => {
+      try {
+        const mermaid = (await import('mermaid')).default;
+        mermaid.initialize({ 
+          startOnLoad: false,
+          theme: 'default',
+          securityLevel: 'loose'
+        });
+        
+        const id = `mermaid-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        const { svg } = await mermaid.render(id, chart);
+        setSvg(svg);
+      } catch (err) {
+        console.error('Mermaid rendering error:', err);
+        setError('Failed to render diagram');
+      }
+    };
+
+    if (chart.trim()) {
+      renderMermaid();
+    }
+  }, [chart]);
+
+  if (error) {
+    return (
+      <Paper p="md" withBorder>
+        <Text c="red">Error rendering diagram: {error}</Text>
+        <Code block mt="sm">{chart}</Code>
+      </Paper>
+    );
+  }
+
+  if (!svg) {
+    return (
+      <Paper p="md" withBorder>
+        <Text>Loading diagram...</Text>
+      </Paper>
+    );
+  }
+
+  return (
+    <Paper p="md" withBorder>
+      <div dangerouslySetInnerHTML={{ __html: svg }} />
+    </Paper>
+  );
+};
+
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
-  // Simple markdown parser for basic formatting
-  const parseMarkdown = (text: string) => {
-    const lines = text.split('\n');
-    const elements: React.ReactNode[] = [];
-    let currentList: React.ReactNode[] = [];
-    let codeBlock = false;
-    let codeLines: string[] = [];
-    let codeLanguage = '';
-
-    const flushList = () => {
-      if (currentList.length > 0) {
-        elements.push(
-          <List key={`list-${elements.length}`} mb="md">
-            {currentList.map((item, index) => (
-              <List.Item key={index}>{item}</List.Item>
-            ))}
-          </List>
-        );
-        currentList = [];
+  const components = {
+    // Custom code block renderer with syntax highlighting
+    code({ node, inline, className, children, ...props }: any) {
+      const match = /language-(\w+)/.exec(className || '');
+      const language = match ? match[1] : '';
+      const codeContent = String(children).replace(/\n$/, '');
+      
+      // Handle Mermaid diagrams
+      if (language === 'mermaid') {
+        return <MermaidChart chart={codeContent} />;
       }
-    };
-
-    const flushCodeBlock = () => {
-      if (codeLines.length > 0) {
-        elements.push(
-          <Code key={`code-${elements.length}`} block mb="md">
-            {codeLines.join('\n')}
-          </Code>
-        );
-        codeLines = [];
-        codeBlock = false;
-        codeLanguage = '';
-      }
-    };
-
-    lines.forEach((line, index) => {
-      // Handle code blocks
-      if (line.startsWith('```')) {
-        if (codeBlock) {
-          flushCodeBlock();
-        } else {
-          flushList();
-          codeBlock = true;
-          codeLanguage = line.substring(3).trim();
-        }
-        return;
-      }
-
-      if (codeBlock) {
-        codeLines.push(line);
-        return;
-      }
-
-      // Handle headers
-      if (line.startsWith('# ')) {
-        flushList();
-        elements.push(
-          <Title key={`h1-${index}`} order={1} mb="md" mt="lg">
-            {formatInlineText(line.substring(2))}
-          </Title>
-        );
-      } else if (line.startsWith('## ')) {
-        flushList();
-        elements.push(
-          <Title key={`h2-${index}`} order={2} mb="md" mt="lg">
-            {formatInlineText(line.substring(3))}
-          </Title>
-        );
-      } else if (line.startsWith('### ')) {
-        flushList();
-        elements.push(
-          <Title key={`h3-${index}`} order={3} mb="md" mt="md">
-            {formatInlineText(line.substring(4))}
-          </Title>
-        );
-      } else if (line.startsWith('#### ')) {
-        flushList();
-        elements.push(
-          <Title key={`h4-${index}`} order={4} mb="sm" mt="md">
-            {formatInlineText(line.substring(5))}
-          </Title>
-        );
-      } else if (line.startsWith('---')) {
-        flushList();
-        elements.push(<Divider key={`hr-${index}`} my="lg" />);
-      } else if (line.startsWith('- ') || line.startsWith('* ')) {
-        currentList.push(formatInlineText(line.substring(2)));
-      } else if (line.trim() === '') {
-        flushList();
-        if (elements.length > 0 && elements[elements.length - 1] !== null) {
-          elements.push(<div key={`br-${index}`} style={{ height: '8px' }} />);
-        }
-      } else {
-        flushList();
-        // Handle inline formatting
-        const formattedLine = formatInlineText(line);
-        elements.push(
-          <Text key={`p-${index}`} mb="sm" style={{ lineHeight: 1.6 }}>
-            {formattedLine}
-          </Text>
-        );
-      }
-    });
-
-    flushList();
-    flushCodeBlock();
-
-    return elements;
-  };
-
-  const formatInlineText = (text: string) => {
-    // Handle inline code
-    text = text.replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`);
-    
-    // Handle bold text
-    text = text.replace(/\*\*([^*]+)\*\*/g, (_, bold) => `<strong>${bold}</strong>`);
-    
-    // Handle italic text
-    text = text.replace(/\*([^*]+)\*/g, (_, italic) => `<em>${italic}</em>`);
-
-    // Convert back to JSX elements
-    const parts = text.split(/(<code>.*?<\/code>|<strong>.*?<\/strong>|<em>.*?<\/em>)/);
-    
-    return parts.map((part, index) => {
-      if (part.startsWith('<code>') && part.endsWith('</code>')) {
+      
+      // Handle other code blocks with syntax highlighting
+      if (!inline && match) {
         return (
-          <Code key={index} color="blue">
-            {part.substring(6, part.length - 7)}
-          </Code>
-        );
-      } else if (part.startsWith('<strong>') && part.endsWith('</strong>')) {
-        return (
-          <strong key={index}>
-            {part.substring(8, part.length - 9)}
-          </strong>
-        );
-      } else if (part.startsWith('<em>') && part.endsWith('</em>')) {
-        return (
-          <em key={index}>
-            {part.substring(4, part.length - 5)}
-          </em>
+          <SyntaxHighlighter
+            style={atomDark}
+            language={language}
+            PreTag="div"
+            {...props}
+          >
+            {codeContent}
+          </SyntaxHighlighter>
         );
       }
-      return part;
-    });
+      
+      // Inline code
+      return (
+        <Code {...props}>
+          {children}
+        </Code>
+      );
+    },
+    
+    // Custom table renderer using Mantine Table
+    table({ children }: any) {
+      return (
+        <Table striped highlightOnHover withTableBorder withColumnBorders>
+          {children}
+        </Table>
+      );
+    },
+    
+    // Custom heading renderers using Mantine Title
+    h1({ children }: any) {
+      return (
+        <Title order={1} mb="md" mt="xl">
+          {children}
+        </Title>
+      );
+    },
+    
+    h2({ children }: any) {
+      return (
+        <Title order={2} mb="md" mt="lg">
+          {children}
+        </Title>
+      );
+    },
+    
+    h3({ children }: any) {
+      return (
+        <Title order={3} mb="sm" mt="md">
+          {children}
+        </Title>
+      );
+    },
+    
+    h4({ children }: any) {
+      return (
+        <Title order={4} mb="sm" mt="md">
+          {children}
+        </Title>
+      );
+    },
+    
+    h5({ children }: any) {
+      return (
+        <Title order={5} mb="xs" mt="sm">
+          {children}
+        </Title>
+      );
+    },
+    
+    h6({ children }: any) {
+      return (
+        <Title order={6} mb="xs" mt="sm">
+          {children}
+        </Title>
+      );
+    },
+    
+    // Custom paragraph renderer
+    p({ children }: any) {
+      return (
+        <Text mb="sm" style={{ lineHeight: 1.6 }}>
+          {children}
+        </Text>
+      );
+    },
+    
+    // Custom blockquote renderer
+    blockquote({ children }: any) {
+      return (
+        <Paper 
+          p="md" 
+          withBorder 
+          style={{ 
+            borderLeft: '4px solid #339af0',
+            backgroundColor: 'var(--mantine-color-gray-0)'
+          }}
+        >
+          {children}
+        </Paper>
+      );
+    }
   };
 
   return (
-    <Stack gap="xs">
-      {parseMarkdown(content)}
-    </Stack>
+    <Box>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeRaw, rehypeKatex]}
+        components={components}
+      >
+        {content}
+      </ReactMarkdown>
+    </Box>
   );
 };
 

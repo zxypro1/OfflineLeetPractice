@@ -227,7 +227,7 @@ except Exception as e:
     case 'java':
       const functionName = extractFunctionName(template, language, userCode);
       const className = 'Solution';
-      const escapedArgs = argsStr.replace(/"/g, '\\"');
+      const escapedArgs = argsStr.replace(/"/g, '\\\\\\"');
       
       // Check if userCode already contains a complete class declaration
       const hasClassDeclaration = userCode.includes('public class') || userCode.includes('class Solution');
@@ -316,14 +316,50 @@ class TestRunnerMain {
         
         if (value.startsWith("[") && value.endsWith("]")) {
             String content = value.substring(1, value.length() - 1).trim();
-            if (content.isEmpty()) return new int[0];
+            if (content.isEmpty()) return new String[0];
             
-            String[] parts = content.split(",");
-            int[] array = new int[parts.length];
-            for (int i = 0; i < parts.length; i++) {
-                array[i] = Integer.parseInt(parts[i].trim());
+            // Check if it's a string array by looking for quotes
+            if (content.indexOf('"') >= 0) {
+                // Parse as string array
+                java.util.List<String> strings = new java.util.ArrayList<>();
+                StringBuilder current = new StringBuilder();
+                boolean inQuotes = false;
+                
+                for (int i = 0; i < content.length(); i++) {
+                    char c = content.charAt(i);
+                    
+                    if (c == '"' && (i == 0 || content.charAt(i-1) != '\\\\')) {
+                        inQuotes = !inQuotes;
+                    } else if (!inQuotes && c == ',') {
+                        String str = current.toString().trim();
+                        if (str.startsWith(String.valueOf('"')) && str.endsWith(String.valueOf('"'))) {
+                            str = str.substring(1, str.length() - 1);
+                        }
+                        strings.add(str);
+                        current = new StringBuilder();
+                    } else if (inQuotes || (c != ' ' && c != '"')) {
+                        current.append(c);
+                    }
+                }
+                
+                if (current.length() > 0) {
+                    String str = current.toString().trim();
+                    if (str.startsWith(String.valueOf('"')) && str.endsWith(String.valueOf('"'))) {
+                        str = str.substring(1, str.length() - 1);
+                    }
+                    strings.add(str);
+                }
+                
+                return strings.toArray(new String[0]);
+            } else {
+                // Parse as int array
+                String[] parts = content.split(",");
+                int[] array = new int[parts.length];
+                for (int i = 0; i < parts.length; i++) {
+                    array[i] = Integer.parseInt(parts[i].trim());
+                }
+                return array;
             }
-            return array;
         }
         
         try {
@@ -365,7 +401,16 @@ class TestRunnerMain {
         if (arg == null) return null;
         if (targetType.isAssignableFrom(arg.getClass())) return arg;
         
-        if (targetType.isArray() && arg instanceof int[]) {
+        if (targetType.isArray()) {
+            if (targetType == String[].class && arg instanceof String[]) {
+                return arg;
+            }
+            if (targetType == int[].class && arg instanceof int[]) {
+                return arg;
+            }
+        }
+        
+        if (targetType == String.class && arg instanceof String) {
             return arg;
         }
         
@@ -381,9 +426,19 @@ class TestRunnerMain {
         if (result instanceof int[]) {
             return java.util.Arrays.toString((int[]) result);
         }
+        if (result instanceof String[]) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            String[] arr = (String[]) result;
+            for (int i = 0; i < arr.length; i++) {
+                if (i > 0) sb.append(",");
+                sb.append(String.valueOf('"')).append(arr[i]).append(String.valueOf('"'));
+            }
+            sb.append("]");
+            return sb.toString();
+        }
         if (result instanceof String) {
-            String quote = String.valueOf('"');
-            return quote + result.toString() + quote;
+            return String.valueOf('"') + result.toString() + String.valueOf('"');
         }
         if (result instanceof Boolean) {
             return result.toString();
@@ -459,9 +514,6 @@ public class ${className} {
             args.add(parseValue(current.toString().trim()));
         }
         
-        return args.toArray();
-    }
-    
     public static Object parseValue(String value) {
         value = value.trim();
         
@@ -475,14 +527,50 @@ public class ${className} {
         
         if (value.startsWith("[") && value.endsWith("]")) {
             String content = value.substring(1, value.length() - 1).trim();
-            if (content.isEmpty()) return new int[0];
+            if (content.isEmpty()) return new String[0];
             
-            String[] parts = content.split(",");
-            int[] array = new int[parts.length];
-            for (int i = 0; i < parts.length; i++) {
-                array[i] = Integer.parseInt(parts[i].trim());
+            // Check if it's a string array by looking for quotes
+            if (content.contains("\\\"")) {
+                // Parse as string array
+                java.util.List<String> strings = new java.util.ArrayList<>();
+                StringBuilder current = new StringBuilder();
+                boolean inQuotes = false;
+                
+                for (int i = 0; i < content.length(); i++) {
+                    char c = content.charAt(i);
+                    
+                    if (c == '\"' && (i == 0 || content.charAt(i-1) != '\\\\')) {
+                        inQuotes = !inQuotes;
+                    } else if (!inQuotes && c == ',') {
+                        String str = current.toString().trim();
+                        if (str.startsWith("\\\"") && str.endsWith("\\\"")) {
+                            str = str.substring(1, str.length() - 1);
+                        }
+                        strings.add(str);
+                        current = new StringBuilder();
+                    } else if (inQuotes || (c != ' ' && c != '\"')) {
+                        current.append(c);
+                    }
+                }
+                
+                if (current.length() > 0) {
+                    String str = current.toString().trim();
+                    if (str.startsWith("\\\"") && str.endsWith("\\\"")) {
+                        str = str.substring(1, str.length() - 1);
+                    }
+                    strings.add(str);
+                }
+                
+                return strings.toArray(new String[0]);
+            } else {
+                // Parse as int array
+                String[] parts = content.split(",");
+                int[] array = new int[parts.length];
+                for (int i = 0; i < parts.length; i++) {
+                    array[i] = Integer.parseInt(parts[i].trim());
+                }
+                return array;
             }
-            return array;
         }
         
         try {
@@ -524,7 +612,16 @@ public class ${className} {
         if (arg == null) return null;
         if (targetType.isAssignableFrom(arg.getClass())) return arg;
         
-        if (targetType.isArray() && arg instanceof int[]) {
+        if (targetType.isArray()) {
+            if (targetType == String[].class && arg instanceof String[]) {
+                return arg;
+            }
+            if (targetType == int[].class && arg instanceof int[]) {
+                return arg;
+            }
+        }
+        
+        if (targetType == String.class && arg instanceof String) {
             return arg;
         }
         
@@ -540,9 +637,19 @@ public class ${className} {
         if (result instanceof int[]) {
             return java.util.Arrays.toString((int[]) result);
         }
+        if (result instanceof String[]) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            String[] arr = (String[]) result;
+            for (int i = 0; i < arr.length; i++) {
+                if (i > 0) sb.append(",");
+                sb.append('"').append(arr[i]).append('"');
+            }
+            sb.append("]");
+            return sb.toString();
+        }
         if (result instanceof String) {
-            String quote = String.valueOf('"');
-            return quote + result.toString() + quote;
+            return '"' + result.toString() + '"';
         }
         if (result instanceof Boolean) {
             return result.toString();

@@ -47,9 +47,12 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
   const [success, setSuccess] = useState<string | null>(null);
   const [generatedProblem, setGeneratedProblem] = useState<GeneratedProblem | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [selectedAIProvider, setSelectedAIProvider] = useState<'deepseek' | 'ollama' | 'auto'>('auto');
+  const [selectedAIProvider, setSelectedAIProvider] = useState<'deepseek' | 'ollama' | 'openai' | 'qwen' | 'claude' | 'auto'>('auto');
   const [isOllamaConfigured, setIsOllamaConfigured] = useState(false);
   const [isDeepSeekConfigured, setIsDeepSeekConfigured] = useState(false);
+  const [isOpenAIConfigured, setIsOpenAIConfigured] = useState(false);
+  const [isQwenConfigured, setIsQwenConfigured] = useState(false);
+  const [isClaudeConfigured, setIsClaudeConfigured] = useState(false);
   const [providersLoading, setProvidersLoading] = useState(true);
 
   // Prevent hydration mismatch by ensuring component is mounted
@@ -67,6 +70,9 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
         if (response.ok) {
           setIsOllamaConfigured(data.providers.ollama);
           setIsDeepSeekConfigured(data.providers.deepseek);
+          setIsOpenAIConfigured(data.providers.openai);
+          setIsQwenConfigured(data.providers.qwen);
+          setIsClaudeConfigured(data.providers.claude);
         } else {
           console.error('Failed to fetch provider configuration:', data.error);
         }
@@ -85,13 +91,19 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
   // Determine which AI provider is currently selected
   const getCurrentAIProvider = () => {
     if (selectedAIProvider === 'auto') {
-      // Auto-select based on what's available
+      // Auto-select based on what's available (in order of preference)
       if (isOllamaConfigured) {
         return 'ollama';
+      } else if (isOpenAIConfigured) {
+        return 'openai';
+      } else if (isClaudeConfigured) {
+        return 'claude';
+      } else if (isQwenConfigured) {
+        return 'qwen';
       } else if (isDeepSeekConfigured) {
         return 'deepseek';
       } else {
-        return null; // Neither is configured
+        return null; // None configured
       }
     }
     return selectedAIProvider;
@@ -101,11 +113,14 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
   const isUsingLocalAI = currentAIProvider === 'ollama';
 
   // Check if AI generation is possible
-  const canGenerate = isOllamaConfigured || isDeepSeekConfigured;
+  const canGenerate = isOllamaConfigured || isDeepSeekConfigured || isOpenAIConfigured || isQwenConfigured || isClaudeConfigured;
   
   // Get available providers for selection
   const availableProviders = [];
   if (isDeepSeekConfigured) availableProviders.push('deepseek');
+  if (isOpenAIConfigured) availableProviders.push('openai');
+  if (isQwenConfigured) availableProviders.push('qwen');
+  if (isClaudeConfigured) availableProviders.push('claude');
   if (isOllamaConfigured) availableProviders.push('ollama');
 
   const suggestedRequests = [
@@ -252,7 +267,7 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
                   <Text size="sm" fw={500}>
                     {currentAIProvider === 'ollama' 
                       ? t('aiGenerator.usingLocalAI') 
-                      : t('aiGenerator.usingOnlineAI')}
+                      : t('aiGenerator.usingOnlineAI', { provider: currentAIProvider || 'unknown' })}
                   </Text>
                 </Group>
               </Alert>
@@ -275,7 +290,37 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
                       onClick={() => setSelectedAIProvider('deepseek')}
                       color="violet"
                     >
-                      {t('aiGenerator.onlineAI')}
+                      {t('aiGenerator.deepseek')}
+                    </Button>
+                  )}
+                  {isOpenAIConfigured && (
+                    <Button
+                      variant={selectedAIProvider === 'openai' ? 'filled' : 'outline'}
+                      size="xs"
+                      onClick={() => setSelectedAIProvider('openai')}
+                      color="blue"
+                    >
+                      {t('aiGenerator.openai')}
+                    </Button>
+                  )}
+                  {isQwenConfigured && (
+                    <Button
+                      variant={selectedAIProvider === 'qwen' ? 'filled' : 'outline'}
+                      size="xs"
+                      onClick={() => setSelectedAIProvider('qwen')}
+                      color="green"
+                    >
+                      {t('aiGenerator.qwen')}
+                    </Button>
+                  )}
+                  {isClaudeConfigured && (
+                    <Button
+                      variant={selectedAIProvider === 'claude' ? 'filled' : 'outline'}
+                      size="xs"
+                      onClick={() => setSelectedAIProvider('claude')}
+                      color="orange"
+                    >
+                      {t('aiGenerator.claude')}
                     </Button>
                   )}
                   {isOllamaConfigured && (
@@ -283,7 +328,7 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
                       variant={selectedAIProvider === 'ollama' ? 'filled' : 'outline'}
                       size="xs"
                       onClick={() => setSelectedAIProvider('ollama')}
-                      color="blue"
+                      color="teal"
                     >
                       {t('aiGenerator.localAI')}
                     </Button>

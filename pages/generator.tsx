@@ -116,7 +116,7 @@ const GeneratorPage: React.FC = () => {
           {/* Footer */}
           <Container size="lg" py="md">
             <Text size="sm" ta="center" c="dimmed">
-              {t('aiGenerator.poweredBy')} • {t('aiGenerator.unlimitedProblems')}
+              {t('aiGenerator.poweredBy', { provider: 'AI' })} • {t('aiGenerator.unlimitedProblems')}
             </Text>
           </Container>
         </AppShell.Main>

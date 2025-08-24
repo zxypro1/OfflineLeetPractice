@@ -9,11 +9,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Check what providers are configured
     const isOllamaConfigured = !!process.env.OLLAMA_ENDPOINT || !!process.env.OLLAMA_MODEL;
     const isDeepSeekConfigured = !!process.env.DEEPSEEK_API_KEY;
+    const isOpenAIConfigured = !!process.env.OPENAI_API_KEY;
+    const isQwenConfigured = !!process.env.QWEN_API_KEY;
+    const isClaudeConfigured = !!process.env.CLAUDE_API_KEY;
     
     return res.status(200).json({
       providers: {
         ollama: isOllamaConfigured,
-        deepseek: isDeepSeekConfigured
+        deepseek: isDeepSeekConfigured,
+        openai: isOpenAIConfigured,
+        qwen: isQwenConfigured,
+        claude: isClaudeConfigured
       }
     });
   } catch (error) {

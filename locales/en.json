@@ -143,14 +143,18 @@
     "instruction4": "The AI will generate a complete problem with test cases and solutions",
     "instruction5": "The generated problem will be automatically added to your problem collection",
     "pleaseEnterRequest": "Please enter a problem request",
-    "poweredBy": "Powered by DeepSeek-V3 AI",
+    "poweredBy": "Powered by {{provider}}",
     "unlimitedProblems": "Generate unlimited coding problems",
-    "usingOnlineAI": "Using Online AI (DeepSeek)",
+    "usingOnlineAI": "Using Online AI ({{provider}})",
     "usingLocalAI": "Using Local AI (Ollama)",
     "selectAIProvider": "Select AI Provider",
     "autoSelect": "Auto",
     "onlineAI": "Online (DeepSeek)",
     "localAI": "Local (Ollama)",
-    "noAIProviderConfigured": "No AI provider is configured. Please configure either Ollama or DeepSeek API key in your environment variables."
+    "deepseek": "DeepSeek",
+    "openai": "OpenAI",
+    "qwen": "Qwen",
+    "claude": "Claude",
+    "noAIProviderConfigured": "No AI provider is configured. Please configure one of the supported AI providers in your environment variables."
   }
 }

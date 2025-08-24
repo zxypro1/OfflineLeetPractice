@@ -71,7 +71,7 @@ npm start
 ### Core Functionality
 
 - **Local Problem Library**: 10+ classic algorithm problems included
-- **AI Problem Generator**: Generate unlimited custom problems with DeepSeek-V3 AI
+- **AI Problem Generator**: Generate unlimited custom problems with various AI providers
 - **Multi-Language Support**: Code and test in JavaScript, Python, Java, C++, or C
 - **Monaco Code Editor**: VS Code-like editing experience
 - **Instant Testing**: Run tests immediately with detailed results
@@ -104,7 +104,7 @@ npm start
 
 #### Setting Up AI Features
 
-To use the AI problem generator, you can configure either DeepSeek cloud service or local Ollama models (or both):
+To use the AI problem generator, you can configure any of these AI providers (or multiple):
 
 ##### Option 1: DeepSeek Cloud Service
 
@@ -123,7 +123,58 @@ To use the AI problem generator, you can configure either DeepSeek cloud service
      export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
      ```
 
-##### Option 2: Local Ollama Models
+##### Option 2: OpenAI
+
+1. **Get API Key**: Obtain an API key from [OpenAI Platform](https://platform.openai.com/)
+2. **Configure Key**: Add your API key to the application using one of these methods:
+   - Create a `.env.local` file in the project root with:
+     ```bash
+     OPENAI_API_KEY=your_openai_api_key_here
+     ```
+   - Or set as an environment variable in your system:
+     ```bash
+     # Windows (PowerShell)
+     $env:OPENAI_API_KEY="your_openai_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export OPENAI_API_KEY="your_openai_api_key_here"
+     ```
+
+##### Option 3: Qwen (通义千问)
+
+1. **Get API Key**: Obtain an API key from [Qwen Platform](https://dashscope.console.aliyun.com/)
+2. **Configure Key**: Add your API key to the application using one of these methods:
+   - Create a `.env.local` file in the project root with:
+     ```bash
+     QWEN_API_KEY=your_qwen_api_key_here
+     ```
+   - Or set as an environment variable in your system:
+     ```bash
+     # Windows (PowerShell)
+     $env:QWEN_API_KEY="your_qwen_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export QWEN_API_KEY="your_qwen_api_key_here"
+     ```
+
+##### Option 4: Claude
+
+1. **Get API Key**: Obtain an API key from [Claude Platform](https://console.anthropic.com/)
+2. **Configure Key**: Add your API key to the application using one of these methods:
+   - Create a `.env.local` file in the project root with:
+     ```bash
+     CLAUDE_API_KEY=your_claude_api_key_here
+     ```
+   - Or set as an environment variable in your system:
+     ```bash
+     # Windows (PowerShell)
+     $env:CLAUDE_API_KEY="your_claude_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export CLAUDE_API_KEY="your_claude_api_key_here"
+     ```
+
+##### Option 5: Local Ollama Models
 
 1. **Install Ollama**: Download and install Ollama from https://ollama.com/
 2. **Download Model**: Run `ollama pull llama3` to download the recommended model
@@ -149,9 +200,16 @@ To use the AI problem generator, you can configure either DeepSeek cloud service
 
 4. **Start Ollama**: Ensure the Ollama service is running (it usually starts automatically)
 
-##### Using Both Providers
+##### Using Multiple Providers
 
-If you have both DeepSeek and Ollama configured, the system will automatically prefer Ollama. You can switch between providers using the UI controls on the AI Generator page.
+If you have multiple AI providers configured, the system will automatically prefer them in this order:
+1. Ollama (local)
+2. OpenAI
+3. Claude
+4. Qwen
+5. DeepSeek
+
+You can switch between providers using the UI controls on the AI Generator page.
 
 The system automatically detects which providers are configured through a server-side check. The frontend fetches this configuration via the `/api/ai-providers` endpoint, ensuring proper security and compliance with Next.js environment variable restrictions.
 

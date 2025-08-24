@@ -143,14 +143,18 @@
     "instruction4": "AI 将生成包含测试用例和解决方案的完整题目",
     "instruction5": "生成的题目将自动添加到您的题目集合中",
     "pleaseEnterRequest": "请输入题目需求",
-    "poweredBy": "由 DeepSeek-V3 AI 驱动",
+    "poweredBy": "由 {{provider}} 驱动",
     "unlimitedProblems": "生成无限编程题目",
-    "usingOnlineAI": "使用在线 AI (DeepSeek)",
+    "usingOnlineAI": "使用在线 AI ({{provider}})",
     "usingLocalAI": "使用本地 AI (Ollama)",
     "selectAIProvider": "选择 AI 提供商",
     "autoSelect": "自动选择",
     "onlineAI": "在线 (DeepSeek)",
     "localAI": "本地 (Ollama)",
-    "noAIProviderConfigured": "未配置 AI 提供商。请在环境变量中配置 Ollama 或 DeepSeek API 密钥。"
+    "deepseek": "DeepSeek",
+    "openai": "OpenAI",
+    "qwen": "通义千问",
+    "claude": "Claude",
+    "noAIProviderConfigured": "未配置 AI 提供商。请在环境变量中配置支持的 AI 提供商。"
   }
 }

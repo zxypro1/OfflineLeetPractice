@@ -69,7 +69,7 @@ npm start
 ### 核心功能
 
 - **本地题库**: 内置 10+ 道经典算法题目
-- **AI 题目生成器**: 使用 DeepSeek-V3 AI 生成无限自定义题目
+- **AI 题目生成器**: 使用多种 AI 提供商生成无限自定义题目
 - **多语言支持**: 支持 JavaScript、Python、Java、C++ 和 C 语言编码和测试
 - **Monaco 代码编辑器**: VS Code 级别的编辑体验
 - **即时测试**: 立即运行测试并查看详细结果
@@ -102,7 +102,7 @@ npm start
 
 #### AI 功能设置
 
-要使用 AI 题目生成器，您可以配置 DeepSeek 云服务或本地 Ollama 模型（或两者）：
+要使用 AI 题目生成器，您可以配置以下任一 AI 提供商（或多个）：
 
 ##### 选项 1：DeepSeek 云服务
 
@@ -121,7 +121,58 @@ npm start
      export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
      ```
 
-##### 选项 2：本地 Ollama 模型
+##### 选项 2：OpenAI
+
+1. **获取 API 密钥**: 从 [OpenAI 平台](https://platform.openai.com/) 获取 API 密钥
+2. **配置密钥**: 通过以下方法之一将 API 密钥添加到应用程序：
+   - 在项目根目录创建 `.env.local` 文件，内容如下：
+     ```bash
+     OPENAI_API_KEY=your_openai_api_key_here
+     ```
+   - 或者在系统中设置环境变量：
+     ```bash
+     # Windows (PowerShell)
+     $env:OPENAI_API_KEY="your_openai_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export OPENAI_API_KEY="your_openai_api_key_here"
+     ```
+
+##### 选项 3：Qwen (通义千问)
+
+1. **获取 API 密钥**: 从 [Qwen 平台](https://dashscope.console.aliyun.com/) 获取 API 密钥
+2. **配置密钥**: 通过以下方法之一将 API 密钥添加到应用程序：
+   - 在项目根目录创建 `.env.local` 文件，内容如下：
+     ```bash
+     QWEN_API_KEY=your_qwen_api_key_here
+     ```
+   - 或者在系统中设置环境变量：
+     ```bash
+     # Windows (PowerShell)
+     $env:QWEN_API_KEY="your_qwen_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export QWEN_API_KEY="your_qwen_api_key_here"
+     ```
+
+##### 选项 4：Claude
+
+1. **获取 API 密钥**: 从 [Claude 平台](https://console.anthropic.com/) 获取 API 密钥
+2. **配置密钥**: 通过以下方法之一将 API 密钥添加到应用程序：
+   - 在项目根目录创建 `.env.local` 文件，内容如下：
+     ```bash
+     CLAUDE_API_KEY=your_claude_api_key_here
+     ```
+   - 或者在系统中设置环境变量：
+     ```bash
+     # Windows (PowerShell)
+     $env:CLAUDE_API_KEY="your_claude_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export CLAUDE_API_KEY="your_claude_api_key_here"
+     ```
+
+##### 选项 5：本地 Ollama 模型
 
 1. **安装 Ollama**: 从 https://ollama.com/ 下载并安装 Ollama
 2. **下载模型**: 运行 `ollama pull llama3` 下载推荐的模型
@@ -147,9 +198,16 @@ npm start
 
 4. **启动 Ollama**: 确保 Ollama 服务正在运行（通常会自动启动）
 
-##### 使用两个提供商
+##### 使用多个提供商
 
-如果您同时配置了 DeepSeek 和 Ollama，系统将自动优先选择 Ollama。您可以使用 AI 生成器页面上的 UI 控件在提供商之间切换。
+如果您配置了多个 AI 提供商，系统将按以下优先级顺序自动选择：
+1. Ollama（本地）
+2. OpenAI
+3. Claude
+4. Qwen
+5. DeepSeek
+
+您可以使用 AI 生成器页面上的 UI 控件在提供商之间切换。
 
 系统通过服务器端检查自动检测配置了哪些提供商。前端通过 `/api/ai-providers` 端点获取此配置，确保正确的安全性和符合 Next.js 环境变量限制。
 

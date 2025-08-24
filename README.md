@@ -102,6 +102,38 @@ npm start
 3. **Generate Problem**: AI creates a complete problem with test cases and solutions
 4. **Practice Immediately**: Generated problem is auto-added to your library
 
+#### Setting Up AI Features
+
+To use the AI problem generator, you need to set up a DeepSeek API key:
+
+1. **Get API Key**: Obtain an API key from [DeepSeek Platform](https://platform.deepseek.com/)
+2. **Configure Key**: Add your API key to the application using one of these methods:
+   - Create a `.env.local` file in the project root with:
+     ```bash
+     DEEPSEEK_API_KEY=your_deepseek_api_key_here
+     ```
+   - Or set as an environment variable in your system:
+     ```bash
+     # Windows (PowerShell)
+     $env:DEEPSEEK_API_KEY="your_deepseek_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
+     ```
+
+3. **Start the Application**: Run the application with `npm run dev` or use the startup scripts
+
+#### Using AI Generator
+
+1. Navigate to the AI Generator page by clicking the "🤖 AI Generator" button on the homepage
+2. Enter your problem request in English or Chinese, for example:
+   - "Generate a medium difficulty array manipulation problem"
+   - "我想做一道动态规划题目"
+   - "Create a binary search problem with edge cases"
+3. Click "Generate Problem" and wait for the AI to create your custom problem
+4. The generated problem will automatically be added to your local problem library
+5. Click "Try Last Generated Problem" to immediately start solving it
+
 ### Adding Custom Problems
 
 1. **Manual Addition**: Use the "Add Problem" page for custom problems

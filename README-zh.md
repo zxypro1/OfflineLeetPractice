@@ -100,6 +100,38 @@ npm start
 3. **生成题目**: AI 创建包含测试用例和解法的完整题目
 4. **立即练习**: 生成的题目自动添加到你的库中
 
+#### AI 功能设置
+
+要使用 AI 题目生成器，您需要设置 DeepSeek API 密钥：
+
+1. **获取 API 密钥**: 从 [DeepSeek 平台](https://platform.deepseek.com/) 获取 API 密钥
+2. **配置密钥**: 通过以下方法之一将 API 密钥添加到应用程序：
+   - 在项目根目录创建 `.env.local` 文件，内容如下：
+     ```bash
+     DEEPSEEK_API_KEY=your_deepseek_api_key_here
+     ```
+   - 或者在系统中设置环境变量：
+     ```bash
+     # Windows (PowerShell)
+     $env:DEEPSEEK_API_KEY="your_deepseek_api_key_here"
+     
+     # macOS/Linux (Bash)
+     export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
+     ```
+
+3. **启动应用程序**: 使用 `npm run dev` 运行应用程序或使用启动脚本
+
+#### 使用 AI 生成器
+
+1. 通过点击首页的"🤖 AI 生成器"按钮导航到 AI 生成器页面
+2. 输入您的问题请求（中文或英文），例如：
+   - "Generate a medium difficulty array manipulation problem"
+   - "我想做一道动态规划题目"
+   - "创建一个包含边界情况的二分搜索问题"
+3. 点击"生成题目"并等待 AI 创建您的自定义问题
+4. 生成的问题将自动添加到您的本地问题库中
+5. 点击"尝试最后生成的问题"立即开始解决它
+
 ### 添加自定义题目
 
 1. **手动添加**: 使用"添加题目"页面添加自定义题目

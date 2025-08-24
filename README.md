@@ -1,51 +1,52 @@
-# OfflineLeetPractice ✈️
+# OfflineLeetPractice
 
 [中文](./README-zh.md)
 
 > A local-run LeetCode-style coding practice system that lets you browse, code, and test problems 100% offline—perfect for planes, cruises, or any no-internet scenario.
 
-## 🌟 Why OfflineLeetPractice?
+## Why OfflineLeetPractice?
 
 **Perfect for No-Internet Scenarios:**
 
-- ✈️ **On Flights**: Make productive use of long flights by practicing coding
-- 🚢 **Cruises & Remote Areas**: Continue learning where internet is unreliable
-- 🏕️ **Camping & Travel**: Practice algorithms anywhere, anytime
-- 🔒 **Security-Conscious Environments**: No data leaves your machine
-- 💰 **No Subscription Required**: Completely free, no online dependencies
+- **On Flights**: Make productive use of long flights by practicing coding
+- **Cruises & Remote Areas**: Continue learning where internet is unreliable
+- **Camping & Travel**: Practice algorithms anywhere, anytime
+- **Security-Conscious Environments**: No data leaves your machine
+- **No Subscription Required**: Completely free, no online dependencies
 
 **Why Choose Offline Over Online Platforms?**
 
-- 🚀 **Instant Response**: No network latency, immediate code execution
-- 🔐 **Privacy**: Your code never leaves your computer
-- 📚 **Always Available**: Works without any internet connection
-- 💻 **Customizable**: Add your own problems and test cases
-- 🎯 **Focused Learning**: No distractions from online features
+- **Instant Response**: No network latency, immediate code execution
+- **Privacy**: Your code never leaves your computer
+- **Always Available**: Works without any internet connection
+- **Customizable**: Add your own problems and test cases
+- **Focused Learning**: No distractions from online features
 
-## 🎯 Features
+## Features
 
 ### Core Functionality
 
-- 📝 **Local Problem Library**: 10+ classic algorithm problems included
-- 🤖 **AI Problem Generator**: Generate unlimited custom problems with DeepSeek-V3 AI
-- 💻 **Monaco Code Editor**: VS Code-like editing experience
-- ⚡ **Instant Testing**: Run tests immediately with detailed results
-- 📊 **Performance Metrics**: Execution time and memory usage tracking
-- 🌍 **Bilingual Support**: Full Chinese and English interface
-- 🌙 **Dark/Light Theme**: Comfortable coding in any lighting
-- ➕ **Dynamic Problem Management**: Add/edit problems without rebuilding
+- **Local Problem Library**: 10+ classic algorithm problems included
+- **AI Problem Generator**: Generate unlimited custom problems with DeepSeek-V3 AI
+- **Multi-Language Support**: Code and test in JavaScript, Python, Java, C++, or C
+- **Monaco Code Editor**: VS Code-like editing experience
+- **Instant Testing**: Run tests immediately with detailed results
+- **Performance Metrics**: Execution time and memory usage tracking
+- **Bilingual Support**: Full Chinese and English interface
+- **Dark/Light Theme**: Comfortable coding in any lighting
+- **Dynamic Problem Management**: Add/edit problems without rebuilding
 
 ### Perfect for Learning
 
-- 🎓 **Educational Focus**: Problems range from Easy to Hard difficulty
-- 🏷️ **Tagged Categories**: Array, Hash Table, Dynamic Programming, etc.
-- 💡 **Reference Solutions**: Study optimal implementations
-- 📈 **Progress Tracking**: Visual feedback on test results
+- **Educational Focus**: Problems range from Easy to Hard difficulty
+- **Tagged Categories**: Array, Hash Table, Dynamic Programming, etc.
+- **Reference Solutions**: Study optimal implementations
+- **Progress Tracking**: Visual feedback on test results
 
-### 🤖 AI-Powered Problem Generation
+### AI-Powered Problem Generation
 
 - **Custom Problem Creation**: Describe what you want to practice in Chinese or English
-- **Multi-Language Templates**: Generated problems support JavaScript, Python, Java, C++, C
+- **Multi-Language Templates**: Generated problems support JavaScript, Python, Java, C++, and C
 - **Complete Solutions**: Each problem includes working reference solutions
 - **Comprehensive Testing**: Auto-generated test cases including edge cases
 - **Instant Integration**: Problems automatically added to your local library
@@ -56,7 +57,7 @@
 - "Generate a medium difficulty array problem using two pointers"
 - "创建一个关于字符串处理的题目" (Chinese: Create a string processing problem)
 
-## 🤖 AI Generator Setup (Optional)
+## AI Generator Setup (Optional)
 
 **For unlimited custom problem generation:**
 
@@ -82,7 +83,7 @@ DEEPSEEK_API_KEY=your_api_key_here
 
 **Note**: AI Generator requires internet for generation, but generated problems work offline forever!
 
-## 🚀 Quick Start (No Internet Required)
+## Quick Start (No Internet Required)
 
 ### Prerequisites
 
@@ -110,10 +111,10 @@ chmod +x start-local.sh
 
 The scripts will automatically:
 
-1. ✅ Check Node.js installation
-2. 📦 Install dependencies (npm install)
-3. 🔨 Build the application (npm run build)
-4. 🌐 Start the local server
+1. Check Node.js installation
+2. Install dependencies (npm install)
+3. Build the application (npm run build)
+4. Start the local server
 
 Then open **http://localhost:3000** in your browser!
 
@@ -134,17 +135,18 @@ npm run build
 npm start
 ```
 
-## 📱 How to Use
+## How to Use
 
 ### Basic Problem Solving
 1. **Browse Problems**: View the problem list with difficulty and tags
 2. **Select a Problem**: Click on any problem to open the detail page
-3. **Code Your Solution**: Use the Monaco editor (supports autocomplete, syntax highlighting)
-4. **Run Tests**: Click "Submit & Run Tests" to execute your code
-5. **View Results**: See test results with performance metrics
+3. **Choose Language**: Select your preferred programming language from the dropdown
+4. **Code Your Solution**: Use the Monaco editor (supports autocomplete, syntax highlighting)
+5. **Run Tests**: Click "Submit & Run Tests" to execute your code
+6. **View Results**: See test results with performance metrics
 
-### 🤖 AI Problem Generation
-1. **Access AI Generator**: Click the "🤖 AI Generator" button on the homepage
+### AI Problem Generation
+1. **Access AI Generator**: Click the "AI Generator" button on the homepage
 2. **Describe Your Need**: Enter what type of problem you want in Chinese or English:
    - "我想做一道中等难度的动态规划题目"
    - "Generate a medium array manipulation problem using sliding window"
@@ -152,7 +154,7 @@ npm start
 4. **Practice Immediately**: Generated problem is auto-added to your library
 5. **Go Offline**: Once generated, practice the problem completely offline
 
-### ➕ Adding Custom Problems
+### Adding Custom Problems
 1. **Manual Addition**: Use the "Add Problem" page for custom problems
 2. **JSON Import**: Upload or paste problem data in JSON format
 3. **Direct Edit**: Modify `public/problems.json` for immediate changes (no rebuild needed)
@@ -161,12 +163,12 @@ npm start
 
 Each test run shows:
 
-- ⏱️ **Total Execution Time**: Time to run all test cases
-- 📊 **Average Time**: Per test case execution time
-- 💾 **Memory Usage**: Heap memory consumed
-- 🔍 **Individual Test Results**: Pass/fail status for each case
+- **Total Execution Time**: Time to run all test cases
+- **Average Time**: Per test case execution time
+- **Memory Usage**: Heap memory consumed
+- **Individual Test Results**: Pass/fail status for each case
 
-## 🛫 Airplane Mode Setup Guide
+## Airplane Mode Setup Guide
 
 ### Before Your Flight
 
@@ -182,12 +184,12 @@ Each test run shows:
 
 ### Flight Productivity Tips
 
-- 🎯 **Focus on Fundamentals**: Practice core algorithms (sorting, searching, DP)
-- 📝 **Take Notes**: Use the editor to document your learning
-- 🔄 **Iterate Solutions**: Optimize your code for better performance
-- 📊 **Track Progress**: Use the performance metrics to improve
+- **Focus on Fundamentals**: Practice core algorithms (sorting, searching, DP)
+- **Take Notes**: Use the editor to document your learning
+- **Iterate Solutions**: Optimize your code for better performance
+- **Track Progress**: Use the performance metrics to improve
 
-## 🏗️ Technology Stack
+## Technology Stack
 
 - **Frontend**: React 18 + Next.js 13 + TypeScript
 - **UI Framework**: Mantine v7 (Modern React components)
@@ -196,7 +198,7 @@ Each test run shows:
 - **Styling**: CSS Modules + Dark/Light themes
 - **Internationalization**: Built-in i18n support
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 OfflineLeetPractice/
@@ -227,7 +229,7 @@ OfflineLeetPractice/
 └── AI_GENERATOR_README.md # AI Generator detailed docs
 ```
 
-## 🔧 Customization
+## Customization
 
 ### Adding New Problems (No Rebuild Required!) 🎯
 
@@ -238,10 +240,10 @@ OfflineLeetPractice/
 3. **Save and Refresh**: Changes take effect immediately!
 
 **Perfect for:**
-- ✈️ Adding practice problems during flights
-- 🏫 Teachers customizing problems for students
-- 🎯 Creating company-specific coding challenges
-- 📚 Building personal algorithm libraries
+- **Adding practice problems during flights**
+- **Teachers customizing problems for students**
+- **Creating company-specific coding challenges**
+- **Building personal algorithm libraries**
 
 **Example**: Add a new problem by editing `public/problems.json`:
 ```json
@@ -278,40 +280,43 @@ Edit `problems/problems.json`:
 
 ### Supported Languages
 
-Currently supports **JavaScript** with plans to add:
+Currently supports multiple programming languages for problem solving:
 
-- Python
-- Java
-- C++
-- TypeScript (enhanced)
+- **JavaScript** - Full support with VM sandbox execution
+- **Python** - Full support with interpreter execution
+- **Java** - Full support with compilation and execution
+- **C++** - Full support with compilation and execution
+- **C** - Full support with compilation and execution
 
-## 🌐 Language Support
+All languages are supported in the AI problem generator with appropriate templates and test cases.
+
+## Language Support
 
 - **English**: Full interface and problem descriptions
 - **中文**: 完整的中文界面和题目描述
 - **Switch Anytime**: Toggle between languages instantly
 
-## 🎨 Themes
+## Themes
 
 - **Light Theme**: Perfect for daytime coding
 - **Dark Theme**: Easy on the eyes for night flights
 - **Auto-Detection**: Follows system preference
 - **Persistent**: Remembers your choice
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Areas for improvement:
 
-- 📚 **More Problems**: Add classic algorithm challenges
-- 🗣️ **More Languages**: Python, Java, C++ support
-- 🎯 **Enhanced Features**: Better performance analytics
-- 🌍 **Translations**: Additional language support
+- **More Problems**: Add classic algorithm challenges
+- **More Languages**: Python, Java, C++ support
+- **Enhanced Features**: Better performance analytics
+- **Translations**: Additional language support
 
-## 📄 License
+## License
 
 MIT License - Feel free to use, modify, and distribute!
 
-## 🛟 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -352,9 +357,9 @@ echo $env:DEEPSEEK_API_KEY # Windows PowerShell
 
 ### Need Help?
 
-- 🔍 Review the startup script output for specific error messages
-- 🛠️ Ensure Node.js 16+ is properly installed
-- 🤖 See `AI_GENERATOR_README.md` for detailed AI Generator documentation
+- Review the startup script output for specific error messages
+- Ensure Node.js 16+ is properly installed
+- See `AI_GENERATOR_README.md` for detailed AI Generator documentation
 
 ---
 

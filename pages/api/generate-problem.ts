@@ -28,6 +28,16 @@ interface Problem {
   solution: {
     js: string;
   };
+  solutions: Array<{
+    title: {
+      en: string;
+      zh: string;
+    };
+    content: {
+      en: string;
+      zh: string;
+    };
+  }>;
   tests: Array<{
     input: string;
     output: string;
@@ -62,7 +72,10 @@ CRITICAL REQUIREMENTS:
 5. Include at least 4-5 comprehensive test cases covering edge cases
 6. Ensure the problem is solvable and well-defined
 7. Use proper escape sequences in strings (\\n for newlines, \\" for quotes)
-8. Make sure all test cases pass with the provided solution`
+8. Make sure all test cases pass with the provided solution
+9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
+10. Each solution should have a title and content in both English and Chinese
+11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples`
         },
         {
           role: 'user',
@@ -116,6 +129,18 @@ Return the response in this EXACT JSON format:
   "solution": {
     "js": "function functionName(param) {\\n  // Complete working solution\\n  return result;\\n}\\nmodule.exports = functionName;"
   },
+  "solutions": [
+    {
+      "title": {
+        "en": "Solution Approach Title",
+        "zh": "解法标题"
+      },
+      "content": {
+        "en": "Detailed explanation of the solution approach in English with code examples, complexity analysis, and step-by-step walkthrough.",
+        "zh": "详细的解法说明，包含中文的代码示例、复杂度分析和逐步演示。"
+      }
+    }
+  ],
   "tests": [
     {
       "input": "test input in JSON format",
@@ -129,6 +154,7 @@ Requirements:
 - Ensure the difficulty level is appropriate
 - Include comprehensive test cases that cover edge cases
 - The JavaScript solution must work correctly with all test cases
+- Include at least 2 detailed solution explanations with code examples
 - Use proper programming concepts and algorithms
 - Make the problem educational and interesting`;
 }

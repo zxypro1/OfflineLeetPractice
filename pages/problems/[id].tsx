@@ -482,9 +482,9 @@ export default function ProblemPage() {
                   <Stack gap="lg">
                     {/* Problem Description */}
                     <Paper shadow="sm" p="lg" withBorder>
-                      <Text size="md" style={{ lineHeight: 1.6 }}>
-                        {problem.description[locale as keyof typeof problem.description] || problem.description.zh}
-                      </Text>
+                      <MarkdownRenderer 
+                        content={problem.description[locale as keyof typeof problem.description] || problem.description.zh}
+                      />
                     </Paper>
                     
                     {/* Examples */}

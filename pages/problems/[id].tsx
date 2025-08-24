@@ -499,14 +499,27 @@ export default function ProblemPage() {
                               <Text size="sm" fw={500} mb={5}>
                                 {t('problemPage.example')} {index + 1}:
                               </Text>
-                              <Code block>
-                                {t('problemPage.input')}: {example.input}\n{t('problemPage.output')}: {example.output}
-                              </Code>
+                              <pre style={{
+                                backgroundColor: colorScheme === 'dark' ? '#2e2e2e' : '#f8f9fa',
+                                border: `1px solid ${colorScheme === 'dark' ? '#373a40' : '#e9ecef'}`,
+                                borderRadius: '4px',
+                                padding: '12px',
+                                fontFamily: 'monospace',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordBreak: 'break-word',
+                                margin: 0
+                              }}>
+                                {t('problemPage.input')}: {example.input}
+                                {'\n'}
+                                {t('problemPage.output')}: {example.output}
+                              </pre>
                             </div>
                           ))}
                         </Stack>
                       </Paper>
                     )}
+
                   </Stack>
                 </Tabs.Panel>
 

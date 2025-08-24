@@ -50,6 +50,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const args = parseTestInput(test.input);
         const expected = parseTestOutput(test.output);
         
+        // Check if this is a linked list problem
+        const isLinkedListProblem = problem.tags && problem.tags.includes('linked-list');
+        
         // Build complete execution code
         const executeCode = `
           // Reset module.exports
@@ -62,15 +65,66 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             throw new Error('Must use module.exports = yourFunction to export function');
           }
           
+          ${isLinkedListProblem ? `
+          // Linked list helper functions
+          function arrayToLinkedList(arr) {
+            if (!arr || arr.length === 0) return null;
+            
+            const head = new ListNode(arr[0]);
+            let current = head;
+            
+            for (let i = 1; i < arr.length; i++) {
+              current.next = new ListNode(arr[i]);
+              current = current.next;
+            }
+            
+            return head;
+          }
+          
+          function linkedListToArray(head) {
+            const result = [];
+            let current = head;
+            
+            while (current) {
+              result.push(current.val);
+              current = current.next;
+            }
+            
+            return result;
+          }
+          ` : ''}
+          
           // Execute function
           const userFunction = module.exports;
           const args = ${JSON.stringify(args)};
+          
+          ${isLinkedListProblem ? `
+          // Convert array arguments to linked lists for linked list problems
+          const processedArgs = args.map(arg => {
+            if (Array.isArray(arg)) {
+              return arrayToLinkedList(arg);
+            }
+            return arg;
+          });
+          
+          const result = userFunction(...processedArgs);
+          
+          console.log('Execution result:', result, 'type:', typeof result);
+          
+          // Convert linked list result back to array
+          const finalResult = linkedListToArray(result);
+          console.log('Converted result:', finalResult);
+          
+          // Explicitly return result
+          return finalResult;
+          ` : `
           const result = userFunction(...args);
           
           console.log('Execution result:', result, 'type:', typeof result);
           
           // Explicitly return result
           return result;
+          `}
         `;
 
         const startTime = Date.now();

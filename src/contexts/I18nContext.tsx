@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 
 type Translations = {
@@ -23,6 +23,7 @@ type Translations = {
     problems: string;
     addProblem: string;
     search: string;
+    aiGenerator: string;
     searchPlaceholder: string;
     filterByDifficulty: string;
     filterByTags: string;
@@ -72,6 +73,31 @@ type Translations = {
     memoryUsed: string;
     totalMemory: string;
     input: string;
+  };
+  aiGenerator: {
+    title: string;
+    subtitle: string;
+    backToHome: string;
+    tryLastProblem: string;
+    requestLabel: string;
+    requestPlaceholder: string;
+    suggestedRequests: string;
+    generateButton: string;
+    generating: string;
+    cancel: string;
+    errorTitle: string;
+    successTitle: string;
+    previewTitle: string;
+    problemId: string;
+    howToUse: string;
+    instruction1: string;
+    instruction2: string;
+    instruction3: string;
+    instruction4: string;
+    instruction5: string;
+    pleaseEnterRequest: string;
+    poweredBy: string;
+    unlimitedProblems: string;
   };
   tags: {
     [key: string]: string;
@@ -143,6 +169,7 @@ const translations: Record<string, Translations> = {
       problemList: '📚 题目列表',
       problems: '题',
       addProblem: '添加题目',
+      aiGenerator: 'AI 生成器',
       search: '搜索',
       searchPlaceholder: '搜索题目标题或描述...',
       filterByDifficulty: '按难度筛选',
@@ -237,6 +264,31 @@ const translations: Record<string, Translations> = {
       jsonImportedSuccess: 'JSON导入成功',
       networkError: '网络错误',
       backToProblems: '返回题目列表'
+    },
+    aiGenerator: {
+      title: 'AI 题目生成器',
+      subtitle: '描述您想要练习的编程题目类型，AI 将为您生成自定义的 LeetCode 风格题目。',
+      backToHome: '返回首页',
+      tryLastProblem: '尝试上一题',
+      requestLabel: '描述您的题目需求',
+      requestPlaceholder: '例如：我想做一道动态规划题目，或者我想做一道关于字符串处理的题目',
+      suggestedRequests: '建议的请求',
+      generateButton: '生成题目',
+      generating: '生成中...',
+      cancel: '取消',
+      errorTitle: '错误',
+      successTitle: '成功',
+      previewTitle: '生成的题目预览',
+      problemId: '题目 ID',
+      howToUse: '使用方法',
+      instruction1: '描述您想要的题目类型（算法类型、难度、主题）',
+      instruction2: '您可以使用中文或英文',
+      instruction3: '具体说明您想练习的内容（例如："动态规划"、"图算法"）',
+      instruction4: 'AI 将生成包含测试用例和解决方案的完整题目',
+      instruction5: '生成的题目将自动添加到您的题目集合中',
+      pleaseEnterRequest: '请输入题目需求',
+      poweredBy: '由 DeepSeek-V3 AI 驱动',
+      unlimitedProblems: '生成无限编程题目'
     }
   },
   en: {
@@ -260,6 +312,7 @@ const translations: Record<string, Translations> = {
       problemList: '📚 Problem List',
       problems: 'problems',
       addProblem: 'Add Problem',
+      aiGenerator: 'AI Generator',
       search: 'Search',
       searchPlaceholder: 'Search problem title or description...',
       filterByDifficulty: 'Filter by Difficulty',
@@ -354,6 +407,31 @@ const translations: Record<string, Translations> = {
       jsonImportedSuccess: 'JSON imported successfully',
       networkError: 'Network error occurred',
       backToProblems: 'Back to Problems'
+    },
+    aiGenerator: {
+      title: 'AI Problem Generator',
+      subtitle: 'Describe the type of coding problem you want to practice. The AI will generate a custom LeetCode-style problem for you.',
+      backToHome: 'Back to Home',
+      tryLastProblem: 'Try Last Problem',
+      requestLabel: 'Describe your problem request',
+      requestPlaceholder: 'e.g., I want to do a dynamic programming problem, or I want to do a string processing problem',
+      suggestedRequests: 'Suggested Requests',
+      generateButton: 'Generate Problem',
+      generating: 'Generating...',
+      cancel: 'Cancel',
+      errorTitle: 'Error',
+      successTitle: 'Success',
+      previewTitle: 'Generated Problem Preview',
+      problemId: 'Problem ID',
+      howToUse: 'How to use',
+      instruction1: 'Describe the type of problem you want (algorithm type, difficulty, topic)',
+      instruction2: 'You can write in English or Chinese',
+      instruction3: 'Be specific about what you want to practice (e.g., "dynamic programming", "graph algorithms")',
+      instruction4: 'The AI will generate a complete problem with test cases and solutions',
+      instruction5: 'The generated problem will be automatically added to your problem collection',
+      pleaseEnterRequest: 'Please enter a problem request',
+      poweredBy: 'Powered by DeepSeek-V3 AI',
+      unlimitedProblems: 'Generate unlimited coding problems'
     }
   }
 };

@@ -27,11 +27,13 @@
 ### Core Functionality
 
 - 📝 **Local Problem Library**: 10+ classic algorithm problems included
+- 🤖 **AI Problem Generator**: Generate unlimited custom problems with DeepSeek-V3 AI
 - 💻 **Monaco Code Editor**: VS Code-like editing experience
 - ⚡ **Instant Testing**: Run tests immediately with detailed results
 - 📊 **Performance Metrics**: Execution time and memory usage tracking
 - 🌍 **Bilingual Support**: Full Chinese and English interface
 - 🌙 **Dark/Light Theme**: Comfortable coding in any lighting
+- ➕ **Dynamic Problem Management**: Add/edit problems without rebuilding
 
 ### Perfect for Learning
 
@@ -39,6 +41,46 @@
 - 🏷️ **Tagged Categories**: Array, Hash Table, Dynamic Programming, etc.
 - 💡 **Reference Solutions**: Study optimal implementations
 - 📈 **Progress Tracking**: Visual feedback on test results
+
+### 🤖 AI-Powered Problem Generation
+
+- **Custom Problem Creation**: Describe what you want to practice in Chinese or English
+- **Multi-Language Templates**: Generated problems support JavaScript, Python, Java, C++, C
+- **Complete Solutions**: Each problem includes working reference solutions
+- **Comprehensive Testing**: Auto-generated test cases including edge cases
+- **Instant Integration**: Problems automatically added to your local library
+- **Offline-First**: Generate problems online, practice them offline forever
+
+**Example AI Requests:**
+- "我想做一道动态规划题目" (Chinese: I want a dynamic programming problem)
+- "Generate a medium difficulty array problem using two pointers"
+- "创建一个关于字符串处理的题目" (Chinese: Create a string processing problem)
+
+## 🤖 AI Generator Setup (Optional)
+
+**For unlimited custom problem generation:**
+
+### Get DeepSeek API Key
+1. Visit [DeepSeek Platform](https://platform.deepseek.com/)
+2. Create account and obtain API key
+3. Set up environment variable:
+
+#### Windows (PowerShell):
+```powershell
+$env:DEEPSEEK_API_KEY="your_api_key_here"
+```
+
+#### macOS/Linux:
+```bash
+export DEEPSEEK_API_KEY="your_api_key_here"
+```
+
+#### Or create `.env.local` file:
+```bash
+DEEPSEEK_API_KEY=your_api_key_here
+```
+
+**Note**: AI Generator requires internet for generation, but generated problems work offline forever!
 
 ## 🚀 Quick Start (No Internet Required)
 
@@ -94,11 +136,26 @@ npm start
 
 ## 📱 How to Use
 
+### Basic Problem Solving
 1. **Browse Problems**: View the problem list with difficulty and tags
 2. **Select a Problem**: Click on any problem to open the detail page
 3. **Code Your Solution**: Use the Monaco editor (supports autocomplete, syntax highlighting)
 4. **Run Tests**: Click "Submit & Run Tests" to execute your code
 5. **View Results**: See test results with performance metrics
+
+### 🤖 AI Problem Generation
+1. **Access AI Generator**: Click the "🤖 AI Generator" button on the homepage
+2. **Describe Your Need**: Enter what type of problem you want in Chinese or English:
+   - "我想做一道中等难度的动态规划题目"
+   - "Generate a medium array manipulation problem using sliding window"
+3. **Generate Problem**: AI creates a complete problem with test cases and solutions
+4. **Practice Immediately**: Generated problem is auto-added to your library
+5. **Go Offline**: Once generated, practice the problem completely offline
+
+### ➕ Adding Custom Problems
+1. **Manual Addition**: Use the "Add Problem" page for custom problems
+2. **JSON Import**: Upload or paste problem data in JSON format
+3. **Direct Edit**: Modify `public/problems.json` for immediate changes (no rebuild needed)
 
 ### Performance Monitoring
 
@@ -146,18 +203,28 @@ OfflineLeetPractice/
 ├── pages/                  # Next.js pages and API routes
 │   ├── api/
 │   │   ├── problems.ts     # Problem data API
-│   │   └── run.ts          # Code execution API
+│   │   ├── run.ts          # Code execution API
+│   │   ├── generate-problem.ts # AI problem generation API
+│   │   └── add-problem.ts  # Manual problem addition API
 │   ├── problems/[id].tsx   # Problem detail page
+│   ├── generator.tsx       # AI Generator page
+│   ├── add-problem.tsx     # Manual problem addition page
 │   └── index.tsx           # Homepage
 ├── problems/
 │   └── problems.json       # Local problem database
 ├── src/
 │   ├── components/         # React components
+│   │   ├── ProblemGenerator.tsx # AI Generator component
+│   │   ├── ProblemForm.tsx     # Manual problem form
+│   │   └── LanguageThemeControls.tsx # Language/theme switcher
 │   ├── contexts/          # React contexts (i18n, theme)
 │   └── styles/            # Global styles
+├── locales/              # Internationalization files
+│   ├── en.json           # English translations
+│   └── zh.json           # Chinese translations
 ├── start-local.bat        # Windows startup script
 ├── start-local.sh         # Unix startup script
-└── README-cross-platform.md
+└── AI_GENERATOR_README.md # AI Generator detailed docs
 ```
 
 ## 🔧 Customization
@@ -266,11 +333,28 @@ npm start -- -p 3001
 chmod +x start-local.sh
 ```
 
+**AI Generator not working:**
+
+```bash
+# Check if DEEPSEEK_API_KEY is set
+echo $DEEPSEEK_API_KEY  # Unix
+echo %DEEPSEEK_API_KEY% # Windows CMD
+echo $env:DEEPSEEK_API_KEY # Windows PowerShell
+
+# Set the API key (see AI Generator Setup section)
+```
+
+**Generated problem format errors:**
+
+- Try rephrasing your request to be more specific
+- Check your DeepSeek API key and account credits
+- Ensure you have a stable internet connection during generation
+
 ### Need Help?
 
-- 📖 Check `README-cross-platform.md` for detailed setup instructions
 - 🔍 Review the startup script output for specific error messages
 - 🛠️ Ensure Node.js 16+ is properly installed
+- 🤖 See `AI_GENERATOR_README.md` for detailed AI Generator documentation
 
 ---
 

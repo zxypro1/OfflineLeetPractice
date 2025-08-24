@@ -22,17 +22,59 @@
 
 ### 核心功能
 - 📝 **本地题库**: 内置 10+ 道经典算法题目
+- 🤖 **AI 题目生成器**: 使用 DeepSeek-V3 AI 生成无限自定义题目
 - 💻 **Monaco 代码编辑器**: VS Code 级别的编辑体验
 - ⚡ **即时测试**: 立即运行测试并查看详细结果
 - 📊 **性能指标**: 执行时间和内存使用量跟踪
 - 🌍 **双语支持**: 完整的中英文界面
 - 🌙 **深色/浅色主题**: 适应任何光线环境的舒适编码
+- ➕ **动态题目管理**: 无需重新构建即可添加/编辑题目
 
 ### 非常适合学习
 - 🎓 **教育导向**: 题目难度从简单到困难
 - 🏷️ **标签分类**: 数组、哈希表、动态规划等
 - 💡 **参考解法**: 学习最优实现方案
 - 📈 **进度跟踪**: 测试结果的可视化反馈
+
+### 🤖 AI 智能题目生成
+
+- **自定义题目创建**: 用中文或英文描述你想练习的内容
+- **多语言模板**: 生成的题目支持 JavaScript、Python、Java、C++、C
+- **完整解法**: 每个题目都包含工作的参考解法
+- **全面测试**: 自动生成包括边界情况的测试用例
+- **即时集成**: 题目自动添加到你的本地库中
+- **离线优先**: 在线生成题目，永久离线练习
+
+**AI 请求示例：**
+- "我想做一道动态规划题目"
+- "Generate a medium difficulty array problem using two pointers"
+- "创建一个关于字符串处理的题目，使用滑动窗口算法"
+
+## 🤖 AI 生成器设置（可选）
+
+**生成无限自定义题目：**
+
+### 获取 DeepSeek API 密钥
+1. 访问 [DeepSeek 平台](https://platform.deepseek.com/)
+2. 创建账户并获取 API 密钥
+3. 设置环境变量：
+
+#### Windows (PowerShell)：
+```powershell
+$env:DEEPSEEK_API_KEY="your_api_key_here"
+```
+
+#### macOS/Linux：
+```bash
+export DEEPSEEK_API_KEY="your_api_key_here"
+```
+
+#### 或创建 `.env.local` 文件：
+```bash
+DEEPSEEK_API_KEY=your_api_key_here
+```
+
+**注意**：AI 生成器需要网络来生成题目，但生成的题目可以永久离线使用！
 
 ## 🚀 快速开始（无需网络）
 
@@ -83,11 +125,26 @@ npm start
 
 ## 📱 使用方法
 
+### 基本题目解决
 1. **浏览题目**: 查看包含难度和标签的题目列表
 2. **选择题目**: 点击任意题目打开详情页面
 3. **编写解法**: 使用 Monaco 编辑器（支持自动补全、语法高亮）
 4. **运行测试**: 点击"提交并运行测试"执行你的代码
 5. **查看结果**: 查看测试结果和性能指标
+
+### 🤖 AI 题目生成
+1. **访问 AI 生成器**: 点击首页的"🤖 AI 生成器"按钮
+2. **描述你的需求**: 用中文或英文输入你想要的题目类型：
+   - "我想做一道中等难度的动态规划题目"
+   - "Generate a medium array manipulation problem using sliding window"
+3. **生成题目**: AI 创建包含测试用例和解法的完整题目
+4. **立即练习**: 生成的题目自动添加到你的库中
+5. **离线使用**: 一旦生成，就可以完全离线练习题目
+
+### ➕ 添加自定义题目
+1. **手动添加**: 使用"添加题目"页面添加自定义题目
+2. **JSON 导入**: 上传或粘贴 JSON 格式的题目数据
+3. **直接编辑**: 修改 `public/problems.json` 即时生效（无需重新构建）
 
 ### 性能监控
 每次测试运行都会显示：
@@ -130,18 +187,28 @@ OfflineLeetPractice/
 ├── pages/                  # Next.js 页面和 API 路由
 │   ├── api/
 │   │   ├── problems.ts     # 题目数据 API
-│   │   └── run.ts          # 代码执行 API
+│   │   ├── run.ts          # 代码执行 API
+│   │   ├── generate-problem.ts # AI 题目生成 API
+│   │   └── add-problem.ts  # 手动添加题目 API
 │   ├── problems/[id].tsx   # 题目详情页面
+│   ├── generator.tsx       # AI 生成器页面
+│   ├── add-problem.tsx     # 手动添加题目页面
 │   └── index.tsx           # 首页
 ├── problems/
 │   └── problems.json       # 本地题目数据库
 ├── src/
 │   ├── components/         # React 组件
+│   │   ├── ProblemGenerator.tsx # AI 生成器组件
+│   │   ├── ProblemForm.tsx     # 手动添加题目表单
+│   │   └── LanguageThemeControls.tsx # 语言/主题切换器
 │   ├── contexts/          # React 上下文 (国际化, 主题)
 │   └── styles/            # 全局样式
+├── locales/              # 国际化文件
+│   ├── en.json           # 英文翻译
+│   └── zh.json           # 中文翻译
 ├── start-local.bat        # Windows 启动脚本
 ├── start-local.sh         # Unix 启动脚本
-└── README-cross-platform.md
+└── AI_GENERATOR_README.md # AI 生成器详细文档
 ```
 
 ## 🔧 自定义
@@ -243,10 +310,25 @@ npm start -- -p 3001
 chmod +x start-local.sh
 ```
 
+**AI 生成器无法工作：**
+```bash
+# 检查 DEEPSEEK_API_KEY 是否设置
+echo $DEEPSEEK_API_KEY  # Unix
+echo %DEEPSEEK_API_KEY% # Windows CMD
+echo $env:DEEPSEEK_API_KEY # Windows PowerShell
+
+# 设置 API 密钥（参见 AI 生成器设置部分）
+```
+
+**生成的题目格式错误：**
+- 尝试更具体地描述你的需求
+- 检查你的 DeepSeek API 密钥和账户余额
+- 确保生成过程中网络连接稳定
+
 ### 需要帮助？
-- 📖 查看 `README-cross-platform.md` 获取详细设置说明
 - 🔍 查看启动脚本输出的具体错误信息
 - 🛠️ 确保正确安装了 Node.js 16+
+- 🤖 查看 `AI_GENERATOR_README.md` 获取 AI 生成器详细说明
 
 ---
 

@@ -48,11 +48,16 @@ export default function Home() {
   const [problems, setProblems] = useState<Problem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -116,6 +121,55 @@ export default function Home() {
   // Check if any filters are applied
   const hasActiveFilters = searchQuery || selectedDifficulties.length > 0 || selectedTags.length > 0;
 
+  // Prevent hydration mismatch by waiting for client-side mount
+  if (!mounted) {
+    return (
+      <AppShell
+        header={{ height: 80 }}
+        navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: true } }}
+        padding={{ base: 'sm', md: 'md' }}
+      >
+        <AppShell.Header>
+          <Stack gap="xs" h="100%" justify="center" px="md">
+            <Group justify="space-between" align="flex-start">
+              <div>
+                <Title order={2} mb={4}>Offline LeetCode Practice</Title>
+                <Text size="sm" c="dimmed">Practice coding problems offline</Text>
+              </div>
+              <Group>
+                <Badge 
+                  size="lg" 
+                  variant="outline" 
+                  color="blue" 
+                  style={{ cursor: 'pointer', padding: '8px 16px' }}
+                >
+                  + {t('homepage.addProblem')}
+                </Badge>
+                <Badge 
+                  size="lg" 
+                  variant="outline" 
+                  color="violet" 
+                  style={{ cursor: 'pointer', padding: '8px 16px' }}
+                >
+                  🤖 {t('homepage.aiGenerator')}
+                </Badge>
+              </Group>
+            </Group>
+          </Stack>
+        </AppShell.Header>
+
+        <AppShell.Main>
+          <Center style={{ minHeight: '50vh' }}>
+            <Stack align="center" gap={20}>
+              <Loader size="lg" />
+              <Text>{t('common.loading')}</Text>
+            </Stack>
+          </Center>
+        </AppShell.Main>
+      </AppShell>
+    );
+  }
+
   if (loading) {
     return (
       <AppShell
@@ -139,6 +193,16 @@ export default function Home() {
                     style={{ cursor: 'pointer', padding: '8px 16px' }}
                   >
                     + {t('homepage.addProblem')}
+                  </Badge>
+                </Link>
+                <Link href="/generator">
+                  <Badge 
+                    size="lg" 
+                    variant="outline" 
+                    color="violet" 
+                    style={{ cursor: 'pointer', padding: '8px 16px' }}
+                  >
+                    🤖 {t('homepage.aiGenerator')}
                   </Badge>
                 </Link>
                 <LanguageThemeControls />
@@ -184,6 +248,16 @@ export default function Home() {
                     + {t('homepage.addProblem')}
                   </Badge>
                 </Link>
+                <Link href="/generator">
+                  <Badge 
+                    size="lg" 
+                    variant="outline" 
+                    color="violet" 
+                    style={{ cursor: 'pointer', padding: '8px 16px' }}
+                  >
+                    🤖 {t('homepage.aiGenerator')}
+                  </Badge>
+                </Link>
                 <LanguageThemeControls />
               </Group>
             </Group>
@@ -224,6 +298,16 @@ export default function Home() {
                   style={{ cursor: 'pointer', padding: '8px 16px' }}
                 >
                   + {t('homepage.addProblem')}
+                </Badge>
+              </Link>
+              <Link href="/generator">
+                <Badge 
+                  size="lg" 
+                  variant="outline" 
+                  color="violet" 
+                  style={{ cursor: 'pointer', padding: '8px 16px' }}
+                >
+                  🤖 {t('homepage.aiGenerator')}
                 </Badge>
               </Link>
               <LanguageThemeControls />

@@ -80,9 +80,10 @@ CRITICAL REQUIREMENTS:
    - Tabs MUST be written as \\t
 8. Make sure all test cases pass with the provided solution
 9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
-10. Each solution should have a title and content in both English and Chinese
-11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
-12. Double-check that your JSON is valid before returning it - parse it to verify`
+10. ENSURE ALL solutions in the "solutions" array contain COMPLETE working code examples with proper syntax
+11. Each solution should have a title and content in both English and Chinese
+12. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
+13. Double-check that your JSON is valid before returning it - parse it to verify`
         },
         {
           role: 'user',
@@ -139,9 +140,10 @@ CRITICAL REQUIREMENTS:
    - Tabs MUST be written as \\t
 8. Make sure all test cases pass with the provided solution
 9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
-10. Each solution should have a title and content in both English and Chinese
-11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
-12. Double-check that your JSON is valid before returning it - parse it to verify`
+10. ENSURE ALL solutions in the "solutions" array contain COMPLETE working code examples with proper syntax
+11. Each solution should have a title and content in both English and Chinese
+12. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
+13. Double-check that your JSON is valid before returning it - parse it to verify`
         },
         {
           role: 'user',
@@ -200,9 +202,10 @@ CRITICAL REQUIREMENTS:
    - Tabs MUST be written as \\t
 8. Make sure all test cases pass with the provided solution
 9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
-10. Each solution should have a title and content in both English and Chinese
-11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
-12. Double-check that your JSON is valid before returning it - parse it to verify`
+10. ENSURE ALL solutions in the "solutions" array contain COMPLETE working code examples with proper syntax
+11. Each solution should have a title and content in both English and Chinese
+12. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
+13. Double-check that your JSON is valid before returning it - parse it to verify`
           },
           {
             role: 'user',
@@ -264,9 +267,10 @@ CRITICAL REQUIREMENTS:
    - Tabs MUST be written as \\t
 8. Make sure all test cases pass with the provided solution
 9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
-10. Each solution should have a title and content in both English and Chinese
-11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
-12. Double-check that your JSON is valid before returning it - parse it to verify
+10. ENSURE ALL solutions in the "solutions" array contain COMPLETE working code examples with proper syntax
+11. Each solution should have a title and content in both English and Chinese
+12. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
+13. Double-check that your JSON is valid before returning it - parse it to verify
 
 ${prompt}`
         }
@@ -316,9 +320,10 @@ CRITICAL REQUIREMENTS:
    - Tabs MUST be written as \\t
 8. Make sure all test cases pass with the provided solution
 9. Include at least 2 detailed solution explanations in the "solutions" array with markdown formatting
-10. Each solution should have a title and content in both English and Chinese
-11. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
-12. Double-check that your JSON is valid before returning it - parse it to verify`
+10. ENSURE ALL solutions in the "solutions" array contain COMPLETE working code examples with proper syntax
+11. Each solution should have a title and content in both English and Chinese
+12. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
+13. Double-check that your JSON is valid before returning it - parse it to verify`
         },
         {
           role: 'user',
@@ -405,8 +410,11 @@ CRITICAL INSTRUCTIONS - READ CAREFULLY:
 4. Include comprehensive test cases that cover edge cases
 5. The JavaScript solution must work correctly with all test cases
 6. Include at least 2 detailed solution explanations with code examples
-7. Ensure the problem is solvable and well-defined
-8. Double-check that your JSON is valid before returning it
+7. ENSURE ALL solutions in the "solutions" array contain COMPLETE working code examples with proper syntax
+8. Each solution should have a title and content in both English and Chinese
+9. Solutions should include algorithm overview, time/space complexity analysis, implementation, step-by-step explanation, and examples
+10. Ensure the problem is solvable and well-defined
+11. Double-check that your JSON is valid before returning it
 
 Example of properly escaped content:
 "description": {

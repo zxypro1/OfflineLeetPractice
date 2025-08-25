@@ -26,6 +26,16 @@
 start-local.bat
 ```
 
+非交互模式（用于 CI 或自动化）：
+
+```bash
+REM 接受默认并优先从 .env.example 复制
+start-local.bat --yes
+
+REM 或在 PowerShell 中设置环境变量
+set START_LOCAL_NONINTERACTIVE=1 && start-local.bat
+```
+
 #### macOS / Linux 用户
 
 ```bash
@@ -103,6 +113,22 @@ npm start
 #### AI 功能设置
 
 要使用 AI 题目生成器，您可以配置以下任一 AI 提供商（或多个）：
+
+##### 首次启动的交互式 AI 配置
+
+当您运行仓库根目录下的启动脚本（`start-local.sh` 或 `start-local.bat`）且项目中不存在 `.env` 文件时，脚本会将其视为首次启动并提供交互式配置 AI 的选项。在非交互模式下（使用 `--yes` 或 `START_LOCAL_NONINTERACTIVE=1`），脚本会尝试从 `.env.example` 复制到 `.env`；如果 `.env.example` 不存在，则创建包含默认模型名和空 API key 的最小 `.env`。交互流程包括：
+
+- 询问是否启用 AI 功能；
+- 对每个提供商（OpenAI、DeepSeek、Qwen、Claude、Ollama）询问是否启用，然后要求输入模型名和 API key（Ollama 会询问 endpoint 与 model）；
+- 若直接按回车接受默认值，将使用如下默认值：
+  - OpenAI model: `gpt-4-turbo`
+  - DeepSeek model: `deepseek-chat`
+  - Qwen model: `qwen-turbo`
+  - Claude model: `claude-3-haiku-20240307`
+  - Ollama endpoint: `http://localhost:11434`，model: `llama3`
+
+脚本会把配置写入项目根目录下的 `.env` 文件。如果 `.env` 已存在，脚本会跳过交互配置。之后要修改配置，请直接编辑 `.env` 文件。
+
 
 ##### 选项 1：DeepSeek 云服务
 

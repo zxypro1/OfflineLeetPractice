@@ -28,6 +28,16 @@
 start-local.bat
 ```
 
+Non-interactive usage (CI or automation):
+
+```bash
+# Accept defaults and copy from .env.example if present
+start-local.bat --yes
+
+# Or set an environment variable (PowerShell)
+set START_LOCAL_NONINTERACTIVE=1 && start-local.bat
+```
+
 #### macOS / Linux
 
 ```bash
@@ -105,6 +115,22 @@ npm start
 #### Setting Up AI Features
 
 To use the AI problem generator, you can configure any of these AI providers (or multiple):
+
+##### First-run interactive AI configuration
+
+If no `.env` file exists when you run the provided startup scripts (`start-local.sh` or `start-local.bat`), the script will detect this as a first-time startup and offer to interactively configure AI features for you. In non-interactive mode (use `--yes` or `START_LOCAL_NONINTERACTIVE=1`) the script will try to copy `.env.example` to `.env` if present; otherwise it will create a minimal `.env` with default model names and empty API keys. The interactive flow will:
+
+- Ask whether you want to enable AI features.
+- For each provider (OpenAI, DeepSeek, Qwen, Claude, Ollama) ask whether to enable it, then prompt for model name and API key (for Ollama it will ask for endpoint and model).
+- Provide sensible defaults if you just press Enter:
+  - OpenAI model: `gpt-4-turbo`
+  - DeepSeek model: `deepseek-chat`
+  - Qwen model: `qwen-turbo`
+  - Claude model: `claude-3-haiku-20240307`
+  - Ollama endpoint: `http://localhost:11434`, model: `llama3`
+
+The script will write your choices into a `.env` file in the project root. If a `.env` already exists, the scripts will skip configuration. To change AI settings later, edit the `.env` file directly.
+
 
 ##### Option 1: DeepSeek Cloud Service
 

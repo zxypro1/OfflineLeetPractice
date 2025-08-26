@@ -89,7 +89,7 @@ jobs:
         with:
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           files: |
-            release-${{ steps.tag.outputs.tag }}.zip
+            release-${{ github.ref_name }}.zip
 
       # - name: Upload release asset (zip)
       #   uses: actions/upload-release-asset@v1

@@ -76,7 +76,7 @@ jobs:
       - name: Prepare release zip
         run: |
           set -euo pipefail
-          TAG=${{ steps.tag.outputs.tag }}
+          TAG=${{ github.ref_name }}
           ZIP_NAME="release-${TAG}.zip"
           # remove dependency folders and common lockfiles before packaging
           rm -rf node_modules package-lock.json yarn.lock pnpm-lock.yaml npm-shrinkwrap.json || true

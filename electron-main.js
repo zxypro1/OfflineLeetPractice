@@ -82,7 +82,7 @@ function updateApplicationMenu(language = 'en') {
       submenu: [
         {
           label: labels.documentation,
-          click: () => shell.openExternal('https://github.com/OfflineLeetPractice')
+          click: () => shell.openExternal('https://github.com/zxypro1/OfflineLeetPractice')
         }
       ]
     }

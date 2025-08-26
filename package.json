@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node setup-problems.js && next build",
+    "build": "next build",
     "start": "next start",
     "deploy-local": "npm run build && npm start",
     "setup": "npm install && npm run build",

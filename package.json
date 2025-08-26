@@ -21,7 +21,11 @@
     "electron-dev": "electron .",
     "electron-build": "electron-builder --config electron-builder.config.js",
     "pack": "electron-builder --config electron-builder.config.js --dir",
-    "dist": "electron-builder --config electron-builder.config.js"
+    "dist": "electron-builder --config electron-builder.config.js",
+    "dist:all": "electron-builder --config electron-builder.config.js --mac --win --linux",
+    "dist:mac": "electron-builder --config electron-builder.config.js --mac",
+    "dist:win": "electron-builder --config electron-builder.config.js --win",
+    "dist:linux": "electron-builder --config electron-builder.config.js --linux"
   },
   "build": {
     "appId": "com.offlineleetpractice.app",

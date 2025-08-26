@@ -1,6 +1,6 @@
 # Desktop App Packaging Guide
 
-This guide explains how to package the Offline Leet Practice application as a desktop app for Windows and macOS using Electron.
+This guide explains how to package the Offline Leet Practice application as a desktop app for Windows, macOS, and Linux using Electron.
 
 ## Prerequisites
 
@@ -15,6 +15,16 @@ The desktop app packaging adds the following files to the project:
 - `build-windows.bat`: Windows build script
 - `build-mac.sh`: macOS build script
 - `public/desktop-index.html`: Desktop entry point
+
+## Building for All Platforms
+
+You can build the desktop app for all supported platforms (Windows, macOS, and Linux) using a single command:
+
+```bash
+npm run dist:all
+```
+
+This will generate installers for all platforms in the `dist` folder.
 
 ## Building for Windows
 
@@ -49,6 +59,11 @@ If you prefer to build manually:
 3. Package for Windows:
    ```cmd
    npx electron-builder --win
+   ```
+   
+   Or use the npm script:
+   ```cmd
+   npm run dist:win
    ```
 
 ### Windows Build Issues and Solutions
@@ -118,6 +133,37 @@ If you prefer to build manually:
    ```bash
    npx electron-builder --mac
    ```
+   
+   Or use the npm script:
+   ```bash
+   npm run dist:mac
+   ```
+
+## Building for Linux
+
+You can also build the app for Linux:
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Build the Next.js application:
+   ```bash
+   npm run build
+   ```
+
+3. Package for Linux:
+   ```bash
+   npx electron-builder --linux
+   ```
+   
+   Or use the npm script:
+   ```bash
+   npm run dist:linux
+   ```
+
+This will generate an AppImage file in the `dist` folder.
 
 ## Development
 
@@ -189,6 +235,10 @@ On macOS, you might need to allow the app in System Preferences > Security & Pri
 ### macOS
 - Applications folder: `/Applications/Offline Leet Practice.app`
 - User data: `~/Library/Application Support/Offline Leet Practice/`
+
+### Linux
+- AppImage can be run from any location
+- User data: `~/.config/Offline Leet Practice/`
 
 ## Updating the App
 

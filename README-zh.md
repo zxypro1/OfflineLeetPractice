@@ -35,7 +35,7 @@
 2. 打开 DMG 文件并将应用程序拖拽到 Applications 文件夹
 3. 从 Applications 文件夹启动应用程序
 
-> 有关自己构建桌面应用程序的详细说明，请参见 [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md)。
+> 有关自己构建桌面应用程序的详细说明，请参见 [DESKTOP-APP-GUIDE-zh.md](./DESKTOP-APP-GUIDE-zh.md) 或英文版本 [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md)。
 
 ### 一键启动（Web）
 

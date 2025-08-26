@@ -52,8 +52,8 @@ jobs:
           file_pattern: CHANGELOG.md
           push_options: --force
 
-  release:
-    name: Generate changelog, build and create Release
+  build-web:
+    name: Build Web Package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -84,17 +84,157 @@ jobs:
           zip -r "$ZIP_NAME" .next public package.json || true
           ls -lah "$ZIP_NAME"
 
-      - name: Release
+      - name: Upload web artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-package
+          path: release-${{ github.ref_name }}.zip
+          if-no-files-found: error
+
+  build-electron-windows:
+    name: Build Electron App (Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with Next.js
+        run: npm run build
+
+      - name: Build Electron app
+        run: npm run dist
+
+      - name: List dist contents
+        run: |
+          ls -la dist/
+          find dist/ -type f
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: electron-windows
+          path: |
+            dist/*.exe
+            dist/*.zip
+            dist/*.blockmap
+            dist/latest*.yml
+          if-no-files-found: error
+
+  build-electron-mac:
+    name: Build Electron App (macOS)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with Next.js
+        run: npm run build
+
+      - name: Build Electron app
+        run: npm run dist
+
+      - name: List dist contents
+        run: |
+          ls -la dist/
+          find dist/ -type f
+
+      - name: Upload macOS artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: electron-macos
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/*.blockmap
+            dist/latest*.yml
+          if-no-files-found: error
+
+  build-electron-linux:
+    name: Build Electron App (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with Next.js
+        run: npm run build
+
+      - name: Build Electron app
+        run: npm run dist
+
+      - name: List dist contents
+        run: |
+          ls -la dist/
+          find dist/ -type f
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: electron-linux
+          path: |
+            dist/*.AppImage
+            dist/*.zip
+            dist/*.blockmap
+            dist/latest*.yml
+          if-no-files-found: error
+
+  release:
+    name: Create GitHub Release
+    needs: [generate_changelog, build-web, build-electron-windows, build-electron-mac, build-electron-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: List downloaded artifacts
+        run: |
+          ls -la
+          find . -name "*" -type f
+
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           files: |
-            release-${{ github.ref_name }}.zip
-
-      # - name: Upload release asset (zip)
-      #   uses: actions/upload-release-asset@v1
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./release-${{ steps.tag.outputs.tag }}.zip
-      #     asset_name: release-${{ steps.tag.outputs.tag }}.zip
-      #     asset_content_type: application/zip
+            web-package/release-${{ github.ref_name }}.zip
+            electron-windows/*
+            electron-macos/*
+            electron-linux/*

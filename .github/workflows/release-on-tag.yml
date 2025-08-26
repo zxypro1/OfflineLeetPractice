@@ -78,8 +78,10 @@ jobs:
           set -euo pipefail
           TAG=${{ steps.tag.outputs.tag }}
           ZIP_NAME="release-${TAG}.zip"
-          # include build output and public assets
-          zip -r "$ZIP_NAME" .next public package.json package-lock.json || true
+          # remove dependency folders and common lockfiles before packaging
+          rm -rf node_modules package-lock.json yarn.lock pnpm-lock.yaml npm-shrinkwrap.json || true
+          # include build output and public assets (exclude dependency files)
+          zip -r "$ZIP_NAME" .next public package.json || true
           ls -lah "$ZIP_NAME"
 
       - name: Release

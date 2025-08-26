@@ -19,7 +19,7 @@
 
 > **注意**: 仅在首次设置和构建时需要网络连接。构建完成后，应用可完全离线使用。
 
-### 桌面应用程序（推荐）
+<!-- ### 桌面应用程序（推荐）
 
 为了获得最佳的离线体验，您可以将 OfflineLeetPractice 安装为桌面应用程序：
 
@@ -35,7 +35,7 @@
 2. 打开 DMG 文件并将应用程序拖拽到 Applications 文件夹
 3. 从 Applications 文件夹启动应用程序
 
-> 有关自己构建桌面应用程序的详细说明，请参见 [DESKTOP-APP-GUIDE-zh.md](./DESKTOP-APP-GUIDE-zh.md) 或英文版本 [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md)。
+> 有关自己构建桌面应用程序的详细说明，请参见 [DESKTOP-APP-GUIDE-zh.md](./DESKTOP-APP-GUIDE-zh.md) 或英文版本 [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md)。 -->
 
 ### 一键启动（Web）
 

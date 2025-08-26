@@ -21,7 +21,7 @@ Quick links: [Discussions](https://github.com/zxypro1/OfflineLeetPractice/discus
 
 > **Note**: Internet is only required for the initial setup and build. Once built, the application works completely offline.
 
-### Desktop App (Recommended)
+<!-- ### Desktop App (Recommended)
 
 For the best offline experience, you can install OfflineLeetPractice as a desktop application:
 
@@ -35,7 +35,7 @@ For the best offline experience, you can install OfflineLeetPractice as a deskto
 2. Open the DMG file and drag the app to your Applications folder
 3. Launch the app from your Applications folder
 
-> See [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md) for detailed instructions on building the desktop app yourself.
+> See [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md) for detailed instructions on building the desktop app yourself. -->
 
 ### One-Click Setup (Web Version)
 

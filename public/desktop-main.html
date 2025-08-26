@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Leet Practice</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .nav-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">💻</div>
+        <h1>Offline Leet Practice</h1>
+        <p>Starting the application... Please wait while we prepare your coding environment.</p>
+        <p>Loading<span class="loading"></span></p>
+        
+        <div class="nav-buttons">
+            <a href="http://localhost:3000" class="nav-button" id="main-app">Main App</a>
+            <a href="http://localhost:3000/settings" class="nav-button" id="settings">Settings</a>
+        </div>
+    </div>
+    <script>
+        // Redirect to the main app after a short delay
+        // In a real implementation, this would wait for the Next.js server to be ready
+        setTimeout(() => {
+            window.location.href = 'http://localhost:3000';
+        }, 3000);
+        
+        // Add click handlers for navigation buttons
+        document.getElementById('main-app').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'http://localhost:3000';
+        });
+        
+        document.getElementById('settings').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'http://localhost:3000/settings';
+        });
+    </script>
+</body>
+</html>

@@ -7,7 +7,8 @@
     "home": "Home",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "settings": "Settings"
   },
   "header": {
     "title": "Offline LeetCode Practice",
@@ -155,6 +156,52 @@
     "openai": "OpenAI",
     "qwen": "Qwen",
     "claude": "Claude",
-    "noAIProviderConfigured": "No AI provider is configured. Please configure one of the supported AI providers in your environment variables."
+    "noAIProviderConfigured": "No AI provider is configured. Please configure one of the supported AI providers in your environment variables.",
+    "jsonParseError": "Failed to parse the generated JSON. You can fix it in the editor below.",
+    "fixJsonTitle": "Fix Generated JSON",
+    "fixJsonInstructions": "The AI generated content that couldn't be parsed as valid JSON. Please fix any syntax errors and save the corrected JSON.",
+    "saveFixedJson": "Save Fixed JSON",
+    "pleaseEnterJson": "Please enter JSON content",
+    "invalidJsonFormat": "Invalid JSON format. Please check for syntax errors."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure AI model providers for problem generation",
+    "save": "Save Configuration",
+    "saving": "Saving...",
+    "deepseek": {
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "Enter your DeepSeek API key",
+      "model": "Model",
+      "modelPlaceholder": "Enter model name (e.g., deepseek-chat)",
+      "timeout": "API Timeout (ms)",
+      "timeoutPlaceholder": "Enter timeout in milliseconds",
+      "maxTokens": "Max Tokens",
+      "maxTokensPlaceholder": "Enter maximum tokens for generation"
+    },
+    "openai": {
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "Enter your OpenAI API key",
+      "model": "Model",
+      "modelPlaceholder": "Enter model name (e.g., gpt-4-turbo)"
+    },
+    "qwen": {
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "Enter your Qwen API key",
+      "model": "Model",
+      "modelPlaceholder": "Enter model name (e.g., qwen-turbo)"
+    },
+    "claude": {
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "Enter your Claude API key",
+      "model": "Model",
+      "modelPlaceholder": "Enter model name (e.g., claude-3-haiku-20240307)"
+    },
+    "ollama": {
+      "endpoint": "Endpoint",
+      "endpointPlaceholder": "Enter Ollama endpoint (e.g., http://localhost:11434)",
+      "model": "Model",
+      "modelPlaceholder": "Enter model name (e.g., llama3)"
+    }
   }
 }

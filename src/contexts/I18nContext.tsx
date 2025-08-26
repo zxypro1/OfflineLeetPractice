@@ -14,6 +14,7 @@ type Translations = {
     loading: string;
     error: string;
     success: string;
+    settings: string;
   };
   header: {
     title: string;
@@ -103,6 +104,46 @@ type Translations = {
     pleaseEnterRequest: string;
     poweredBy: string;
     unlimitedProblems: string;
+  };
+  settings: {
+    title: string;
+    description: string;
+    save: string;
+    saving: string;
+    deepseek: {
+      apiKey: string;
+      apiKeyPlaceholder: string;
+      model: string;
+      modelPlaceholder: string;
+      timeout: string;
+      timeoutPlaceholder: string;
+      maxTokens: string;
+      maxTokensPlaceholder: string;
+    };
+    openai: {
+      apiKey: string;
+      apiKeyPlaceholder: string;
+      model: string;
+      modelPlaceholder: string;
+    };
+    qwen: {
+      apiKey: string;
+      apiKeyPlaceholder: string;
+      model: string;
+      modelPlaceholder: string;
+    };
+    claude: {
+      apiKey: string;
+      apiKeyPlaceholder: string;
+      model: string;
+      modelPlaceholder: string;
+    };
+    ollama: {
+      endpoint: string;
+      endpointPlaceholder: string;
+      model: string;
+      modelPlaceholder: string;
+    };
   };
   tags: {
     [key: string]: string;

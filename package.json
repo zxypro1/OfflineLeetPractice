@@ -1,7 +1,10 @@
 {
   "name": "offline-leet-practice",
-  "version": "0.1.0",
+  "version": "0.0.8",
   "private": true,
+  "main": "electron-main.js",
+  "description": "An offline code practice application",
+  "author": "zxypro1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,7 +17,47 @@
     "test:api": "jest tests/api",
     "test:specific": "node scripts/test-runner.js specific",
     "test:solutions": "node scripts/test-runner.js specific solution",
-    "test:data": "node scripts/test-runner.js specific data"
+    "test:data": "node scripts/test-runner.js specific data",
+    "electron-dev": "electron .",
+    "electron-build": "electron-builder --config electron-builder.config.js",
+    "pack": "electron-builder --config electron-builder.config.js --dir",
+    "dist": "electron-builder --config electron-builder.config.js"
+  },
+  "build": {
+    "appId": "com.offlineleetpractice.app",
+    "productName": "Offline Leet Practice",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron-main.js",
+      "electron-preload.js",
+      "next.config.js",
+      "package.json",
+      "package-lock.json",
+      ".next/**/*",
+      "node_modules/**/*",
+      "public/**/*",
+      "problems/**/*",
+      "locales/**/*",
+      "scripts/**/*",
+      "src/**/*",
+      "pages/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "public/icon.png",
+      "category": "public.app-category.education"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "public/icon.png",
+      "category": "Development"
+    }
   },
   "dependencies": {
     "@mantine/core": "7.6.1",
@@ -46,6 +89,9 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@types/supertest": "^6.0.3",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.9.1",
+    "electron-next": "^3.1.5",
     "jest": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "supertest": "^6.3.4",

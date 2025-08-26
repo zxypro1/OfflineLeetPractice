@@ -45,10 +45,7 @@ interface Problem {
 }
 
 // Function to call DeepSeek API with configurable model
-async function callDeepSeekAPI(prompt: string): Promise<any> {
-  const apiKey = process.env.DEEPSEEK_API_KEY;
-  const model = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
-  
+async function callDeepSeekAPI(prompt: string, apiKey: string, model: string, timeout: number = 30000, maxTokens: number = 120000): Promise<any> {
   if (!apiKey) {
     throw new Error('DEEPSEEK_API_KEY environment variable is not set');
   }
@@ -91,7 +88,7 @@ CRITICAL REQUIREMENTS:
         }
       ],
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: maxTokens,
     }),
   });
 
@@ -105,10 +102,7 @@ CRITICAL REQUIREMENTS:
 }
 
 // Function to call OpenAI API
-async function callOpenAIAPI(prompt: string): Promise<any> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  const model = process.env.OPENAI_MODEL || 'gpt-4-turbo';
-  
+async function callOpenAIAPI(prompt: string, apiKey: string, model: string): Promise<any> {
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY environment variable is not set');
   }
@@ -165,10 +159,7 @@ CRITICAL REQUIREMENTS:
 }
 
 // Function to call Qwen API
-async function callQwenAPI(prompt: string): Promise<any> {
-  const apiKey = process.env.QWEN_API_KEY;
-  const model = process.env.QWEN_MODEL || 'qwen-turbo';
-  
+async function callQwenAPI(prompt: string, apiKey: string, model: string): Promise<any> {
   if (!apiKey) {
     throw new Error('QWEN_API_KEY environment variable is not set');
   }
@@ -230,10 +221,7 @@ CRITICAL REQUIREMENTS:
 }
 
 // Function to call Claude API
-async function callClaudeAPI(prompt: string): Promise<any> {
-  const apiKey = process.env.CLAUDE_API_KEY;
-  const model = process.env.CLAUDE_MODEL || 'claude-3-haiku-20240307';
-  
+async function callClaudeAPI(prompt: string, apiKey: string, model: string): Promise<any> {
   if (!apiKey) {
     throw new Error('CLAUDE_API_KEY environment variable is not set');
   }
@@ -290,10 +278,7 @@ ${prompt}`
 }
 
 // New function to call Ollama API
-async function callOllamaAPI(prompt: string): Promise<any> {
-  const ollamaEndpoint = process.env.OLLAMA_ENDPOINT || 'http://localhost:11434';
-  const ollamaModel = process.env.OLLAMA_MODEL || 'llama3';
-
+async function callOllamaAPI(prompt: string, ollamaEndpoint: string = 'http://localhost:11434', ollamaModel: string = 'llama3'): Promise<any> {
   const response = await fetch(`${ollamaEndpoint}/api/chat`, {
     method: 'POST',
     headers: {
@@ -426,18 +411,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { request, aiProvider } = req.body;
+    const { request, aiProvider, config } = req.body;
 
     if (!request || typeof request !== 'string') {
       return res.status(400).json({ error: 'Request description is required' });
     }
 
     // Check what providers are configured
-    const isOllamaConfigured = !!process.env.OLLAMA_ENDPOINT || !!process.env.OLLAMA_MODEL;
-    const isDeepSeekConfigured = !!process.env.DEEPSEEK_API_KEY;
-    const isOpenAIConfigured = !!process.env.OPENAI_API_KEY;
-    const isQwenConfigured = !!process.env.QWEN_API_KEY;
-    const isClaudeConfigured = !!process.env.CLAUDE_API_KEY;
+    // Use provided config from web mode if available, otherwise use environment variables
+    let isOllamaConfigured: boolean;
+    let isDeepSeekConfigured: boolean;
+    let isOpenAIConfigured: boolean;
+    let isQwenConfigured: boolean;
+    let isClaudeConfigured: boolean;
+
+    if (config) {
+      // Use configuration from web mode (sent from frontend)
+      isOllamaConfigured = !!(config.ollama?.endpoint || config.ollama?.model);
+      isDeepSeekConfigured = !!config.deepSeek?.apiKey;
+      isOpenAIConfigured = !!config.openAI?.apiKey;
+      isQwenConfigured = !!config.qwen?.apiKey;
+      isClaudeConfigured = !!config.claude?.apiKey;
+    } else {
+      // Use environment variables (Electron mode or when no config provided)
+      isOllamaConfigured = !!process.env.OLLAMA_ENDPOINT || !!process.env.OLLAMA_MODEL;
+      isDeepSeekConfigured = !!process.env.DEEPSEEK_API_KEY;
+      isOpenAIConfigured = !!process.env.OPENAI_API_KEY;
+      isQwenConfigured = !!process.env.QWEN_API_KEY;
+      isClaudeConfigured = !!process.env.CLAUDE_API_KEY;
+    }
     
     // If a specific provider is requested, validate it's configured
     if (aiProvider) {
@@ -543,15 +545,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let generatedContent: string;
 
     if (useOllama) {
-      generatedContent = await callOllamaAPI(prompt);
+      // Use provided config if available, otherwise use environment variables
+      const endpoint = config?.ollama?.endpoint || process.env.OLLAMA_ENDPOINT || 'http://localhost:11434';
+      const model = config?.ollama?.model || process.env.OLLAMA_MODEL || 'llama3';
+      generatedContent = await callOllamaAPI(prompt, endpoint, model);
     } else if (useDeepSeek) {
-      generatedContent = await callDeepSeekAPI(prompt);
+      // Use provided config if available, otherwise use environment variables
+      const apiKey = config?.deepSeek?.apiKey || process.env.DEEPSEEK_API_KEY;
+      const model = config?.deepSeek?.model || process.env.DEEPSEEK_MODEL || 'deepseek-chat';
+      const timeout = config?.deepSeek?.timeout ? parseInt(config.deepSeek.timeout) : (process.env.DEEPSEEK_API_TIMEOUT ? parseInt(process.env.DEEPSEEK_API_TIMEOUT) : 30000);
+      const maxTokens = config?.deepSeek?.maxTokens ? parseInt(config.deepSeek.maxTokens) : (process.env.DEEPSEEK_MAX_TOKENS ? parseInt(process.env.DEEPSEEK_MAX_TOKENS) : 4000);
+      generatedContent = await callDeepSeekAPI(prompt, apiKey, model, timeout, maxTokens);
     } else if (useOpenAI) {
-      generatedContent = await callOpenAIAPI(prompt);
+      // Use provided config if available, otherwise use environment variables
+      const apiKey = config?.openAI?.apiKey || process.env.OPENAI_API_KEY;
+      const model = config?.openAI?.model || process.env.OPENAI_MODEL || 'gpt-4-turbo';
+      generatedContent = await callOpenAIAPI(prompt, apiKey, model);
     } else if (useQwen) {
-      generatedContent = await callQwenAPI(prompt);
+      // Use provided config if available, otherwise use environment variables
+      const apiKey = config?.qwen?.apiKey || process.env.QWEN_API_KEY;
+      const model = config?.qwen?.model || process.env.QWEN_MODEL || 'qwen-turbo';
+      generatedContent = await callQwenAPI(prompt, apiKey, model);
     } else if (useClaude) {
-      generatedContent = await callClaudeAPI(prompt);
+      // Use provided config if available, otherwise use environment variables
+      const apiKey = config?.claude?.apiKey || process.env.CLAUDE_API_KEY;
+      const model = config?.claude?.model || process.env.CLAUDE_MODEL || 'claude-3-haiku-20240307';
+      generatedContent = await callClaudeAPI(prompt, apiKey, model);
     } else {
       return res.status(500).json({ error: 'No valid AI provider configured' });
     }
@@ -564,7 +583,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error('Failed to parse generated JSON:', generatedContent, parseError);
       return res.status(500).json({ 
         error: 'Failed to parse generated problem data',
-        details: generatedContent
+        details: generatedContent,
+        rawContent: generatedContent // Add raw content for frontend editing
       });
     }
 

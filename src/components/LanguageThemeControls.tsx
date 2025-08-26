@@ -19,13 +19,25 @@ export function LanguageThemeControls() {
         <Menu.Dropdown>
           <Menu.Label>{t('common.language')}</Menu.Label>
           <Menu.Item 
-            onClick={() => switchLocale('zh')}
+            onClick={() => {
+              switchLocale('zh');
+              // Notify Electron of language change
+              if (typeof window !== 'undefined' && (window as any).electronAPI) {
+                (window as any).electronAPI.setLanguage('zh');
+              }
+            }}
             color={locale === 'zh' ? 'blue' : undefined}
           >
             中文
           </Menu.Item>
           <Menu.Item 
-            onClick={() => switchLocale('en')}
+            onClick={() => {
+              switchLocale('en');
+              // Notify Electron of language change
+              if (typeof window !== 'undefined' && (window as any).electronAPI) {
+                (window as any).electronAPI.setLanguage('en');
+              }
+            }}
             color={locale === 'en' ? 'blue' : undefined}
           >
             English
@@ -37,7 +49,13 @@ export function LanguageThemeControls() {
       <Button 
         variant="subtle" 
         size="sm"
-        onClick={toggleColorScheme}
+        onClick={() => {
+          toggleColorScheme();
+          // Notify Electron of theme change
+          if (typeof window !== 'undefined' && (window as any).electronAPI) {
+            (window as any).electronAPI.setTheme(colorScheme === 'dark' ? 'light' : 'dark');
+          }
+        }}
         title={t('common.theme')}
       >
         {colorScheme === 'dark' ? '🌞' : '🌙'}

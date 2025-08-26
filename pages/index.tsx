@@ -153,6 +153,16 @@ export default function Home() {
                 >
                   🤖 {t('homepage.aiGenerator')}
                 </Badge>
+                <Link href="/settings">
+                  <Badge 
+                    size="lg" 
+                    variant="outline" 
+                    color="gray" 
+                    style={{ cursor: 'pointer', padding: '8px 16px' }}
+                  >
+                    ⚙️ {t('common.settings')}
+                  </Badge>
+                </Link>
               </Group>
             </Group>
           </Stack>
@@ -203,6 +213,16 @@ export default function Home() {
                     style={{ cursor: 'pointer', padding: '8px 16px' }}
                   >
                     🤖 {t('homepage.aiGenerator')}
+                  </Badge>
+                </Link>
+                <Link href="/settings">
+                  <Badge 
+                    size="lg" 
+                    variant="outline" 
+                    color="gray" 
+                    style={{ cursor: 'pointer', padding: '8px 16px' }}
+                  >
+                    ⚙️ {t('common.settings')}
                   </Badge>
                 </Link>
                 <LanguageThemeControls />
@@ -308,6 +328,16 @@ export default function Home() {
                   style={{ cursor: 'pointer', padding: '8px 16px' }}
                 >
                   🤖 {t('homepage.aiGenerator')}
+                </Badge>
+              </Link>
+              <Link href="/settings">
+                <Badge 
+                  size="lg" 
+                  variant="outline" 
+                  color="gray" 
+                  style={{ cursor: 'pointer', padding: '8px 16px' }}
+                >
+                  ⚙️ {t('common.settings')}
                 </Badge>
               </Link>
               <LanguageThemeControls />

@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Box, 
   Button, 
   Textarea, 
   Title, 
   Text, 
-  Card, 
   Alert, 
   Loader, 
-  Badge, 
-  Group, 
   Stack, 
-  Grid,
-  useMantineColorScheme
+  Group, 
+  Box, 
+  Card, 
+  Badge
 } from '@mantine/core';
-import { IconWand, IconPlus, IconBrain } from '@tabler/icons-react';
 import { useTranslation, useI18n } from '../contexts/I18nContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { 
+  IconBrain, 
+  IconWand, 
+  IconDeviceFloppy
+} from '@tabler/icons-react';
+import Editor from '@monaco-editor/react';
 
 interface GeneratedProblem {
   id: string;
@@ -39,21 +43,31 @@ interface ProblemGeneratorProps {
 const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated, onClose }) => {
   const { t } = useTranslation();
   const { locale } = useI18n();
-  const { colorScheme } = useMantineColorScheme();
-  
+  const { colorScheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [request, setRequest] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [generatedProblem, setGeneratedProblem] = useState<GeneratedProblem | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const [selectedAIProvider, setSelectedAIProvider] = useState<'deepseek' | 'ollama' | 'openai' | 'qwen' | 'claude' | 'auto'>('auto');
-  const [isOllamaConfigured, setIsOllamaConfigured] = useState(false);
+  const [providersLoading, setProvidersLoading] = useState(true);
+  const [canGenerate, setCanGenerate] = useState(false);
+  const [isUsingLocalAI, setIsUsingLocalAI] = useState(false);
+  const [currentAIProvider, setCurrentAIProvider] = useState<string | null>(null);
+  const [availableProviders, setAvailableProviders] = useState<string[]>([]);
+  const [selectedAIProvider, setSelectedAIProvider] = useState('auto');
+  
+  // AI Provider configuration states
   const [isDeepSeekConfigured, setIsDeepSeekConfigured] = useState(false);
   const [isOpenAIConfigured, setIsOpenAIConfigured] = useState(false);
   const [isQwenConfigured, setIsQwenConfigured] = useState(false);
   const [isClaudeConfigured, setIsClaudeConfigured] = useState(false);
-  const [providersLoading, setProvidersLoading] = useState(true);
+  const [isOllamaConfigured, setIsOllamaConfigured] = useState(false);
+  
+  // JSON Editor states
+  const [showJsonEditor, setShowJsonEditor] = useState(false);
+  const [jsonContent, setJsonContent] = useState('');
+  const [jsonError, setJsonError] = useState<string | null>(null);
 
   // Prevent hydration mismatch by ensuring component is mounted
   useEffect(() => {
@@ -64,17 +78,62 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
   useEffect(() => {
     const fetchProviderConfiguration = async () => {
       try {
-        const response = await fetch('/api/ai-providers');
-        const data = await response.json();
-        
-        if (response.ok) {
-          setIsOllamaConfigured(data.providers.ollama);
-          setIsDeepSeekConfigured(data.providers.deepseek);
-          setIsOpenAIConfigured(data.providers.openai);
-          setIsQwenConfigured(data.providers.qwen);
-          setIsClaudeConfigured(data.providers.claude);
+        // Check if we're running in Electron
+        if (typeof window !== 'undefined' && (window as any).electronAPI) {
+          const response = await fetch('/api/ai-providers');
+          const data = await response.json();
+          
+          if (response.ok) {
+            setIsOllamaConfigured(data.providers.ollama);
+            setIsDeepSeekConfigured(data.providers.deepseek);
+            setIsOpenAIConfigured(data.providers.openai);
+            setIsQwenConfigured(data.providers.qwen);
+            setIsClaudeConfigured(data.providers.claude);
+          } else {
+            console.error('Failed to fetch provider configuration:', data.error);
+          }
         } else {
-          console.error('Failed to fetch provider configuration:', data.error);
+          // Web mode: Check localStorage first, fallback to API
+          const savedConfig = localStorage.getItem('ai-provider-config');
+          if (savedConfig) {
+            try {
+              const config = JSON.parse(savedConfig);
+              setIsOllamaConfigured(!!(config.ollama?.endpoint || config.ollama?.model));
+              setIsDeepSeekConfigured(!!config.deepSeek?.apiKey);
+              setIsOpenAIConfigured(!!config.openAI?.apiKey);
+              setIsQwenConfigured(!!config.qwen?.apiKey);
+              setIsClaudeConfigured(!!config.claude?.apiKey);
+            } catch (parseError) {
+              console.error('Error parsing saved configuration:', parseError);
+              // Fallback to API
+              const response = await fetch('/api/ai-providers');
+              const data = await response.json();
+              
+              if (response.ok) {
+                setIsOllamaConfigured(data.providers.ollama);
+                setIsDeepSeekConfigured(data.providers.deepseek);
+                setIsOpenAIConfigured(data.providers.openai);
+                setIsQwenConfigured(data.providers.qwen);
+                setIsClaudeConfigured(data.providers.claude);
+              } else {
+                console.error('Failed to fetch provider configuration:', data.error);
+              }
+            }
+          } else {
+            // Fallback to API
+            const response = await fetch('/api/ai-providers');
+            const data = await response.json();
+            
+            if (response.ok) {
+              setIsOllamaConfigured(data.providers.ollama);
+              setIsDeepSeekConfigured(data.providers.deepseek);
+              setIsOpenAIConfigured(data.providers.openai);
+              setIsQwenConfigured(data.providers.qwen);
+              setIsClaudeConfigured(data.providers.claude);
+            } else {
+              console.error('Failed to fetch provider configuration:', data.error);
+            }
+          }
         }
       } catch (err) {
         console.error('Error fetching provider configuration:', err);
@@ -109,19 +168,28 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
     return selectedAIProvider;
   };
 
-  const currentAIProvider = getCurrentAIProvider();
-  const isUsingLocalAI = currentAIProvider === 'ollama';
+  useEffect(() => {
+    const provider = getCurrentAIProvider();
+    setCurrentAIProvider(provider);
+    setIsUsingLocalAI(provider === 'ollama');
 
-  // Check if AI generation is possible
-  const canGenerate = isOllamaConfigured || isDeepSeekConfigured || isOpenAIConfigured || isQwenConfigured || isClaudeConfigured;
-  
-  // Get available providers for selection
-  const availableProviders = [];
-  if (isDeepSeekConfigured) availableProviders.push('deepseek');
-  if (isOpenAIConfigured) availableProviders.push('openai');
-  if (isQwenConfigured) availableProviders.push('qwen');
-  if (isClaudeConfigured) availableProviders.push('claude');
-  if (isOllamaConfigured) availableProviders.push('ollama');
+    const providers = [];
+    if (isDeepSeekConfigured) providers.push('deepseek');
+    if (isOpenAIConfigured) providers.push('openai');
+    if (isQwenConfigured) providers.push('qwen');
+    if (isClaudeConfigured) providers.push('claude');
+    if (isOllamaConfigured) providers.push('ollama');
+
+    setAvailableProviders(providers);
+    setCanGenerate(providers.length > 0);
+  }, [
+    selectedAIProvider,
+    isDeepSeekConfigured,
+    isOpenAIConfigured,
+    isQwenConfigured,
+    isClaudeConfigured,
+    isOllamaConfigured
+  ]);
 
   const suggestedRequests = [
     locale === 'zh' ? "我想做一道动态规划题目" : "Generate a dynamic programming problem",
@@ -158,30 +226,56 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
     setError(null);
     setSuccess(null);
     setGeneratedProblem(null);
+    setShowJsonEditor(false);
+    setJsonContent('');
+    setJsonError(null);
 
     try {
+      // Prepare request body
+      const requestBody: any = { 
+        request: request.trim(),
+        aiProvider: selectedAIProvider === 'auto' ? undefined : selectedAIProvider
+      };
+
+      // Check if we're in web mode and have saved configuration
+      if (typeof window !== 'undefined' && !(window as any).electronAPI) {
+        const savedConfig = localStorage.getItem('ai-provider-config');
+        if (savedConfig) {
+          try {
+            requestBody.config = JSON.parse(savedConfig);
+          } catch (parseError) {
+            console.error('Error parsing saved configuration:', parseError);
+          }
+        }
+      }
+
       const response = await fetch('/api/generate-problem', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          request: request.trim(),
-          aiProvider: selectedAIProvider === 'auto' ? undefined : selectedAIProvider
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate problem');
-      }
-
-      setGeneratedProblem(data.problem);
-      setSuccess(data.message);
-      
-      if (onProblemGenerated) {
-        onProblemGenerated(data.problem);
+        // Check if it's a JSON parsing error
+        if (data.error && data.error.includes('Failed to parse generated problem data')) {
+          // Show JSON editor for user to fix the problem
+          setShowJsonEditor(true);
+          setJsonContent(data.rawContent || data.details || '');
+          setError(t('aiGenerator.jsonParseError'));
+        } else {
+          throw new Error(data.error || 'Failed to generate problem');
+        }
+      } else {
+        setGeneratedProblem(data.problem);
+        setSuccess(data.message);
+        
+        if (onProblemGenerated) {
+          onProblemGenerated(data.problem);
+        }
       }
 
     } catch (err) {
@@ -193,6 +287,49 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
 
   const handleSuggestionClick = (suggestion: string) => {
     setRequest(suggestion);
+  };
+
+  const handleSaveFixedJson = async () => {
+    if (!jsonContent.trim()) {
+      setJsonError(t('aiGenerator.pleaseEnterJson'));
+      return;
+    }
+
+    try {
+      // Try to parse the JSON to validate it
+      const parsed = JSON.parse(jsonContent);
+      
+      // If parsing succeeds, try to save the problem
+      const response = await fetch('/api/add-problem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ problem: parsed }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save problem');
+      }
+
+      setGeneratedProblem(parsed);
+      setSuccess(data.message);
+      setShowJsonEditor(false);
+      setJsonContent('');
+      setJsonError(null);
+      
+      if (onProblemGenerated) {
+        onProblemGenerated(parsed);
+      }
+    } catch (err) {
+      if (err instanceof SyntaxError) {
+        setJsonError(t('aiGenerator.invalidJsonFormat'));
+      } else {
+        setJsonError(err instanceof Error ? err.message : 'Failed to save problem');
+      }
+    }
   };
 
   // Prevent hydration issues by not rendering until mounted
@@ -392,10 +529,63 @@ const ProblemGenerator: React.FC<ProblemGeneratorProps> = ({ onProblemGenerated,
           </Group>
 
           {/* Error Display */}
-          {error && (
+          {error && !showJsonEditor && (
             <Alert color="red" title={t('aiGenerator.errorTitle')}>
               {error}
             </Alert>
+          )}
+
+          {/* JSON Editor for fixing parsing errors */}
+          {showJsonEditor && (
+            <Card withBorder mt="md" style={{ position: 'relative' }}>
+              <Stack gap="md">
+                <Group justify="space-between">
+                  <Title order={4} c={colorScheme === 'dark' ? 'red.4' : 'red.6'}>
+                    🛠️ {t('aiGenerator.fixJsonTitle')}
+                  </Title>
+                  <Button
+                    leftSection={<IconDeviceFloppy size={16} />}
+                    onClick={handleSaveFixedJson}
+                    color="green"
+                  >
+                    {t('aiGenerator.saveFixedJson')}
+                  </Button>
+                </Group>
+                
+                <Text size="sm" c="dimmed">
+                  {t('aiGenerator.fixJsonInstructions')}
+                </Text>
+                
+                {jsonError && (
+                  <Alert color="red" title={t('aiGenerator.errorTitle')}>
+                    {jsonError}
+                  </Alert>
+                )}
+                
+                <div style={{ height: '400px', border: '1px solid #ccc', borderRadius: '4px' }}>
+                  <Editor
+                    height="100%"
+                    language="json"
+                    value={jsonContent}
+                    onChange={(value) => setJsonContent(value || '')}
+                    theme={colorScheme === 'dark' ? 'vs-dark' : 'light'}
+                    options={{
+                      minimap: { enabled: false },
+                      fontSize: 14,
+                      lineNumbers: 'on',
+                      roundedSelection: false,
+                      scrollBeyondLastLine: false,
+                      automaticLayout: true,
+                      tabSize: 2,
+                      insertSpaces: true,
+                      wordWrap: 'on',
+                      contextmenu: false,
+                      folding: false
+                    }}
+                  />
+                </div>
+              </Stack>
+            </Card>
           )}
 
           {/* Success Display */}

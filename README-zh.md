@@ -19,7 +19,25 @@
 
 > **注意**: 仅在首次设置和构建时需要网络连接。构建完成后，应用可完全离线使用。
 
-### 一键启动
+### 桌面应用程序（推荐）
+
+为了获得最佳的离线体验，您可以将 OfflineLeetPractice 安装为桌面应用程序：
+
+#### Windows
+
+1. 从 [Releases 页面](https://github.com/zxypro1/OfflineLeetPractice/releases) 下载 Windows 安装程序
+2. 运行安装程序并按照设置向导操作
+3. 从开始菜单启动应用程序
+
+#### macOS
+
+1. 从 [Releases 页面](https://github.com/zxypro1/OfflineLeetPractice/releases) 下载 macOS 安装程序
+2. 打开 DMG 文件并将应用程序拖拽到 Applications 文件夹
+3. 从 Applications 文件夹启动应用程序
+
+> 有关自己构建桌面应用程序的详细说明，请参见 [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md)。
+
+### 一键启动（Web）
 
 #### Windows 用户
 
@@ -112,6 +130,23 @@ npm start
 3. **生成题目**: AI 创建包含测试用例和解法的完整题目
 4. **立即练习**: 生成的题目自动添加到你的库中
 
+### 设置配置
+
+您可以通过设置页面配置 AI 提供商，该页面在桌面和网页模式下均可访问：
+
+1. **桌面模式**: 通过加载屏幕上的"设置"按钮或应用程序菜单访问
+2. **网页模式**: 导航到 `/settings` 路径 (例如: http://localhost:3000/settings)
+
+设置页面允许您配置所有支持的 AI 提供商：
+
+- DeepSeek 云服务
+- OpenAI
+- Qwen (通义千问)
+- Claude
+- Ollama (本地)
+
+在桌面模式下，配置保存到您的用户目录 (`~/.offline-leet-practice/config.json`)，在网页模式下进行模拟。详细说明请参见 [AI_PROVIDER_GUIDE.md](./AI_PROVIDER_GUIDE.md)。
+
 #### AI 功能设置
 
 要使用 AI 题目生成器，您可以配置以下任一 AI 提供商（或多个）：
@@ -131,7 +166,6 @@ npm start
 
 脚本会把配置写入项目根目录下的 `.env` 文件。如果 `.env` 已存在，脚本会跳过交互配置。之后要修改配置，请直接编辑 `.env` 文件。
 
-
 ##### 选项 1：DeepSeek 云服务
 
 1. **获取 API 密钥**: 从 [DeepSeek 平台](https://platform.deepseek.com/) 获取 API 密钥
@@ -144,7 +178,7 @@ npm start
      ```bash
      # Windows (PowerShell)
      $env:DEEPSEEK_API_KEY="your_deepseek_api_key_here"
-     
+
      # macOS/Linux (Bash)
      export DEEPSEEK_API_KEY="your_deepseek_api_key_here"
      ```
@@ -161,7 +195,7 @@ npm start
      ```bash
      # Windows (PowerShell)
      $env:OPENAI_API_KEY="your_openai_api_key_here"
-     
+
      # macOS/Linux (Bash)
      export OPENAI_API_KEY="your_openai_api_key_here"
      ```
@@ -178,7 +212,7 @@ npm start
      ```bash
      # Windows (PowerShell)
      $env:QWEN_API_KEY="your_qwen_api_key_here"
-     
+
      # macOS/Linux (Bash)
      export QWEN_API_KEY="your_qwen_api_key_here"
      ```
@@ -195,7 +229,7 @@ npm start
      ```bash
      # Windows (PowerShell)
      $env:CLAUDE_API_KEY="your_claude_api_key_here"
-     
+
      # macOS/Linux (Bash)
      export CLAUDE_API_KEY="your_claude_api_key_here"
      ```
@@ -205,11 +239,12 @@ npm start
 1. **安装 Ollama**: 从 https://ollama.com/ 下载并安装 Ollama
 2. **下载模型**: 运行 `ollama pull llama3` 下载推荐的模型
 3. **配置 Ollama**: 通过以下方法之一配置 Ollama：
+
    - 在项目根目录创建 `.env.local` 文件，内容如下：
      ```bash
      # 可选：设置 Ollama 端点（默认：http://localhost:11434）
      # OLLAMA_ENDPOINT=http://localhost:11434
-     
+
      # 可选：设置 Ollama 模型（默认：llama3）
      # OLLAMA_MODEL=llama3
      ```
@@ -218,17 +253,17 @@ npm start
      # Windows (PowerShell)
      $env:OLLAMA_ENDPOINT="http://localhost:11434"  # 可选
      $env:OLLAMA_MODEL="llama3"  # 可选
-     
+
      # macOS/Linux (Bash)
      export OLLAMA_ENDPOINT=http://localhost:11434  # 可选
      export OLLAMA_MODEL=llama3  # 可选
      ```
-
 4. **启动 Ollama**: 确保 Ollama 服务正在运行（通常会自动启动）
 
 ##### 使用多个提供商
 
 如果您配置了多个 AI 提供商，系统将按以下优先级顺序自动选择：
+
 1. Ollama（本地）
 2. OpenAI
 3. Claude
@@ -250,7 +285,7 @@ npm start
 4. 生成的问题将自动添加到您的本地问题库中
 5. 点击"尝试最后生成的问题"立即开始解决它
 
-查看 **`AI_GENERATOR_README.md`** 获取更详细的配置说明和故障排除指南！
+查看 **`AI_PROVIDER_GUIDE.md`** 获取更详细的配置说明和故障排除指南！
 
 ### 添加自定义题目
 
@@ -289,7 +324,7 @@ OfflineLeetPractice/
 │   └── styles/            # 全局样式
 ├── start-local.bat        # Windows 启动脚本
 ├── start-local.sh         # Unix 启动脚本
-└── AI_GENERATOR_README.md # AI 生成器详细文档
+└── AI_PROVIDER_GUIDE.md # AI 提供商配置指南
 ```
 
 ## 自定义

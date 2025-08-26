@@ -21,7 +21,23 @@ Quick links: [Discussions](https://github.com/zxypro1/OfflineLeetPractice/discus
 
 > **Note**: Internet is only required for the initial setup and build. Once built, the application works completely offline.
 
-### One-Click Setup
+### Desktop App (Recommended)
+
+For the best offline experience, you can install OfflineLeetPractice as a desktop application:
+
+#### Windows
+1. Download the Windows installer from the [Releases page](https://github.com/zxypro1/OfflineLeetPractice/releases)
+2. Run the installer and follow the setup wizard
+3. Launch the app from your Start menu
+
+#### macOS
+1. Download the macOS installer from the [Releases page](https://github.com/zxypro1/OfflineLeetPractice/releases)
+2. Open the DMG file and drag the app to your Applications folder
+3. Launch the app from your Applications folder
+
+> See [DESKTOP-APP-GUIDE.md](./DESKTOP-APP-GUIDE.md) for detailed instructions on building the desktop app yourself.
+
+### One-Click Setup (Web Version)
 
 #### Windows
 
@@ -113,6 +129,22 @@ npm start
 2. **Describe Your Need**: Enter what type of problem you want
 3. **Generate Problem**: AI creates a complete problem with test cases and solutions
 4. **Practice Immediately**: Generated problem is auto-added to your library
+
+### Settings Configuration
+
+You can configure AI providers through the settings page, which is accessible in both desktop and web modes:
+
+1. **In Desktop Mode**: Access via the "Settings" button on the loading screen or through the application menu
+2. **In Web Mode**: Navigate to `/settings` path (e.g., http://localhost:3000/settings)
+
+The settings page allows you to configure all supported AI providers:
+- DeepSeek Cloud Service
+- OpenAI
+- Qwen (通义千问)
+- Claude
+- Ollama (Local)
+
+Configuration is saved to your user directory in desktop mode (`~/.offline-leet-practice/config.json`) or simulated in web mode. See [AI_PROVIDER_GUIDE.md](./AI_PROVIDER_GUIDE.md) for detailed instructions.
 
 #### Setting Up AI Features
 
@@ -252,7 +284,7 @@ The system automatically detects which providers are configured through a server
 4. The generated problem will automatically be added to your local problem library
 5. Click "Try Last Generated Problem" to immediately start solving it
 
-See **`AI_GENERATOR_README.md`** for more detailed configuration instructions and troubleshooting guide!
+See **`AI_PROVIDER_GUIDE.md`** for more detailed configuration instructions and troubleshooting guide!
 
 ### Adding Custom Problems
 
@@ -291,7 +323,7 @@ OfflineLeetPractice/
 │   └── styles/            # Global styles
 ├── start-local.bat        # Windows startup script
 ├── start-local.sh         # Unix startup script
-└── AI_GENERATOR_README.md # AI Generator detailed docs
+└── AI_PROVIDER_GUIDE.md # AI Provider configuration guide
 ```
 
 ## Customization
